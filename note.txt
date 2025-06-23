@@ -1,0 +1,502 @@
+php artisan iseed my_table or php artisan iseed my_table,another_table for backup data from dev
+
+add use Hash; at top
+add this on bottom permission seeder
+$user = \App\Models\User::factory()->create([
+        'name' => 'Admin',
+        'email' => 'admin@arjayamarine.id',
+        'password' => Hash::make('password'),
+    ]);
+    $user->assignRole('Super Admin');
+
+run this "php artisan migrate:fresh --seed" for input data 
+
+php artisan migrate:fresh --seed to recreate db and input seed
+
+php artisan iseed categories,category_types,client_types,clients,companies,departments,dock_spaces,dock_spaces,equipment,employees,format_number_codes,job_levels,job_positions,migrations,model_has_roles,permissions,role_has_permissions,roles,supplier_types,suppliers,sysparams,taxes,units,users,vendor_types,vessel_types,vessels,warehouses
+
+Find & replace using regex
+src="([^"]+)"
+
+src="{{ asset('user_guide/sandar_buritan/1.webp') }}"
+/*
+
+@php
+    $roles = ['admin' => 'Admin', 'editor' => 'Editor', 'user' => 'User'];
+@endphp
+
+<x-form.multi-select name="role" label="Role" :options="$roles" :selected="$selectedRoles ?? []" />
+
+<x-form.password name="password" label="Password" />
+<x-form.checkbox name="terms" label="Accept Terms" />
+<x-form.text name="username" label="Username" :value="$user->username ?? ''" class="my-input" />
+<x-form.select name="role" :options="$roles" :value="$user->role_id ?? ''" />
+<x-form.file name="avatar" label="Profile Picture" />
+<x-form.checkbox name="interests" label="Choose Interests" :options="['tech' => 'Tech', 'sports' => 'Sports']" :checked="['tech']" />
+<form action="{{ route('your.upload.route') }}" method="POST" enctype="multipart/form-data">
+    @csrf
+    <x-form.file name="profile" label="Upload" />
+</form>
+<x-form.input name="username" label="Username" required autofocus />
+<x-form.select name="roles" label="Roles" :options="$roles" multiple data-select="true" />
+//new
+<x-form.input name="title" label="Title" :required="true" />
+<x-form.select name="role" label="Role" :options="['admin' => 'Admin', 'user' => 'User']" :selected="$role" />
+<x-form.select name="tags" label="Tags" :options="$tags" :selected="$selectedTags" :multiple="true" />
+<x-form.checkbox name="permissions" label="Permissions" :options="$permissions" :checked="$checkedPermissions" />
+<x-form.radio name="status" label="Status" :options="['active' => 'Active', 'inactive' => 'Inactive']" :checked="$status" />
+<x-form.file name="avatar" label="Profile Picture" />
+<x-form.email name="email" label="Email" />
+<x-form.password name="password" label="Password" />
+
+
+<x-form.select
+    name="role"
+    label="User Role"
+    :options="['admin' => 'Admin', 'user' => 'User']"
+    selected="user"
+/>
+
+<x-form.select
+    name="role"
+    label="User Role"
+    :options="['admin' => 'Admin', 'user' => 'User']"
+    selected="user"
+/>
+
+for edit pages
+<x-form.input name="title" label="Title" :value="$post->title" :required="true" />
+<x-form.select name="status" label="Status"
+    :options="['draft' => 'Draft', 'published' => 'Published']"
+    :selected="$post->status"
+/>
+<x-form.select name="tags" label="Tags"
+    :options="$tags"
+    :selected="$post->tags->pluck('id')->toArray()"
+    :multiple="true"
+/>
+<x-form.textarea name="description" label="Description" :value="$post->description" />
+<x-form.radio name="visibility" label="Visibility"
+    :options="['public' => 'Public', 'private' => 'Private']"
+    :checked="$post->visibility"
+/>
+<x-form.checkbox name="categories" label="Categories"
+    :options="$categories"
+    :checked="$post->categories->pluck('id')->toArray()"
+/>
+<x-form.file name="cover_image" label="Cover Image" />
+<x-form.date name="publish_date" label="Publish Date" :value="$post->publish_date->format('Y-m-d')" />
+<x-form.datetime name="scheduled_at" label="Scheduled At" :value="$post->scheduled_at->format('Y-m-d\TH:i')" />
+<x-form.email name="author_email" label="Author Email" :value="$post->author_email" />
+
+
+on product detail pages
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org/",
+  "@type": "Product",
+  "name": "{{ $product->name }}",
+  "image": ["{{ asset($product->image) }}"],
+  "description": "{{ Str::limit(strip_tags($product->description), 155) }}",
+  "brand": {
+    "@type": "Organization",
+    "name": "Arjaya Marine"
+  }
+}
+</script>
+
+Laravel Company Profile SEO Setup with Separate Models per Page + Bootstrap Integration
+Front-end and Back-end Layout Separation with SEO Hidden on Backend
+With SEO Meta Management and Sitemap Generation using Laravel Packages + Custom Bootstrap Theme + Dark Mode
+Includes SEO Snippet Preview in Admin for better meta validation
+*/
+
+// 1. Migration Example: About Us
+Schema::create('about_uses', function (Blueprint $table) {
+    $table->id();
+    $table->text('content');
+    $table->string('meta_title')->nullable();
+    $table->text('meta_description')->nullable();
+    $table->text('meta_keywords')->nullable();
+    $table->string('meta_image')->nullable();
+    $table->timestamps();
+});
+
+// Repeat similar structure for home_pages, galleries, news, clients
+
+// 2. Helper: SeoHelper.php (app/Helpers/SeoHelper.php)
+namespace App\Helpers;
+
+use SEOMeta;
+use OpenGraph;
+use Twitter;
+
+class SeoHelper
+{
+    public static function setMeta($data)
+    {
+        SEOMeta::setTitle($data['meta_title'] ?? config('app.name'));
+        SEOMeta::setDescription($data['meta_description'] ?? '');
+        SEOMeta::addKeyword(explode(',', $data['meta_keywords'] ?? ''));
+
+        OpenGraph::setTitle($data['meta_title'] ?? config('app.name'));
+        OpenGraph::setDescription($data['meta_description'] ?? '');
+        OpenGraph::setImage(asset($data['meta_image'] ?? ''));
+
+        Twitter::setTitle($data['meta_title'] ?? config('app.name'));
+        Twitter::setDescription($data['meta_description'] ?? '');
+        Twitter::setImage(asset($data['meta_image'] ?? ''));
+    }
+}
+
+// 3. Example Controller: AboutUsController
+use App\Models\AboutUs;
+use App\Helpers\SeoHelper;
+
+public function index()
+{
+    $about = AboutUs::first();
+    SeoHelper::setMeta($about->toArray());
+
+    return view('frontend.about.index', compact('about'));
+}
+
+// 4a. Blade Layout: layouts/frontend.blade.php (for SEO-exposed pages)
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {!! SEO::generate() !!}
+
+    <!-- Google Tag Manager -->
+    <script>
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','G-XXXXXXX');
+    </script>
+    <!-- End Google Tag Manager -->
+
+    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+</head>
+<body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=G-XXXXXXX"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+    <button id="themeToggle">Toggle Theme</button>
+
+    @include('partials.header')
+    <main>
+        @yield('content')
+    </main>
+    @include('partials.footer')
+
+    <script>
+        document.querySelector('#themeToggle')?.addEventListener('click', () => {
+            const html = document.documentElement;
+            const current = html.getAttribute('data-bs-theme');
+            html.setAttribute('data-bs-theme', current === 'dark' ? 'light' : 'dark');
+        });
+    </script>
+</body>
+</html>
+
+// 4b. Blade Layout: layouts/backend.blade.php (no SEO, hidden from bots)
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@yield('title', 'Admin Panel')</title>
+    <meta name="robots" content="noindex, nofollow">
+    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+</head>
+<body>
+    @include('backend.partials.sidebar')
+    <main>
+        @yield('content')
+    </main>
+</body>
+</html>
+
+// 4c. Optional Admin SEO Preview Blade Component (resources/views/components/admin/seo-preview.blade.php)
+<div class="card p-3 shadow-sm rounded border mb-4">
+    <h6 class="text-muted">SEO Snippet Preview</h6>
+    <div class="border p-3 bg-light">
+        <p class="text-primary m-0" id="preview-title">{{ old('meta_title', $item->meta_title ?? 'Meta Title') }}</p>
+        <p class="text-success small m-0">{{ url()->current() }}</p>
+        <p class="text-dark" id="preview-description">{{ old('meta_description', $item->meta_description ?? 'Meta description will show here.') }}</p>
+    </div>
+</div>
+
+// 5. Example Route: web.php
+Route::get('/about-us', [AboutUsController::class, 'index'])->name('about');
+
+// Backend routes (optional middleware protection)
+Route::prefix('admin')->middleware(['auth'])->group(function () {
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+});
+
+// 6. Bootstrap Integration
+// Install via terminal:
+// npm install bootstrap @popperjs/core
+
+// resources/js/app.js
+import './bootstrap';
+import 'bootstrap';
+import '../sass/app.scss';
+
+// resources/sass/variables.scss
+$primary: #004080;
+$secondary: #6c757d;
+$success: #28a745;
+$info: #17a2b8;
+$warning: #ffc107;
+$danger: #dc3545;
+$light: #f8f9fa;
+$dark: #343a40;
+
+$color-mode-type: media;
+
+// resources/sass/app.scss
+@import url('https://fonts.bunny.net/css?family=Nunito');
+@import 'variables';
+@import 'bootstrap/scss/bootstrap';
+
+// 7. Composer Packages for SEO
+// composer require artesaos/seotools
+// composer require spatie/laravel-sitemap
+
+// 8. Sitemap Generation (optional route or command usage)
+// use Spatie\Sitemap\SitemapGenerator;
+// SitemapGenerator::create(config('app.url'))->writeToFile(public_path('sitemap.xml'));
+
+// 9. Public/robots.txt
+// User-agent: *
+// Disallow: /admin
+// Sitemap: https://yourdomain.com/sitemap.xml
+
+
+/*
+Laravel Company Profile SEO Setup with Additional Meta Fields: meta_author, meta_canonical, meta_robots
+*/
+
+// 1. Migration Example: About Us (Add new meta fields)
+Schema::create('about_uses', function (Blueprint $table) {
+    $table->id();
+    $table->text('content');
+    $table->string('meta_title')->nullable();
+    $table->text('meta_description')->nullable();
+    $table->text('meta_keywords')->nullable();
+    $table->string('meta_author')->nullable();
+    $table->string('meta_canonical')->nullable();
+    $table->string('meta_robots')->nullable();
+    $table->string('image')->nullable();
+    $table->timestamps();
+});
+
+// If table exists, create migration to add new fields accordingly...
+
+// 2. Update Model: Add new fillable meta fields
+class AboutUs extends Model
+{
+    protected $fillable = [
+        'content',
+        'meta_title',
+        'meta_description',
+        'meta_keywords',
+        'meta_author',
+        'meta_canonical',
+        'meta_robots',
+        'image',
+    ];
+}
+
+// 3. SeoHelper.php update
+namespace App\Helpers;
+
+use SEOMeta;
+use OpenGraph;
+use Twitter;
+
+class SeoHelper
+{
+    public static function setMeta($data)
+    {
+        SEOMeta::setTitle($data['meta_title'] ?? config('app.name'));
+        SEOMeta::setDescription($data['meta_description'] ?? '');
+        SEOMeta::addKeyword(explode(',', $data['meta_keywords'] ?? ''));
+
+        if (!empty($data['meta_author'])) {
+            SEOMeta::addMeta('author', $data['meta_author']);
+        }
+        if (!empty($data['meta_canonical'])) {
+            SEOMeta::setCanonical($data['meta_canonical']);
+        }
+        if (!empty($data['meta_robots'])) {
+            SEOMeta::addMeta('robots', $data['meta_robots']);
+        }
+
+        OpenGraph::setTitle($data['meta_title'] ?? config('app.name'));
+        OpenGraph::setDescription($data['meta_description'] ?? '');
+        OpenGraph::setImage(asset($data['meta_image'] ?? ''));
+
+        Twitter::setTitle($data['meta_title'] ?? config('app.name'));
+        Twitter::setDescription($data['meta_description'] ?? '');
+        Twitter::setImage(asset($data['meta_image'] ?? ''));
+    }
+}
+
+// 4. Controller Example Update (frontend AboutUsController)
+public function index()
+{
+    $about = AboutUs::first();
+
+    SeoHelper::setMeta([
+        'meta_title' => $about->meta_title,
+        'meta_description' => $about->meta_description,
+        'meta_keywords' => $about->meta_keywords,
+        'meta_author' => $about->meta_author,
+        'meta_canonical' => $about->meta_canonical,
+        'meta_robots' => $about->meta_robots,
+        'meta_image' => $about->image ? 'storage/' . $about->image : null,
+    ]);
+
+    return view('frontend.about.index', compact('about'));
+}
+
+// 5a. Frontend Layout (layouts/frontend.blade.php) — SEO generated via SEOMeta, no change needed here
+// {!! SEO::generate() !!} will now include the new meta tags automatically.
+
+// 5b. Backend Layout (layouts/backend.blade.php) — add meta_author, meta_canonical, meta_robots with noindex fallback
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@yield('title', 'Admin Panel')</title>
+
+    {{-- Block SEO indexing for backend --}}
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="author" content="Admin" />
+    {{-- No canonical for backend, or can set to app url --}}
+    <link rel="canonical" href="{{ url()->current() }}" />
+
+    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+</head>
+<body>
+    @include('backend.partials.sidebar')
+    <main>
+        @yield('content')
+    </main>
+</body>
+</html>
+
+// 6. Add meta fields in backend edit form for About Us (optional, for admin to fill)
+
+<label for="meta_author" class="mt-3">Meta Author</label>
+<input type="text" name="meta_author" id="meta_author" value="{{ old('meta_author', $about->meta_author) }}" class="form-control">
+
+<label for="meta_canonical" class="mt-3">Meta Canonical URL</label>
+<input type="url" name="meta_canonical" id="meta_canonical" value="{{ old('meta_canonical', $about->meta_canonical) }}" class="form-control">
+
+<label for="meta_robots" class="mt-3">Meta Robots</label>
+<input type="text" name="meta_robots" id="meta_robots" value="{{ old('meta_robots', $about->meta_robots) }}" class="form-control" placeholder="e.g. index, follow">
+
+// 7. Update validation rules in controller update method
+$data = $request->validate([
+    'content' => 'required|string',
+    'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+    'meta_title' => 'nullable|string|max:255',
+    'meta_description' => 'nullable|string',
+    'meta_keywords' => 'nullable|string',
+    'meta_author' => 'nullable|string|max:255',
+    'meta_canonical' => 'nullable|url|max:255',
+    'meta_robots' => 'nullable|string|max:255',
+]);
+
+// 8. Pass these fields to update method (already handled via $data)
+
+---
+
+If you want, I can also update other models (like Home, News, Client) with these meta fields similarly.
+
+Let me know!
+
+<!-- resources/views/admin/dashboard/analytics.blade.php -->
+@extends('layouts.app')
+
+@section('content')
+<div class="container mx-auto p-6">
+    <h1 class="text-2xl font-bold mb-6">Website Analytics Dashboard</h1>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Sessions -->
+        <div class="bg-white p-4 rounded shadow">
+            <h2 class="text-lg font-semibold">Sessions</h2>
+            <p class="text-3xl text-blue-600 mt-2">
+                {{ $analytics->rows[0]->metricValues[0]->value ?? '0' }}
+            </p>
+        </div>
+
+        <!-- Avg. Session Duration -->
+        <div class="bg-white p-4 rounded shadow">
+            <h2 class="text-lg font-semibold">Avg. Time on Site</h2>
+            <p class="text-3xl text-green-600 mt-2">
+                {{ round($analytics->rows[0]->metricValues[1]->value / 60, 2) }} mins
+            </p>
+        </div>
+
+        <!-- Bounce Rate -->
+        <div class="bg-white p-4 rounded shadow">
+            <h2 class="text-lg font-semibold">Bounce Rate</h2>
+            <p class="text-3xl text-red-500 mt-2">
+                {{ round($analytics->rows[0]->metricValues[2]->value, 2) }}%
+            </p>
+        </div>
+
+        <!-- New Users -->
+        <div class="bg-white p-4 rounded shadow">
+            <h2 class="text-lg font-semibold">New Sessions</h2>
+            <p class="text-3xl text-purple-600 mt-2">
+                {{ $analytics->rows[0]->metricValues[3]->value ?? '0' }}
+            </p>
+        </div>
+
+        <!-- Page Views -->
+        <div class="bg-white p-4 rounded shadow">
+            <h2 class="text-lg font-semibold">Pageviews</h2>
+            <p class="text-3xl text-indigo-600 mt-2">
+                {{ $analytics->rows[0]->metricValues[4]->value ?? '0' }}
+            </p>
+        </div>
+    </div>
+
+    <div class="mt-8">
+        <h2 class="text-xl font-bold mb-4">Top Countries</h2>
+        <div class="overflow-x-auto">
+            <table class="min-w-full bg-white border">
+                <thead class="bg-gray-100">
+                    <tr>
+                        <th class="text-left p-2 border">Country</th>
+                        <th class="text-left p-2 border">Sessions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($analytics->rows as $row)
+                        <tr>
+                            <td class="p-2 border">{{ $row->dimensionValues[0]->value }}</td>
+                            <td class="p-2 border">{{ $row->metricValues[0]->value }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@endsection
+

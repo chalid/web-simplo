@@ -1,0 +1,9 @@
+{{-- resources/views/layouts/components/form/input.blade.php --}}
+@props(['name', 'label', 'type' => 'text', 'value' => '', 'class' => 'form-control', 'required' => false])
+
+<div class="row mb-3">
+    <label for="{{ $name }}" class="col-sm-4 col-form-label">{{ $label }}</label>
+    <div class="col-sm-8">
+        <input type="{{ $type }}" name="{{ $name }}" id="{{ $name }}" class="{{ $class }}" value="{!! old($name, $value) !!}" {{ $required ? 'required' : '' }}>
+    </div>
+</div>
