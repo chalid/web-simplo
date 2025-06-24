@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('product_id');
             $table->string('uri');
+            $table->string('meta_tag')->nullable();
             $table->boolean('is_default')->default(0);
             $table->timestamps();
 

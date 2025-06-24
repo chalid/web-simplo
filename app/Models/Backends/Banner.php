@@ -17,14 +17,16 @@ class Banner extends Model
         'title',
         'description',
         'image',
+        'link',
         'meta_title',
+        'meta_tag',
         'meta_description',
         'meta_keywords',
         'meta_author',
         'meta_image',
         'meta_canonical',
         'meta_robots',
-        'slug',
+        'slug', // For SEO-friendly URLs
         'is_active',
     ];
 }

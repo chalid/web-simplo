@@ -4,7 +4,7 @@
     <div class="h-100" data-simplebar="">
         <!-- Brand logo -->
         <a class="navbar-brand" href="{{ url('/') }}">
-            <img src="{{ asset('assets/backend/images/svg/logo-text.svg') }}" width="30px" height="30px" alt="{{ config('app.name', 'Laravel') }}">&nbsp;{{ config('app.name', 'Laravel') }}
+            <img src="{{ asset('assets/backend/images/svg/logo.svg') }}" width="80px" height="30px" alt="{{ config('app.name', 'Laravel') }}">
         </a>
         <!-- Navbar nav -->
         <ul class="navbar-nav flex-column" id="sideNavbar">
@@ -135,9 +135,9 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link has-arrow " href="{{ route('project-category') }}">
+                    <a class="nav-link has-arrow " href="{{ route('faq-category') }}">
                         <i data-feather="clipboard" class="nav-icon me-2 icon-xxs"></i>
-                        {{ __('Project Category') }}
+                        {{ __('FAQ Category') }}
                     </a>
                 </li>
                 <li class="nav-item">

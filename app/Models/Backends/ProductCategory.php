@@ -16,6 +16,21 @@ class ProductCategory extends Model
     protected $fillable = [
         'name',
         'description',
-        'code',
+        'image',
+        'meta_title',
+        'meta_tag',
+        'meta_description',
+        'meta_keywords',
+        'meta_author',
+        'meta_image',
+        'meta_canonical',
+        'meta_robots',
+        'slug', // For SEO-friendly URLs
+        'is_active',
     ];
+
+    public function products()
+    {
+        return $this->hasMany(Product::class, 'product_category_id');
+    }
 }

@@ -16,6 +16,7 @@ class ProductImage extends Model
     protected $fillable = [
         'product_id',
         'uri',
+        'meta_tag',
         'is_default',
     ];
 

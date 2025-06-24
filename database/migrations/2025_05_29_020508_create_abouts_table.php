@@ -15,7 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('description')->nullable();
+            $table->text('vision')->nullable();
+            $table->text('mission')->nullable();
+            $table->text('history')->nullable();
             $table->string('image')->nullable();
+            $table->string('meta_tag')->nullable();
             $table->string('meta_title')->nullable();
             $table->text('meta_description')->nullable();
             $table->string('meta_keywords')->nullable();

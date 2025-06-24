@@ -3,7 +3,7 @@
     <div class="navbar-custom navbar navbar-expand-lg">
         <div class="container-fluid px-0">
             <a class="navbar-brand d-block d-md-none" href="{{ url('/') }}">
-                <img src="{{ asset('assets/backend/images/svg/logo-text.svg') }}" width="30px" height="30px" alt="{{ config('app.name', 'Laravel') }}">&nbsp;{{ config('app.name', 'Laravel') }}
+                <img src="{{ asset('assets/backend/images/svg/logo.svg') }}" width="80px" height="30px" alt="{{ config('app.name', 'Laravel') }}">
             </a>
             <a id="nav-toggle" href="#!" class="ms-auto ms-md-0 me-0 me-lg-3 ">
                 <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-text-indent-left text-muted" viewbox="0 0 16 16">

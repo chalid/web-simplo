@@ -16,7 +16,11 @@ class About extends Model
     protected $fillable = [
         'title',
         'description',
+        'vision',
+        'mission',
+        'history',
         'image',
+        'meta_tag',
         'meta_title',
         'meta_description',
         'meta_keywords',
@@ -24,7 +28,7 @@ class About extends Model
         'meta_image',
         'meta_canonical',
         'meta_robots',
-        'slug',
+        'slug', // For SEO-friendly URLs
         'is_active',
     ];
 }

@@ -15,19 +15,22 @@ class Product extends Model
 
     protected $fillable = [
         'product_category_id',
-        'product_type',
+        'brand_id',
         'title',
-        'code_no',
         'description',
+        'feature',
+        'specification',
+        'brochure',
         'image',
         'meta_title',
+        'meta_tag',
         'meta_description',
         'meta_keywords',
         'meta_author',
         'meta_image',
         'meta_canonical',
         'meta_robots',
-        'slug',
+        'slug', // For SEO-friendly URLs
         'is_active',
     ];
 
@@ -39,5 +42,10 @@ class Product extends Model
     public function category()
     {
         return $this->belongsTo(ProductCategory::class, 'product_category_id');
+    }
+
+    public function brand()
+    {
+        return $this->belongsTo(Brand::class, 'brand_id');
     }
 }

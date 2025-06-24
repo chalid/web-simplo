@@ -429,20 +429,20 @@ Route::middleware('auth')->group(function () {
         /**
          * project Category
          */
-        Route::middleware('role_or_permission:Project Category')->group(function () {
-            Route::get('/project-category/ajax_datatable', [App\Http\Controllers\Backends\ProjectCategoryController::class,'ajaxDatatable'])->name('project-category.get_data');
-            Route::get('/project-category',[App\Http\Controllers\Backends\ProjectCategoryController::class, 'index'])->name('project-category');
+        Route::middleware('role_or_permission:Faq Category')->group(function () {
+            Route::get('/faq-category/ajax_datatable', [App\Http\Controllers\Backends\ProjectCategoryController::class,'ajaxDatatable'])->name('faq-category.get_data');
+            Route::get('/faq-category',[App\Http\Controllers\Backends\ProjectCategoryController::class, 'index'])->name('faq-category');
         });
-        Route::middleware('role_or_permission:Can add project category')->group(function () {
-            Route::get('/project-category/add',[App\Http\Controllers\Backends\ProjectCategoryController::class, 'create'])->name('project-category.create');
-            Route::post('/project-category/store', [App\Http\Controllers\Backends\ProjectCategoryController::class,'store'])->name('project-category.store');
+        Route::middleware('role_or_permission:Can add faq category')->group(function () {
+            Route::get('/faq-category/add',[App\Http\Controllers\Backends\ProjectCategoryController::class, 'create'])->name('faq-category.create');
+            Route::post('/faq-category/store', [App\Http\Controllers\Backends\ProjectCategoryController::class,'store'])->name('faq-category.store');
         });
-        Route::middleware('role_or_permission:Can edit project category')->group(function () {
-            Route::get('/project-category/{projectCategory}/edit', [App\Http\Controllers\Backends\ProjectCategoryController::class,'edit'])->name('project-category.edit');
-            Route::patch('/project-category/{projectCategory}/update', [App\Http\Controllers\Backends\ProjectCategoryController::class,'update'])->name('project-category.update');
+        Route::middleware('role_or_permission:Can edit faq category')->group(function () {
+            Route::get('/faq-category/{faqCategory}/edit', [App\Http\Controllers\Backends\ProjectCategoryController::class,'edit'])->name('faq-category.edit');
+            Route::patch('/faq-category/{faqCategory}/update', [App\Http\Controllers\Backends\ProjectCategoryController::class,'update'])->name('faq-category.update');
         });
-        Route::middleware('role_or_permission:Can delete project category')->group(function () {
-            Route::delete('/project-category/{projectCategory}/delete', [App\Http\Controllers\Backends\ProjectCategoryController::class,'destroy'])->name('project-category.delete');
+        Route::middleware('role_or_permission:Can delete faq category')->group(function () {
+            Route::delete('/faq-category/{faqCategory}/delete', [App\Http\Controllers\Backends\ProjectCategoryController::class,'destroy'])->name('faq-category.delete');
         });
     
         /**
