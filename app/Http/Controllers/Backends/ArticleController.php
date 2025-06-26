@@ -90,7 +90,7 @@ class ArticleController extends Controller
             $article->meta_keywords         = implode(',', explode(' ', Str::lower($request->title)));
             $article->meta_author           = auth()->check() ? auth()->user()->name : 'Admin';
             $article->meta_image            = null;
-            $article->meta_canonical        = url()->current();
+            $article->meta_canonical        = route('web_article.show', Str::slug($request->title));
             $article->meta_robots           = 'index, follow';
             $article->slug                  = Str::slug($request->title);
             $article->save();
@@ -107,17 +107,11 @@ class ArticleController extends Controller
             if ($request->hasFile('image')) {
                 $file   = $request->file('image');
 
-                $image = ImageHelper::uploadImage($file,'article',['small-thumb', 'small','normal', 'meta', 'large']);
+                $image = ImageHelper::uploadImage($file,'article',['small-thumb', 'small','normal', 'meta']);
 
                 $article->image         = $image;
                 $article->meta_image    = $image ?? null;
                 $article->update();
-
-                $articleImage              = new ArticleImage();
-                $articleImage->article_id  = $article->id;
-                $articleImage->uri         = $image;
-                $articleImage->is_default  = true;
-                $articleImage->save();
             }
             return redirect()->route('article')->with('success', 'Berhasil terkirim');
         }
@@ -154,6 +148,7 @@ class ArticleController extends Controller
             'description'           => 'required',
             'article_category_id'   => 'required',
             'is_active'             => 'required|boolean',
+            'image'                 => 'image|mimes:jpeg,png,jpg,gif|max:6144',
         ], [
             'title.required'                => 'title wajib diisi',
             'description.required'          => 'description wajib diisi',
@@ -180,7 +175,7 @@ class ArticleController extends Controller
             $article->meta_description      = Str::limit(strip_tags($request->description), 150);
             $article->meta_keywords         = implode(',', explode(' ', Str::lower($request->title)));
             $article->meta_author           = auth()->check() ? auth()->user()->name : 'Admin';
-            $article->meta_canonical        = url()->current();
+            $article->meta_canonical        = route('web_article.show', Str::slug($request->title));
             $article->meta_robots           = 'index, follow';
             $article->slug                  = Str::slug($request->title);
             $article->update();
@@ -195,6 +190,15 @@ class ArticleController extends Controller
         }
 
         if ($success_trans == true) {
+            if ($request->hasFile('image')) {
+                $file   = $request->file('image');
+
+                $image = ImageHelper::uploadImage($file,'article',['small-thumb', 'small','normal', 'meta']);
+
+                $article->image         = $image;
+                $article->meta_image    = $image ?? null;
+                $article->update();
+            }
             return redirect()->route('article')->with('success', 'Berhasil terkirim');
         }
     }
@@ -210,7 +214,7 @@ class ArticleController extends Controller
         try {
             
             foreach($article->images as $image){
-                $deleteImage = ImageHelper::deleteFileExists($image->uri,'article',['small-thumb', 'small','normal', 'meta', 'large', 'original']);
+                $deleteImage = ImageHelper::deleteFileExists($image->uri,'article',['small-thumb', 'small','normal', 'meta', 'original']);
             }
             $article->images->each->delete();
 
@@ -271,7 +275,7 @@ class ArticleController extends Controller
                         : url('assets/backend/images/png/no_image.png');
 
                     $originalPath = $item->image
-                        ? url($path . $dir . 'large/' . $item->image)
+                        ? url($path . $dir . 'normal/' . $item->image)
                         : '#';
 
                     return '<a href="' . $originalPath . '" target="_blank">
@@ -377,11 +381,11 @@ class ArticleController extends Controller
     public function imageAdd(Request $request, Article $article)
     {
         $validator = Validator::make($request->all(), [
-            'image'         => 'image|mimes:jpeg,png,jpg,gif|max:6144',
+            'image' => 'image|mimes:jpeg,png,jpg,gif|max:6144',
         ], [
-            'image.required'        => 'Hanya gambar',
-            'image.mimes'           => 'Hanya file bertipe jpeg,png,jpg,gif',
-            'image.max'             => 'Tidak bole lebih dari 6144',
+            'image.required'    => 'Hanya gambar',
+            'image.mimes'       => 'Hanya file bertipe jpeg,png,jpg,gif',
+            'image.max'         => 'Tidak bole lebih dari 6144',
         ]);
 
         if ($validator->fails()) {
@@ -397,81 +401,12 @@ class ArticleController extends Controller
             if ($request->hasFile('image')) {
                 $file   = $request->file('image');
 
-                $image = ImageHelper::uploadImage($file,'article',['small-thumb', 'small','normal', 'meta', 'large']);
+                $image = ImageHelper::uploadImage($file,'article',['small-thumb', 'small','normal', 'meta']);
 
                 $article->image         = $image;
                 $article->meta_image    = $image ?? null;
                 $article->update();
-
-                $oldArticleImage            = ArticleImage::where('article_id', $article->id)->where('is_default', true)->update(['is_default' => false]);
-
-                $articleImage              = new ArticleImage();
-                $articleImage->article_id  = $article->id;
-                $articleImage->uri         = $image;
-                $articleImage->is_default  = true;
-                $articleImage->save();
             }
-
-            DB::commit();
-            $success_trans = true;
-
-        } catch (\Exception $e) {
-            DB::rollback();
-            // error page
-            return redirect()->route('article.show', $article->id)->with('error', $e->getMessage());
-        }
-
-        if ($success_trans == true) {
-            return redirect()->route('article.show', $article->id)->with('success', 'Berhasil terkirim');
-        }
-    }
-
-    public function imageSetDefault(Request $request, Article $article, ArticleImage $articleImage)
-    {
-        $articleImage = ArticleImage::find($request->image_id);
-
-        DB::beginTransaction();
-        $success_trans = false;
-
-        try {
-
-            $article->image             = $articleImage->uri;
-            $article->meta_image        = $articleImage->uri ?? null;
-            $article->update();
-
-            $oldArticleImage            = ArticleImage::where('article_id', $article->id)->where('is_default', true)->update(['is_default' => false]);
-
-            $articleImage->is_default  = true;
-            $articleImage->update();
-
-            DB::commit();
-            $success_trans = true;
-
-        } catch (\Exception $e) {
-            DB::rollback();
-            // error page
-            return redirect()->route('article.show', $article->id)->with('error', $e->getMessage());
-        }
-
-        if ($success_trans == true) {
-            return redirect()->route('article.show', $article->id)->with('success', 'Berhasil terkirim');
-        }
-    }
-
-    public function imageDelete(Request $request, Article $article, ArticleImage $articleImage)
-    {
-        DB::beginTransaction();
-        $success_trans = false;
-
-        try {
-            $articleImage = ArticleImage::find($request->image_id);
-
-            $article->image             = null;
-            $article->meta_image        = null;
-            $article->update();
-
-            $deleteImage = ImageHelper::deleteFileExists($articleImage->uri,'article',['small-thumb', 'small','normal', 'meta', 'large', 'original']);
-            $articleImage->delete();
 
             DB::commit();
             $success_trans = true;

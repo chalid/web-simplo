@@ -22,6 +22,13 @@
                     <x-form.textarea name="description" label="Description" :value="old('description', $article->description)"  :rich="true" />
                     <x-form.select name="article_category_id" label="Kategori Article" :options="$articleCategories" :selected="$article->article_category_id ?? ''" :required="true"/>
                     <x-form.select name="is_active" label="Is Active" :options="[1 => 'Active', 0 => 'In Active']" :selected="$article->is_active ?? ''" :required="true"/>
+                    <x-form.file name="image" label="Article Image" />
+                    <div class="row mb-3">
+                        <label for="images" class="col-sm-4 col-form-label"></label>
+                        <div class="col-sm-8">
+                            <img src="{{ url('storage/upload_files/images/article/small-thumb/' . $article->image) }}" alt="{{ $article->meta_tag }}">
+                        </div>
+                    </div>
                     <div class="col-12">
                         <a href="{{ route('article') }}" class="btn btn-danger">
                         <i data-feather="arrow-left" class="nav-icon me-2 icon-xs"></i>Kembali</a>

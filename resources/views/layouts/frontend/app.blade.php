@@ -1,182 +1,208 @@
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="light">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>@yield('title', 'Home') | PT. Arjaya Berkah Marine</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('assets/frontend/assets/img/favicon.ico/apple-touch-icon.png') }}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('assets/frontend/assets/img/favicon.ico/favicon-32x32.png') }}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('assets/frontend/assets/img/favicon.ico/favicon-16x16.png') }}">
-    <link rel="manifest" href="{{ asset('assets/frontend/assets/img/favicon.ico/site.webmanifest') }}">
-    <link rel="mask-icon" href="{{ asset('assets/frontend/assets/img/favicon.ico/safari-pinned-tab.svg') }}" color="#5bbad5">
-    <meta name="msapplication-TileColor" content="#da532c">
-    <meta name="theme-color" content="#ffffff">
-    <link rel="stylesheet" href="{{ asset('assets/frontend/css/main.css') }}">
+<!--[if lt IE 7]>      <html lang="en" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html lang="en" class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html lang="en" class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="robots" content="index, follow" />
+		<meta name="generator" content="All in One SEO (AIOSEO) 4.6.6" />
+		<title>@yield('title', $title ? $title : 'Home') &middot; Simplo - Solusi Integrasi Sistem Keamanan Terbaik di Indonesia</title>
+		<meta name="description" content="Simplo Solusi Cerdas Untuk Sistem Keamanan TerintegrasiKami Membawa Inovasi Anak Bangsa dalam Sistem Keamanan Anda Call To Action ABOUT US VISI Visi kami adalah menjadi pemimpin dalam solusi sistem keamanan terintegrasi yang inovatif dan andal, memberdayakan bisnis di seluruh Indonesia. MISIMisi kami adalah menyediakan solusi keamanan yang efisien, aman dan fleksibel, bersamanan dengan mendukung karya anak bangsa dan">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+		<link rel="profile" href="https://gmpg.org/xfn/11">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="mobile-web-app-capable" content="yes">
+		<meta name="twitter:card" content="summary_large_image"/>
+		<meta name="twitter:site" content="@aliaraaab"/>
+		<meta name="twitter:title" content="HOME - Simplo - Solusi Integrasi Sistem Keamanan Terbaik di Indonesia"/>
+		<meta name="twitter:creator" content="@aliaraaab" />
+		<meta name="twitter:description" content="Simplo Solusi Cerdas Untuk Sistem Keamanan TerintegrasiKami Membawa Inovasi Anak Bangsa dalam Sistem Keamanan Anda Call To Action ABOUT US VISI Visi kami adalah menjadi pemimpin dalam solusi sistem keamanan terintegrasi yang inovatif dan andal, memberdayakan bisnis di seluruh Indonesia. MISIMisi kami adalah menyediakan solusi keamanan yang efisien, aman dan fleksibel, bersamanan dengan mendukung karya anak bangsa dan"/>
+		<meta name="twitter:image:src" content="https://simplo.id/wp-content/uploads/2024/07/WhatsApp_Image_2024-07-03_at_14.26.18_3865a286-removebg-preview.png"/>
+		<meta name="keyword" content="Keyword Here">
+		<meta property="og:locale" content="id_ID" />
+		<meta property="og:site_name" content="Simplo - Solusi Integrasi Sistem Keamanan Terbaik di Indonesia - Saatnya Tingkatkan Produktivitas dan Keamanan dengan Solusi Terintegrasi dari Simplo"/>
+		<meta property="og:title" content="HOME - Simplo - Solusi Integrasi Sistem Keamanan Terbaik di Indonesia"/>
+		<meta property="og:url" content="https://simplo.id/"/>
+		<meta property="og:description" content="Simplo Solusi Cerdas Untuk Sistem Keamanan TerintegrasiKami Membawa Inovasi Anak Bangsa dalam Sistem Keamanan Anda Call To Action ABOUT US VISI Visi kami adalah menjadi pemimpin dalam solusi sistem keamanan terintegrasi yang inovatif dan andal, memberdayakan bisnis di seluruh Indonesia. MISIMisi kami adalah menyediakan solusi keamanan yang efisien, aman dan fleksibel, bersamanan dengan mendukung karya anak bangsa dan" >
+		<meta property="og:image" content="https://simplo.id/wp-content/uploads/2024/07/WhatsApp_Image_2024-07-03_at_14.26.18_3865a286-removebg-preview.png"/>
+		<meta property="og:image:secure_url" content="https://simplo.id/wp-content/uploads/2024/07/WhatsApp_Image_2024-07-03_at_14.26.18_3865a286-removebg-preview.png" />
+		<meta property="og:image:width" content="500" />
+		<meta property="og:image:height" content="500" />
+		<meta property="og:type" content="article" />
+		<link rel="canonical" href="https://simplo.id/"/>
 
-    <!-- CSRF Token -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    {!! SEO::generate() !!}
-    {!! SEOMeta::generate() !!}
-    {!! OpenGraph::generate() !!}
-    {!! Twitter::generate() !!}
+		<link rel="apple-touch-icon" sizes="57x57" href="{{ asset('assets/frontend/apple-icon-57x57.png') }}">
+		<link rel="apple-touch-icon" sizes="60x60" href="{{ asset('assets/frontend/apple-icon-60x60.png') }}">
+		<link rel="apple-touch-icon" sizes="72x72" href="{{ asset('assets/frontend/apple-icon-72x72.png') }}">
+		<link rel="apple-touch-icon" sizes="76x76" href="{{ asset('assets/frontend/apple-icon-76x76.png') }}">
+		<link rel="apple-touch-icon" sizes="114x114" href="{{ asset('assets/frontend/apple-icon-114x114.png') }}">
+		<link rel="apple-touch-icon" sizes="120x120" href="{{ asset('assets/frontend/apple-icon-120x120.png') }}">
+		<link rel="apple-touch-icon" sizes="144x144" href="{{ asset('assets/frontend/apple-icon-144x144.png') }}">
+		<link rel="apple-touch-icon" sizes="152x152" href="{{ asset('assets/frontend/apple-icon-152x152.png') }}">
+		<link rel="apple-touch-icon" sizes="180x180" href="{{ asset('assets/frontend/apple-icon-180x180.png') }}">
+		<link rel="icon" type="image/png" sizes="192x192"  href="{{ asset('assets/frontend/android-icon-192x192.png') }}">
+		<link rel="icon" type="image/png" sizes="32x32" href="{{ asset('assets/frontend/favicon-32x32.png') }}">
+		<link rel="icon" type="image/png" sizes="96x96" href="{{ asset('assets/frontend/favicon-96x96.png') }}">
+		<link rel="icon" type="image/png" sizes="16x16" href="{{ asset('assets/frontend/favicon-16x16.png') }}">
+		<link rel="manifest" href="{{ asset('assets/frontend/manifest.json') }}">
+		<meta name="msapplication-TileColor" content="#ffffff">
+		<meta name="msapplication-TileImage" content="{{ asset('assets/frontend/ms-icon-144x144.png') }}">
+		<meta name="theme-color" content="#ffffff">
+        {!! SEO::generate() !!}
+        {!! SEOMeta::generate() !!}
+        {!! OpenGraph::generate() !!}
+        {!! Twitter::generate() !!}
 
-    <!-- Google Tag Manager -->
-    <script>
-        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-        })(window,document,'script','dataLayer','G-NLLC7CFGQ1');
-    </script>
-    <!-- End Google Tag Manager -->
-</head>
-<body>
-    <!-- Google Tag Manager (noscript) -->
-    <noscript>
-        <iframe src="https://www.googletagmanager.com/ns.html?id=G-NLLC7CFGQ1" height="0" width="0" style="display:none;visibility:hidden"></iframe>
-    </noscript>
-    <!-- End Google Tag Manager (noscript) -->
+		<link rel="stylesheet" href="{{ asset('assets/frontend/css/main.css') }}">
 
-    <header class="header-fix {{ request()->is('/') ? 'full' : '' }}"> <!-- tambahin class 'full' di home -->
-        <div class="container-fluid">
-            <nav class="header-menu">
-                <div class="header-logo">
-                    <h1 class="brand-logo" data-aos="fade-right">
-                        <a href="{{ route('web_index') }}">
-                            <span class="logo"></span>
-                            <strong>PT. Arjaya Berkah Marine</strong>
-                        </a>
-                    </h1>
-                </div>
-                <div class="toggle-down">
-                    <div class="menu-toggle-btn" data-aos="fade-left">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </div>
-                </div>
-                <div class="menu">
-                    <ul class="flat" data-aos="fade-left">
-                        <li>
-                            <a href="{{ route('web_story') }}">About</a>
-                        </li>
-                        <li>
-                            <a href="{{ route('web_partner') }}">Partner</a>
-                        </li>
-                        <li>
-                            <a href="{{ route('web_client') }}">Client</a>
-                        </li>
-                        <li>
-                            <a href="{{ route('web_facility') }}">Facility</a>
-                        </li>
-                        <li>
-                            <a href="{{ route('web_project') }}">Projects</a>
-                        </li>
-                        <li>
-                            <a href="{{ route('web_product') }}">Products</a>
-                        </li>
-                        <li>
-                            <a href="{{ route('web_xvessel') }}">Second Products</a>
-                        </li>
-                        <li>
-                            <a href="{{ route('web_article') }}">Article</a>
-                        </li>
-                        <li>
-                            <a href="{{ route('web_contact') }}">Contact</a>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-        </div>
-    </header>
-    @yield('content')
-    <footer>
-        <div class="nav-top">
-            <div class="container">
-                <div class="footer-wrapper">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="footer-logo">
-                                        <a href="{{ route('web_index') }}">
-                                            <span class="logo"></span>
-                                            <strong>PT. Arjaya Berkah Marine</strong>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="address text-center-mobile">
-                                        <i class="fas fa-map-marker-alt"></i>
-                                        <address>
-                                            Mangunreja <br>
-                                            Puloampel, Serang, <br>
-                                            Banten, 42455, Indonesia
-                                        </address>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="phone text-center-mobile">
-                                        <ul>
-                                            <li>
-                                                <a href="mailto:arjayamarine@gmail.com">
-                                                    <i class="fas fa-envelope"></i>
-                                                    <span>arjayamarine@gmail.com</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="tel:+6281932995665">
-                                                    <i class="fas fa-phone-alt"></i>
-                                                    <span>+62 819-3299-5665</span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 phone-email">
-                                    <div class="social-media text-center-mobile">
-                                        <h6>Social Media</h6>
-                                        <ul class="social flat">
-                                            <li class="facebook">
-                                                <a href="#" target="_blank">
-                                                    <i class="fab fa-facebook-f"></i>
-                                                </a>
-                                            </li>
-                                            <li class="youtube">
-                                                <a href="https://www.youtube.com/channel/UCcQuKf59WFDn2LvF28B6jkA" target="_blank">
-                                                    <i class="fab fa-youtube"></i>
-                                                </a>
-                                            </li>
-                                            <li class="instagram">
-                                                <a href="https://www.instagram.com/arjayamarine/" target="_blank" title="@arjayamarine">
-                                                    <i class="fab fa-instagram"></i>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="nav-bottom">
-            <div class="container">
-                <p class="copyright">Copyright © 2020 PT. Arjaya Berkah Marine. All Rights Reserved.</p>
-            </div>
-        </div>
-    </footer>
-    @yield('script')
-    <script src="{{ asset('assets/frontend/js/vendor.js') }}"></script>
-    <script src="{{ asset('assets/frontend/js/bootstrap.js') }}"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCGFigOKuVyg2z0JAb0AGN-H5znZkV35fA"></script>
-    <script src="{{ asset('assets/frontend/js/main.min.js') }}"></script>
-</body>
+		<!-- Pemanggilan GTM -->
+		
+		<!-- End Google Tag Manager -->
+	</head>
+
+	<body  class="@yield('body', $body ? $body : 'index')">
+
+		<!-- Google Tag Manager (noscript) -->
+		
+		<!-- End Google Tag Manager (noscript) -->
+
+		<header class="header-fix">
+			<div class="container-fluid">
+				<nav class="header-menu">
+					<div class="search-web">
+						<div class="search-input" data-aos="zoom-in">
+							<button type="button" class="button button-search">
+								<span class="fa fa-search"></span>
+							</button>
+						</div>
+					</div>
+					<div class="header-logo">
+						<h1 class="brand-logo" data-aos="zoom-in">
+							<a href="{{ route('web_index') }}">
+								<span class="logo"></span>
+								<strong>Simplo</strong>
+							</a>
+						</h1>
+					</div>
+					<div class="toggle-down">
+						<div class="menu-toggle-btn" data-aos="zoom-in">
+							<span></span>
+							<span></span>
+							<span></span>
+						</div>
+					</div>
+				</nav>
+				<div class="search-field">
+					<form id="search-form">
+						<input type="text" class="search-text" name="" placeholder="Search here....">
+						<input type="hidden" name="">
+					</form>
+				</div>
+			</div>
+		</header>
+		<div class="burger-menu">
+			<div class="backdrop"></div>
+			<div class="menu">
+				<button class="close-toggle">
+					<span class="fa fa-times"></span>
+				</button>
+				<ul>
+					<li data-aos="fade-left">
+						<a class="font-text-bold" href="{{ route('web_product') }}">Produk Kami</a>
+					</li>
+					<li data-aos="fade-left">
+						<a class="font-text-bold active" href="{{ route('web_article') }}">Berita dan Artikel</a>
+					</li>
+					<li data-aos="fade-left">
+						<a class="font-text-bold" href="{{ route('web_about') }}">Tentang Kami</a>
+					</li>
+					<li data-aos="fade-left">
+						<a class="font-text-bold" href="{{ route('web_faq') }}">FAQ</a>
+					</li>
+					<li data-aos="fade-left">
+						<a class="font-text-bold" href="{{ route('web_contact') }}">Hubungi Kami</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<main id="main">
+			@yield('content')
+            <div class="floating-button inquiry-button">
+				<div class="button-wrapper">
+					<a href="#" class="button-inside">
+						<span class="arrow"></span>
+						<strong>?</strong>
+						<small>Inquiry</small>
+					</a>
+				</div>
+			</div>
+			<div class="floating-button back-top">
+				<div class="button-wrapper">
+					<a href="#main" class="button-inside is-scroll">
+						<span class="icon-arrow"></span>
+					</a>
+				</div>
+			</div>
+		</main>
+		<footer id="footer">
+			<div class="nav-top">
+				<div class="container">
+					<div class="footer-wrapper">
+						<div class="row justify-content-between align-items-center">
+							<div class="col-md-5">
+								<div class="footer-logo" data-aos="fade-in">
+									<a href="{{ route('web_index') }}">
+										<figure>
+											<img src="{{ asset('assets/frontend/assets/img/logo-white.png') }}" alt="Simplo">
+										</figure>
+									</a>
+								</div>
+							</div>
+							<div class="col-md-5">
+								<div class="footer-sosmed">
+									<ul class="content-list social flat">
+										<li class="linkedin" data-aos="zoom-in">
+											<a href="#" target="_blank">
+												<i class="fab fa-linkedin"></i>
+											</a>
+										</li>
+										<li class="facebook" data-aos="zoom-in">
+											<a href="#" target="_blank">
+												<i class="fa fa-facebook"></i>
+											</a>
+										</li>
+										<li class="instagram" data-aos="zoom-in">
+											<a href="#" target="_blank">
+												<i class="fab fa-instagram"></i>
+											</a>
+										</li>
+										<li class="youtube" data-aos="zoom-in">
+											<a href="#" target="_blank">
+												<i class="fab fa-youtube"></i>
+											</a>
+										</li>
+										<li class="tiktok" data-aos="zoom-in">
+											<a href="#" target="_blank">
+												<i class="icon-buttom fa-tiktok"></i>
+											</a>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="nav-bottom">
+				<div class="container">
+					<p>Copyright © 2025 Simplo. All Rights Reserved</p>
+				</div>
+			</div>
+		</footer>
+        <script src="{{ asset('assets/frontend/js/vendor.js') }}"></script>
+		<script src="{{ asset('assets/frontend/js/bootstrap.js') }}"></script>
+		<script src="{{ asset('assets/frontend/js/main.min.js') }}"></script>
+	</body>
 </html>

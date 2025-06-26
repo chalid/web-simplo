@@ -54,11 +54,17 @@ class AboutController extends Controller
         $validator = Validator::make($request->all(), [
             'title'         => 'required',
             'description'   => 'required',
+            'vision'        => 'required',
+            'mission'       => 'required',
+            'history'       => 'required',
             'is_active'     => 'required|boolean',
             'image'         => 'image|mimes:jpeg,png,jpg,gif|max:6144',
         ], [
             'title.required'        => 'title wajib diisi',
             'description.required'  => 'description wajib diisi',
+            'vision.required'       => 'vision wajib diisi',
+            'mission.required'      => 'mission wajib diisi',
+            'history.required'      => 'history wajib diisi',
             'is_active.required'    => 'is active wajib diisi',
             'image.required'        => 'Hanya gambar',
             'image.mimes'           => 'Hanya file bertipe jpeg,png,jpg,gif',
@@ -83,8 +89,12 @@ class AboutController extends Controller
             $about                      = new About();
             $about->title               = $request->title;
             $about->description         = $request->description;
+            $about->vision              = $request->vision;
+            $about->mission             = $request->mission;
+            $about->history             = $request->history;
             $about->is_active           = $request->is_active;
             $about->meta_title          = $request->title;
+            $about->meta_tag            = $request->title;
             $about->meta_description    = Str::limit(strip_tags($request->description), 150);
             $about->meta_keywords       = implode(',', explode(' ', Str::lower($request->title)));
             $about->meta_author         = auth()->check() ? auth()->user()->name : 'Admin';
@@ -106,7 +116,7 @@ class AboutController extends Controller
             if ($request->hasFile('image')) {
                 $file   = $request->file('image');
 
-                $image = ImageHelper::uploadImage($file,'about',['small-thumb', 'small','normal', 'meta', 'large']);
+                $image = ImageHelper::uploadImage($file,'about',['small-thumb', 'meta', 'large']);
 
                 $about->image         = $image;
                 $about->meta_image    = $image ?? null;
@@ -141,11 +151,17 @@ class AboutController extends Controller
         $validator = Validator::make($request->all(), [
             'title'         => 'required',
             'description'   => 'required',
+            'vision'        => 'required',
+            'mission'       => 'required',
+            'history'       => 'required',
             'is_active'     => 'required|boolean',
             'image'         => 'image|mimes:jpeg,png,jpg,gif|max:6144',
         ], [
             'title.required'        => 'title wajib diisi',
             'description.required'  => 'description wajib diisi',
+            'vision.required'       => 'vision wajib diisi',
+            'mission.required'      => 'mission wajib diisi',
+            'history.required'      => 'history wajib diisi',
             'is_active.required'    => 'is active wajib diisi',
             'image.required'        => 'Hanya gambar',
             'image.mimes'           => 'Hanya file bertipe jpeg,png,jpg,gif',
@@ -169,13 +185,17 @@ class AboutController extends Controller
 
             $about->title               = $request->title;
             $about->description         = $request->description;
+            $about->vision              = $request->vision;
+            $about->mission             = $request->mission;
+            $about->history             = $request->history;
             $about->is_active           = $request->is_active;
             $about->meta_title          = $request->title;
+            $about->meta_tag            = $request->title;
             $about->meta_description    = Str::limit(strip_tags($request->description), 150);
             $about->meta_keywords       = implode(',', explode(' ', Str::lower($request->title)));
             $about->meta_author         = auth()->check() ? auth()->user()->name : 'Admin';
             $about->meta_image          = $request->image ?? null;
-            $about->meta_canonical      = url()->current();
+            $about->meta_canonical      = route('web_about');
             $about->meta_robots         = 'index, follow';
             $about->slug                = Str::slug($request->title);
             $about->update();
@@ -192,11 +212,11 @@ class AboutController extends Controller
         if ($success_trans == true) {
             if ($request->hasFile('image')) {
 
-                $deleteImage        = ImageHelper::deleteFileExists($about->image,'about',['small-thumb', 'small','normal', 'meta', 'large']);
+                $deleteImage        = ImageHelper::deleteFileExists($about->image,'about',['small-thumb', 'meta', 'large', 'original']);
                 
                 $file               = $request->file('image');
 
-                $image              = ImageHelper::uploadImage($file,'about',['small-thumb', 'small','normal', 'meta', 'large']);
+                $image              = ImageHelper::uploadImage($file,'about',['small-thumb', 'meta', 'large']);
 
                 $about->image      = $image;
                 $about->meta_image = $image ?? null;
@@ -215,7 +235,7 @@ class AboutController extends Controller
         $success_trans = false;
 
         try {
-            $deleteImage = ImageHelper::deleteFileExists($about->image,'about',['small-thumb', 'small','normal', 'meta', 'large']);
+            $deleteImage = ImageHelper::deleteFileExists($about->image,'about',['small-thumb', 'meta', 'large', 'original']);
             
             $about->delete();
 

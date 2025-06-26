@@ -33,13 +33,13 @@ class WebController extends Controller
     public function index()
     {
         $seo        = About::where('is_active', 1)->first();
-        $banners    = Banner::where('is_active', 1)->limit(3)->get();
-        $visions    = Vision::where('is_active', 1)->limit(3)->get();
-        $mottos     = Motto::where('is_active', 1)->limit(3)->get();
-        $projects   = Project::where('is_active', 1)->latest()->limit(5)->get();
-        $clients    = ClientModel::where('is_active', 1)->latest()->limit(7)->get();
-        $partners   = Partner::where('is_active', 1)->latest()->limit(7)->get();
-        $articles   = Article::where('is_active', 1)->latest()->limit(7)->get();
+        // $banners    = Banner::where('is_active', 1)->limit(3)->get();
+        // $visions    = Vision::where('is_active', 1)->limit(3)->get();
+        // $mottos     = Motto::where('is_active', 1)->limit(3)->get();
+        // $projects   = Project::where('is_active', 1)->latest()->limit(5)->get();
+        // $clients    = ClientModel::where('is_active', 1)->latest()->limit(7)->get();
+        // $partners   = Partner::where('is_active', 1)->latest()->limit(7)->get();
+        // $articles   = Article::where('is_active', 1)->latest()->limit(7)->get();
         $title      = 'PT. Arjaya Berkah Marine';
         // Use SEO metadata from first banner or fallback
         if ($seo) {
@@ -54,16 +54,14 @@ class WebController extends Controller
                 'meta_robots'       => $seo->meta_robots,
             ]);
         }
-        return view('frontends.index', compact(['title', 'banners', 'visions', 'mottos', 'projects', 'clients', 'articles', 'partners']));
+        return view('frontends.index', compact(['title']));
     }
 
     public function story()
     {
-        $about          = About::where('is_active', 1)->first();
-        $certificates   = Certificate::where('is_active', 1)->get();
-        $clients        = ClientModel::where('is_active', 1)->get();
-        $partners       = Partner::where('is_active', 1)->get();
-        $title          = 'Tentang PT. Arjaya Berkah Marine | PT. Arjaya Berkah Marine';
+        $about  = About::where('is_active', 1)->first();
+        $title  = $about->title;
+        $body   = 'about-page';
         // Use SEO metadata from first banner or fallback
         if ($about) {
             SeoHelper::setMeta([
@@ -77,7 +75,7 @@ class WebController extends Controller
                 'meta_robots'       => $about->meta_robots,
             ]);
         }
-        return view('frontends.story', compact(['title', 'about', 'certificates', 'clients', 'partners']));
+        return view('frontends.story', compact(['title', 'about', 'body']));
     }
 
     public function facility()
@@ -263,7 +261,8 @@ class WebController extends Controller
     {
         // Filter by category if available
         $query  = Article::with('category')->where('is_active', 1);
-        $title  = 'Artikel PT. Arjaya Berkah Marine | PT. Arjaya Berkah Marine';
+        $title  = 'Artikel';
+        $body   = 'news-page';
 
         if ($request->has('category')) {
             $query->where('article_category_id', $request->category);
@@ -288,13 +287,14 @@ class WebController extends Controller
         $categories     = ArticleCategory::all();
         $recentArticles = Article::where('is_active', 1)->latest()->take(3)->get();
 
-        return view('frontends.article', compact('articles', 'categories', 'recentArticles', 'title'));
+        return view('frontends.article', compact('articles', 'categories', 'recentArticles', 'title', 'body'));
     }
 
     public function articleShow($slug)
     {
         $article    = Article::where('slug', $slug)->where('is_active', 1)->firstOrFail();
-        $title      = 'Detail Artikel PT. Arjaya Berkah Marine | PT. Arjaya Berkah Marine';
+        $title      = $article->title;
+        $body       = 'news-detail-page';
 
         // Sidebar Data
         $categories = ArticleCategory::withCount('articles')->get();
@@ -315,7 +315,7 @@ class WebController extends Controller
             'meta_robots'       => $article->meta_robots,
         ]);
 
-        return view('frontends.article-show', compact('article', 'categories', 'recent_articles', 'previous', 'next', 'title'));
+        return view('frontends.article-show', compact('article', 'categories', 'recent_articles', 'previous', 'next', 'title', 'body'));
     }
 
     public function partner()

@@ -5,18 +5,14 @@ use Illuminate\Support\Facades\Route;
 //Frontend
 
 Route::get('/', [App\Http\Controllers\Frontend\WebController::class, 'index'])->name('web_index');
-Route::get('/story', [App\Http\Controllers\Frontend\WebController::class, 'story'])->name('web_story');
-Route::get('/facility', [App\Http\Controllers\Frontend\WebController::class, 'facility'])->name('web_facility');
+Route::get('/about', [App\Http\Controllers\Frontend\WebController::class, 'story'])->name('web_about');
 Route::get('/product', [App\Http\Controllers\Frontend\WebController::class, 'product'])->name('web_product');
-Route::get('/project', [App\Http\Controllers\Frontend\WebController::class, 'project'])->name('web_project');
-Route::get('/project/{slug}', [App\Http\Controllers\Frontend\WebController::class, 'projectShow'])->name('web_project.show');
+Route::get('/product/{slug}', [App\Http\Controllers\Frontend\WebController::class, 'productShow'])->name('web_product.show');
 Route::get('/contact', [App\Http\Controllers\Frontend\WebController::class, 'contact'])->name('web_contact');
 Route::post('/add_question', [App\Http\Controllers\Frontend\WebController::class, 'addQuestion'])->name('web_add_question');
-Route::get('/xvessel', [App\Http\Controllers\Frontend\WebController::class, 'xvessel'])->name('web_xvessel');
 Route::get('/article', [App\Http\Controllers\Frontend\WebController::class, 'article'])->name('web_article');
 Route::get('/article/{slug}', [App\Http\Controllers\Frontend\WebController::class, 'articleShow'])->name('web_article.show');
-Route::get('/partner', [App\Http\Controllers\Frontend\WebController::class, 'partner'])->name('web_partner');
-Route::get('/client', [App\Http\Controllers\Frontend\WebController::class, 'client'])->name('web_client');
+Route::get('/faq', [App\Http\Controllers\Frontend\WebController::class, 'faq'])->name('web_faq');
 
 // Add this instead:
 Route::get('/login', function () {

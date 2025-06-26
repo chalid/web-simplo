@@ -1,65 +1,77 @@
 @extends('layouts.frontend.app')
 @section('title', $title)
 @section('content')
-    <main class="story" id="story" >
-        <section class="title-page">
-            <div class="title-area">
-                <div class="container">
-                    <h3 data-aos="fade-right">
-                        Our
-                        <span>Story</span>
-                    </h3>
-                </div>
-            </div>
-        </section>
-        <section class="content-detail editable">
+    <div class="page-content">
+        <div class="breadcrumb-page" data-aos="fade-in">
             <div class="container">
-                <div class="row">
-                    <div class="col-md-8 col-lg-6">
-                        <article data-aos="fade-right" data-aos-delay="50">
-                            {!! $about->description !!}							
-                        </article>
-                    </div>
-                </div>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="{{ route('web_index') }}">
+                                <span class="fa fa-home"></span>
+                            </a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">About Us</li>
+                    </ol>
+                </nav>
             </div>
-        </section>
-        @if($certificates->count() != 0)
-            <section class="certificate">
-                <div class="container">
-                    <div class="title-section">
-                        <h3 data-aos="fade-right">
-                            Our
-                            <span>Certificate's</span>
-                        </h3>
-                    </div>
-                    <div class="wrapper content-detail-page">
-                        <div class="row awards-list">
-                            @foreach ($certificates as $item)
-                                <div class="col-sm-6 col-lg-4">
-                                    <div class="certificate-image shadow selector" data-exthumbimage="{{ url('storage/upload_files/images/certificate/original') . '/' .$item->image }}" data-src="{{ url('storage/upload_files/images/certificate/original') . '/' .$item->image }}" data-aos="zoom-in">
-                                        <div class="frame">
-                                            <img src="{{ asset('assets/frontend/assets/img/certificates/frame.png') }}" alt="">
+        </div>
+        <section class="about">
+            <div class="container">
+                <div class="title-page" data-aos="fade-in">
+                    <h3 class="font-text-bold">About Us</h3>
+                </div>
+                <div class="about-inside">
+                    <div class="content-area">
+                        <div class="image-area" data-aos="fade-in">
+                            <figure>
+                                <img src="{{ url('storage/upload_files/images/about/large/' . $about->image) }}" alt="{{ $about->meta_tag }}">
+                            </figure>
+                        </div>
+                        <div class="article-area" data-aos="fade-in">
+                            <div class="article-row">
+                                <div class="article-group">
+                                    <article>
+                                        {!! $about->description !!}
+                                    </article>
+                                </div>
+                            </div>
+                            <div class="article-row row no-gutters">
+                                <div class="col-md-6">
+                                    <div class="article-group">
+                                        <div class="title-detail" data-aos="fade-in">
+                                            <h5 class="font-text-bold">Visi</h5>
                                         </div>
-                                        <div class="wrapper-image">
-                                            <img src="{{ url('storage/upload_files/images/certificate/original') . '/' . $item->image }}" alt="{{ $item->meta_title }}">
-                                            <div class="overlay-bg">
-                                                <div class="hover-icon">
-                                                    <span class="icon"></span>
-                                                </div>
-                                            </div>
-                                            <div class="overlay-mobile show-mobile">
-                                                <div class="icon">
-                                                    <span class="fa fa-search-plus"></span>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <article data-aos="fade-in">
+                                            {!! $about->vision !!}
+                                        </article>
                                     </div>
                                 </div>
-                            @endforeach
+                                <div class="col-md-6">
+                                    <div class="article-group">
+                                        <div class="title-detail" data-aos="fade-in">
+                                            <h5 class="font-text-bold">Misi</h5>
+                                        </div>
+                                        <article data-aos="fade-in">
+                                            {!! $about->mission !!}
+                                        </article>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="article-group">
+                                        <div class="title-detail" data-aos="fade-in">
+                                            <h5 class="font-text-bold">Sejarah</h5>
+                                        </div>
+                                        <article data-aos="fade-in">
+                                            {!! $about->history !!}
+                                        </article>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </section>
-        @endif
-    </main>
+            </div>
+        </section>
+    </div>
 @endsection

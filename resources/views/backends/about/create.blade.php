@@ -19,6 +19,9 @@
                     @csrf
                     <x-form.input name="title" label="Title name" :value="old('title')" :required="true" />
                     <x-form.textarea name="description" label="Description" :value="old('description')" />
+                    <x-form.textarea name="vision" label="Vision" :value="old('vision')" />
+                    <x-form.textarea name="mission" label="Mission" :value="old('mission')" />
+                    <x-form.textarea name="history" label="History" :value="old('history')" />
                     <x-form.select name="is_active" label="Is Active" :options="[1 => 'Active', 0 => 'In Active']" :selected="old('is_active')" :required="true"/>
                     <x-form.file name="image" label="About Image" />
                     <div class="col-12">
@@ -57,24 +60,21 @@
         })
     })();
 
-    var description = document.getElementById("description");
-    CKEDITOR.replace(description, {
-        // Disable upload tabs from dialogs
+    const ckConfig = {
         removeDialogTabs: 'image:Upload;link:upload',
-
-        // Remove upload plugins completely
         removePlugins: 'uploadimage,uploadfile,uploadwidget,uploadbrowser',
+        language: 'en-en',
+    };
 
-        // Optional: Remove toolbar buttons if you want to hide image tools entirely
-        // toolbar: [
-        //     ['Bold', 'Italic', 'Underline', 'Link', 'Unlink', 'NumberedList', 'BulletedList'] // No image button
-        // ],
-
-        // Keep the rest of your config
-        language: 'en-en'
-    });
-
-    // Keep allowed content if you want to allow inline styles
     CKEDITOR.config.allowedContent = true;
+
+    const names = ['description', 'vision', 'mission', 'history'];
+
+    names.forEach(name => {
+        const el = document.querySelector(`textarea[name="${name}"]`);
+        if (el && !CKEDITOR.instances[el.name]) {
+            CKEDITOR.replace(el.name, ckConfig);
+        }
+    });
 </script>
 @endpush

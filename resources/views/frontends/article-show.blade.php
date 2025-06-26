@@ -1,32 +1,50 @@
 @extends('layouts.frontend.app')
 @section('title', $title)
 @section('content')
-<main class="article-detail-page" id="article-detail-page" >
-    <section class="title-page">
-        <div class="title-area">
-            <div class="container">
-                <h3 data-aos="fade-right">
-                    Our
-                    <span>Article's</span>
-                </h3>
-            </div>
-        </div>
-    </section>
-    <section class="article-news-detail">
+<div class="page-content">
+    <div class="breadcrumb-page" data-aos="fade-in">
         <div class="container">
-            <div class="article-area">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="{{ route('web_index') }}">
+                            <span class="fa fa-home"></span>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="{{ route('web_article') }}">
+                            Berita dan Artikel
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">{{ $article->title }}</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <section class="news-detail">
+        <div class="container">
+            <div class="title-page" data-aos="fade-in">
+                <h3 class="font-text-bold">Berita dan Artikel</h3>
+            </div>
+            <div class="news-detail-inside">
                 <div class="row no-gutters">
                     <div class="col-md-4 col-lg-3">
                         <div class="sidebar-news" data-aos="zoom-in">
                             <div class="sidebar-category">
                                 <div class="sidebar-group">
-                                    <h5>
+                                    <h5 class="font-text-bold">
                                         <span>Kategori</span>
                                     </h5>
                                     <ul class="sidebar-list">
+                                        <li>
+                                            <a href="{{ route('web_article') }}" class="{{ request('category') ? '' : 'active' }}">
+                                                <span>All Articles</span>
+                                                <span class="icon fa fa-angle-right"></span>
+                                            </a>
+                                        </li>
                                         @foreach($categories as $cat)
                                             <li>
-                                                <a href="{{ route('web_article', ['category' => $cat->id]) }}" class="{{ $article->article_category_id == $cat->id ? 'active' : '' }}">
+                                                <a href="{{ route('web_article', ['category' => $cat->id]) }}" class="{{ request('category') == $cat->id ? 'active' : '' }}">
                                                     <span>{{ $cat->name }}</span>
                                                     <span class="icon fa fa-angle-right"></span>
                                                 </a>
@@ -35,7 +53,7 @@
                                     </ul>
                                 </div>
                                 <div class="sidebar-group">
-                                    <h5>
+                                    <h5 class="font-text-bold">
                                         <span>Recent Posts</span>
                                     </h5>
                                     <ul class="sidebar-list">
@@ -56,54 +74,18 @@
                         <div class="content-area">
                             <div class="title-detail" data-aos="fade-in">
                                 <h6>{{ \Carbon\Carbon::parse($article->created_at)->translatedFormat('d F Y') }}</h6>
-                                <h5>{{ $article->title }}</h5>
+                                <h5 class="font-text-bold">{{ $article->title }}</h5>
                             </div>
                             <div class="content-detail">
                                 <div class="image-area" data-aos="fade-in">
-                                    <figure class="image-wrapper selector" data-exthumbimage="{{ url('storage/upload_files/images/article/small/' . $article->image) }}" data-src="{{ url('storage/upload_files/images/article/small/' . $article->image) }}">
-                                        <img src="{{ url('storage/upload_files/images/article/large/' . $article->image) }}" alt="{{ $article->title }}">
-                                        <div class="overlay-bg">
-                                            <div class="hover-icon">
-                                                <span class="icon"></span>
-                                            </div>
-                                        </div>
-                                        <div class="overlay-mobile show-mobile">
-                                            <div class="icon">
-                                                <span class="fa fa-search-plus"></span>
-                                            </div>
-                                        </div>
+                                    <figure>
+                                        <img src="{{ url('storage/upload_files/images/article/normal') . '/' . $article->image }}" alt="{{ $article->meta_slug }}">
                                     </figure>
                                 </div>
                                 <div class="article-area" data-aos="fade-in">
                                     <article>
                                         {!! $article->description !!}
                                     </article>
-                                </div>
-                                <div class="gallery-area">
-                                    <div class="title-detail" data-aos="fade-in">
-                                        <h5>Gallery</h5>
-                                    </div>
-                                    <div class="row no-gutters">
-                                        @foreach($article->images as $item)
-                                            <div class="col-md-6">
-                                                <div class="gallery-wrapper" data-aos="zoom-in">
-                                                    <figure class="image-wrapper selector" data-exthumbimage="{{ url('storage/upload_files/images/article/small/' . $item->uri) }}" data-src="{{ url('storage/upload_files/images/article/small/' . $item->uri) }}">
-                                                        <img src="{{ url('storage/upload_files/images/article/large/' . $item->uri) }}" alt="{{ $article->title }}">
-                                                        <div class="overlay-bg">
-                                                            <div class="hover-icon">
-                                                                <span class="icon"></span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="overlay-mobile show-mobile">
-                                                            <div class="icon">
-                                                                <span class="fa fa-search-plus"></span>
-                                                            </div>
-                                                        </div>
-                                                    </figure>
-                                                </div>
-                                            </div>
-                                        @endforeach
-                                    </div>
                                 </div>
                             </div>
                             <div class="history-post">
@@ -132,5 +114,5 @@
             </div>
         </div>
     </section>
-</main>
+</div>
 @endsection
