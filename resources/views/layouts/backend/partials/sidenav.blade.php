@@ -43,19 +43,11 @@
                 </a>
             </li>
             @endcan
-            @can('Certificate')
+            @can('Brand')
             <li class="nav-item">
-                <a class="nav-link has-arrow " href="{{ route('certificate') }}">
+                <a class="nav-link has-arrow " href="{{ route('brand') }}">
                     <i data-feather="archive" class="nav-icon me-2 icon-xxs"></i>
-                    {{ __('Certificate') }}
-                </a>
-            </li>
-            @endcan
-            @can('Partner')
-            <li class="nav-item">
-                <a class="nav-link has-arrow " href="{{ route('partner') }}">
-                    <i data-feather="archive" class="nav-icon me-2 icon-xxs"></i>
-                    {{ __('Partner') }}
+                    {{ __('Brand') }}
                 </a>
             </li>
             @endcan
@@ -67,30 +59,6 @@
                 </a>
             </li>
             @endcan
-            @can('Ex Vessel')
-            <li class="nav-item">
-                <a class="nav-link has-arrow " href="{{ route('exvessel') }}">
-                    <i data-feather="archive" class="nav-icon me-2 icon-xxs"></i>
-                    {{ __('Ex Vessel') }}
-                </a>
-            </li>
-            @endcan
-            @can('Facility')
-            <li class="nav-item">
-                <a class="nav-link has-arrow " href="{{ route('facility') }}">
-                    <i data-feather="archive" class="nav-icon me-2 icon-xxs"></i>
-                    {{ __('Facility') }}
-                </a>
-            </li>
-            @endcan
-            @can('Motto')
-            <li class="nav-item">
-                <a class="nav-link has-arrow " href="{{ route('motto') }}">
-                    <i data-feather="archive" class="nav-icon me-2 icon-xxs"></i>
-                    {{ __('Motto') }}
-                </a>
-            </li>
-            @endcan
             @can('Product')
             <li class="nav-item">
                 <a class="nav-link has-arrow " href="{{ route('product') }}">
@@ -99,27 +67,19 @@
                 </a>
             </li>
             @endcan
-            @can('Project')
+            @can('Study Case')
             <li class="nav-item">
-                <a class="nav-link has-arrow " href="{{ route('project') }}">
+                <a class="nav-link has-arrow " href="{{ route('study-case') }}">
                     <i data-feather="archive" class="nav-icon me-2 icon-xxs"></i>
-                    {{ __('Project') }}
+                    {{ __('Study Case') }}
                 </a>
             </li>
             @endcan
-            @can('Client')
+            @can('Faq')
             <li class="nav-item">
-                <a class="nav-link has-arrow " href="{{ route('client') }}">
+                <a class="nav-link has-arrow " href="{{ route('faq') }}">
                     <i data-feather="archive" class="nav-icon me-2 icon-xxs"></i>
-                    {{ __('Client') }}
-                </a>
-            </li>
-            @endcan
-            @can('Vision')
-            <li class="nav-item">
-                <a class="nav-link has-arrow " href="{{ route('vision') }}">
-                    <i data-feather="archive" class="nav-icon me-2 icon-xxs"></i>
-                    {{ __('Vision') }}
+                    {{ __('Faq') }}
                 </a>
             </li>
             @endcan

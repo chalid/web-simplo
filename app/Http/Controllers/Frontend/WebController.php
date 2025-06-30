@@ -33,14 +33,15 @@ class WebController extends Controller
     public function index()
     {
         $seo        = About::where('is_active', 1)->first();
-        // $banners    = Banner::where('is_active', 1)->limit(3)->get();
-        // $visions    = Vision::where('is_active', 1)->limit(3)->get();
+        $banners    = Banner::where('is_active', 1)->limit(5)->get();
+        $productCategories  = ProductCategory::where('parent_id', 0)->where('is_active', 1)->get();
         // $mottos     = Motto::where('is_active', 1)->limit(3)->get();
         // $projects   = Project::where('is_active', 1)->latest()->limit(5)->get();
         // $clients    = ClientModel::where('is_active', 1)->latest()->limit(7)->get();
         // $partners   = Partner::where('is_active', 1)->latest()->limit(7)->get();
         // $articles   = Article::where('is_active', 1)->latest()->limit(7)->get();
-        $title      = 'PT. Arjaya Berkah Marine';
+        $title      = 'Simplo';
+        $body       = 'index';
         // Use SEO metadata from first banner or fallback
         if ($seo) {
             SeoHelper::setMeta([
@@ -54,7 +55,7 @@ class WebController extends Controller
                 'meta_robots'       => $seo->meta_robots,
             ]);
         }
-        return view('frontends.index', compact(['title']));
+        return view('frontends.index', compact(['title', 'body', 'banners', 'productCategories']));
     }
 
     public function story()
@@ -78,32 +79,12 @@ class WebController extends Controller
         return view('frontends.story', compact(['title', 'about', 'body']));
     }
 
-    public function facility()
-    {
-        $facilities = Facility::where('is_active', 1)->paginate(4);
-        $seo        = $facilities->first();
-        $title      = 'Fasilitas PT. Arjaya Berkah Marine | PT. Arjaya Berkah Marine';
-        // Use SEO metadata from first banner or fallback
-        if ($seo) {
-            SeoHelper::setMeta([
-                'meta_title'        => $seo->meta_title,
-                'meta_description'  => $seo->meta_description,
-                'meta_keywords'     => $seo->meta_keywords,
-                'meta_author'       => $seo->meta_author,
-                'meta_image_path'   => 'facility', // ensure this is a relative path, e.g., 'storage/banners/xyz.jpg'
-                'meta_image'        => $seo->meta_image, // ensure this is a relative path, e.g., 'storage/banners/xyz.jpg'
-                'meta_canonical'    => url()->current(),
-                'meta_robots'       => $seo->meta_robots,
-            ]);
-        }
-        return view('frontends.facility', compact(['facilities', 'title']));
-    }
-
     public function product()
     {
         $products   = Product::where('is_active', 1)->paginate(4);
         $seo        = $products->first();
         $title      = 'Produk PT. Arjaya Berkah Marine | PT. Arjaya Berkah Marine';
+        $body       = 'product';
         // Use SEO metadata from first banner or fallback
         if ($seo) {
             SeoHelper::setMeta([
@@ -117,10 +98,10 @@ class WebController extends Controller
                 'meta_robots'       => $seo->meta_robots,
             ]);
         }
-        return view('frontends.product', compact(['products', 'title']));
+        return view('frontends.product', compact(['products', 'title', 'body']));
     }
 
-    public function project()
+    public function studyCase()
     {
         $projects   = Project::where('is_active', 1)->paginate(4);
         $seo        = $projects->first();
@@ -141,7 +122,7 @@ class WebController extends Controller
         return view('frontends.project', compact(['projects', 'title']));
     }
 
-    public function projectShow($slug)
+    public function studyCaseShow($slug)
     {
         $project    = Project::where('slug', $slug)->firstOrFail();
         $title      = 'Detail Proyek PT. Arjaya Berkah Marine | PT. Arjaya Berkah Marine';
@@ -236,27 +217,6 @@ class WebController extends Controller
         }
     }
 
-    public function xvessel()
-    {
-        $exVessels  = ExVessel::where('is_active', 1)->paginate(4);
-        $seo        = $exVessels->first();
-        $title      = 'Kapal Second PT. Arjaya Berkah Marine | PT. Arjaya Berkah Marine';
-        // Use SEO metadata from first banner or fallback
-        if ($seo) {
-            SeoHelper::setMeta([
-                'meta_title'        => $seo->meta_title,
-                'meta_description'  => $seo->meta_description,
-                'meta_keywords'     => $seo->meta_keywords,
-                'meta_author'       => $seo->meta_author,
-                'meta_image_path'   => 'exvessel', // ensure this is a relative path, e.g., 'storage/banners/xyz.jpg'
-                'meta_image'        => $seo->meta_image, // ensure this is a relative path, e.g., 'storage/banners/xyz.jpg'
-                'meta_canonical'    => url()->current(),
-                'meta_robots'       => $seo->meta_robots,
-            ]);
-        }
-        return view('frontends.xvessel', compact(['exVessels', 'title']));
-    }
-
     public function article(Request $request)
     {
         // Filter by category if available
@@ -339,7 +299,7 @@ class WebController extends Controller
         return view('frontends.partner', compact(['partners', 'title']));
     }
 
-    public function client()
+    public function faq()
     {
         $clients    = ClientModel::where('is_active', 1)->get();
         $seo        = About::where('is_active', 1)->first();

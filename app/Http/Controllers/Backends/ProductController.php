@@ -224,7 +224,7 @@ class ProductController extends Controller
 
         try {
             foreach($product->images as $image){
-                $deleteImage = ImageHelper::deleteFileExists($image->uri,'product',['small-thumb', 'small','normal', 'meta', 'large', 'original']);
+                $deleteImage = ImageHelper::deleteFileExists($image->uri,'product',['small-thumb', 'small','normal', 'meta', 'large', 'ori']);
             }
             $product->images->each->delete();
 
@@ -484,7 +484,7 @@ class ProductController extends Controller
             $product->meta_image        = null;
             $product->update();
 
-            $deleteImage = ImageHelper::deleteFileExists($productImage->uri,'product',['small-thumb', 'small','normal', 'meta', 'large', 'original']);
+            $deleteImage = ImageHelper::deleteFileExists($productImage->uri,'product',['small-thumb', 'small','normal', 'meta', 'large', 'ori']);
             $productImage->delete();
 
             DB::commit();

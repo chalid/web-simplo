@@ -14,17 +14,11 @@ class ProductCategory extends Model
     protected $historyLimit = 100; //Maintain a maximum of 500 changes at any point of time, while cleaning up old revisions.
 
     protected $fillable = [
-        'name',
-        'description',
+        'title',
+        'parent_id',
         'image',
-        'meta_title',
         'meta_tag',
-        'meta_description',
-        'meta_keywords',
-        'meta_author',
         'meta_image',
-        'meta_canonical',
-        'meta_robots',
         'slug', // For SEO-friendly URLs
         'is_active',
     ];
@@ -32,5 +26,20 @@ class ProductCategory extends Model
     public function products()
     {
         return $this->hasMany(Product::class, 'product_category_id');
+    }
+
+    public function brands()
+    {
+        return $this->hasMany(Brand::class, 'product_category_id');
+    }
+
+    public function children()
+    {
+        return $this->hasMany(ProductCategory::class, 'parent_id', 'id');
+    }
+
+    public function parent()
+    {
+        return $this->belongsTo(ProductCategory::class, 'parent_id', 'id');
     }
 }

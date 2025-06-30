@@ -16,13 +16,12 @@
             <div class="card-header">{{ $title }}</div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-bordered table-hover table-striped partner">
+                    <table class="table table-bordered table-hover table-striped brand">
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Name</th>
-                                <th>Phone</th>
-                                <th>Email</th>
+                                <th>Title</th>
+                                <th>Product Category</th>
                                 <th>Is Active</th>
                                 <th>Image</th>
                                 <th>Aksi</th>
@@ -34,12 +33,37 @@
         </div>
     </div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="addBrand" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addBrandLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="addBrandLabel">Anda ingin menambah data?</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ route('brand.store') }}" method="POST" class="row g-3 needs-validation" novalidate>
+                @csrf
+                @method('POST')
+                <div class="modal-body">
+                    <x-form.input name="title" label="Title name" :value="old('title')" :required="true" />
+                    <x-form.select name="product_category_id" label="Product Category" :options="$productCategories" :selected="old('product_category_id')" :required="true"/>
+                    <x-form.select name="is_active" label="Is Active" :options="[1 => 'Active', 0 => 'In Active']" :selected="old('is_active')" :required="true"/>
+                    <x-form.file name="image" label="Brand Image" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Tutup</button>
+                    <button type="submit" class="btn btn-success">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 @endsection
 @push('scripts')
 @include('layouts.backend.partials.script_form')
 <script>
     $(function() {
-        var t = $('.partner').DataTable({
+        var t = $('.brand').DataTable({
             processing: true,
             serverSide: true,
             ajax: '{{ route($routeAjax) }}',
@@ -66,9 +90,7 @@
                         {
                             text: 'Tambah Data',
                             action: function (e, dt, node, config) {
-                                // Redirect to a Laravel route named 'new-data'
-                                var routeUrl = '{{ route("partner.create") }}';
-                                window.location.href = routeUrl;
+                                $('#addBrand').modal('show');
                             }
                         }
                     ]

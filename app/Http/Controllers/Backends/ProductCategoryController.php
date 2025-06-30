@@ -9,6 +9,8 @@ use DataTables;
 use DB;
 use Auth;
 use Validator;
+use Str;
+use ImageHelper;
 
 class ProductCategoryController extends Controller
 {
@@ -30,8 +32,9 @@ class ProductCategoryController extends Controller
         $confirmDelete  = 'Yakin ingin menghapus data ini?';
         $routeAjax      = 'product-category.get_data';
         $title          = 'List Product Category';
+        $parents        = ProductCategory::where('parent_id', 0)->pluck('title', 'id')->put(0, 'Sebagai Parent')->sortKeys();
 
-        return view('backends.product_category.index', compact(['confirmDelete','routeAjax','title']));
+        return view('backends.product_category.index', compact(['confirmDelete','routeAjax','title', 'parents']));
     }
 
     /**
@@ -48,13 +51,11 @@ class ProductCategoryController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name'          => 'required',
-            'description'   => 'required',
-            'code'          => 'required',
+            'title'     => 'required',
+            'is_active' => 'required',
         ], [
-            'name.required'         => 'name wajib diisi',
-            'description.required'  => 'description wajib diisi',
-            'code.required'         => 'code wajib diisi',
+            'title.required'        => 'title wajib diisi',
+            'is_active.required'    => 'is_active wajib diisi',
         ]);
 
         if ($validator->fails()) {
@@ -68,10 +69,13 @@ class ProductCategoryController extends Controller
 
         try {
 
-            $productCategory                = new ProductCategory();
-            $productCategory->name          = $request->name;
-            $productCategory->description   = $request->description;
-            $productCategory->code          = $request->code;
+            $productCategory                    = new ProductCategory();
+            $productCategory->title             = $request->title;
+            $productCategory->parent_id         = $request->parent_id;
+            $productCategory->is_active         = $request->is_active;
+            $productCategory->meta_tag          = $request->title;
+            $productCategory->meta_image        = null;
+            $productCategory->slug              = Str::slug($request->title);
             $productCategory->save();
 
             DB::commit();
@@ -83,6 +87,15 @@ class ProductCategoryController extends Controller
         }
 
         if ($success_trans == true) {
+            if ($request->hasFile('image')) {
+                $file   = $request->file('image');
+
+                $image = ImageHelper::uploadImage($file,'product_category',['small-thumb', 'meta', 'category']);
+
+                $productCategory->image         = $image;
+                $productCategory->meta_image    = $image ?? null;
+                $productCategory->update();
+            }
             return redirect()->route('product-category')->with('success', 'Berhasil terkirim');
         }
     }
@@ -100,7 +113,10 @@ class ProductCategoryController extends Controller
      */
     public function edit(ProductCategory $productCategory)
     {
-        //
+        $title      = 'Edit Product Category';
+        $parents    = ProductCategory::where('parent_id', 0)->pluck('title', 'id')->put(0, 'Sebagai Parent')->sortKeys();
+
+        return view('backends.product_category.edit', compact(['productCategory', 'title', 'parents']));
     }
 
     /**
@@ -113,9 +129,10 @@ class ProductCategoryController extends Controller
 
         try {
 
-            $productCategory->name          = $request->name;
-            $productCategory->description   = $request->description;
-            $productCategory->code          = $request->code;
+            $productCategory->title             = $request->title;
+            $productCategory->parent_id         = $request->parent_id;
+            $productCategory->is_active         = $request->is_active;
+            $productCategory->slug              = Str::slug($request->title);
             $productCategory->update();
 
             DB::commit();
@@ -124,10 +141,22 @@ class ProductCategoryController extends Controller
         } catch (\Exception $e) {
             DB::rollback();
             // error page
-            return redirect()->route('product-category')->with('error', $e->getMessage());
+            return redirect()->route('product-category.edit', $productCategory->id)->with('error', $e->getMessage());
         }
 
         if ($success_trans == true) {
+            if ($request->hasFile('image')) {
+
+                $deleteImage        = ImageHelper::deleteFileExists($productCategory->image,'about',['small-thumb', 'meta', 'category', 'ori']);
+                
+                $file               = $request->file('image');
+
+                $image              = ImageHelper::uploadImage($file,'product_category',['small-thumb', 'meta', 'category']);
+
+                $productCategory->image      = $image;
+                $productCategory->meta_image = $image ?? null;
+                $productCategory->update();
+            }
             return redirect()->route('product-category')->with('success', 'Berhasil terkirim');
         }
     }
@@ -141,6 +170,7 @@ class ProductCategoryController extends Controller
         $success_trans = false;
 
         try {
+            $deleteImage = ImageHelper::deleteFileExists($productCategory->image,'product_category',['small-thumb', 'meta', 'category', 'ori']);
             $productCategory->delete();
 
             DB::commit();
@@ -160,61 +190,23 @@ class ProductCategoryController extends Controller
     public function ajaxDatatable(Request $request)
     {
         if ($request->ajax()) {
-            $productCategories  = ProductCategory::get();
+            $productCategories  = ProductCategory::with('children')->where('parent_id',0)->get();
 
-            $routeEdit          = 'product-category.update';
+            $routeEdit          = 'product-category.edit';
             $routeDestroy       = 'product-category.delete';
             $iconEdit           = '<i class="bi bi-pencil"></i>';
             $iconDestroy        = '<i class="bi bi-trash"></i>';
 
             return DataTables::of($productCategories)
                 ->addIndexColumn()
+                ->editColumn('is_active', function ($row) {
+                    return $row->is_active ? 'Active' : 'Not Active';
+                })
                 ->addColumn('action', function ($productCategories) use ($routeEdit,$routeDestroy,$iconEdit,$iconDestroy) {
                     $btn_action = '';
                     $btn_action .=  '<div class="btn-group">';
                     if(Auth::user()->can('Can edit product category')){
-                        $btn_action .=  '<form action="' . route($routeEdit, ['productCategory' => $productCategories->id]) . '" method="POST">' .
-                                            '<input type="hidden" name="_method" value="PATCH">' . // Add this line to specify the PATCH method
-                                            '<input type="hidden" name="_token" value="' . csrf_token() . '">' . // Add this line for CSRF protection
-                                            '<a data-bs-toggle="modal" class="btn btn-warning btn-sm" title="Edit Data" href="" data-bs-target="#staticBackdrop' . $productCategories->id . '">' . $iconEdit . '</a>' .
-                                            '<div class="modal fade" id="staticBackdrop' . $productCategories->id . '" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel' . $productCategories->id . '" aria-hidden="true">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                        <h1 class="modal-title fs-5" id="staticBackdropLabel' . $productCategories->id . '">Edit Data</h1>
-                                                            <button type="button" class="btn-close clear-form" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <div class="row mb-3">
-                                                                <label for="name" class="col-sm-4 col-form-label">Name</label>
-                                                                <div class="col-sm-8">
-                                                                    <input type="text" name="name" class="form-control" id="name" value="' . $productCategories->name . '" required>
-                                                                    <div class="invalid-feedback">Harap isi sgroup</div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row mb-3">
-                                                                <label for="description" class="col-sm-4 col-form-label">description</label>
-                                                                <div class="col-sm-8">
-                                                                    <input type="text" name="description" class="form-control" id="description" value="' . $productCategories->description . '" required>
-                                                                    <div class="invalid-feedback">Harap isi description</div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row mb-3">
-                                                                <label for="code" class="col-sm-4 col-form-label">code</label>
-                                                                <div class="col-sm-8">
-                                                                    <input type="text" name="code" class="form-control" id="code" value="' . $productCategories->code . '" required>
-                                                                    <div class="invalid-feedback">Harap isi code</div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-danger clear-form" data-bs-dismiss="modal">Close</button>
-                                                            <button type="submit" class="btn btn-success">Simpan</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </form>&nbsp;';
+                        $btn_action .=  '<a title="Edit Data" class="btn btn-warning btn-sm" href="'. route($routeEdit, ['productCategory' => $productCategories->id]) . '">' . $iconEdit . '</a>&nbsp;';
                     }
                     if(Auth::user()->can('Can delete product category')){
                         $btn_action .=  '<form action="' . route($routeDestroy, ['productCategory' => $productCategories->id]) . '" method="POST">' .
@@ -235,7 +227,7 @@ class ProductCategoryController extends Controller
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Tutup</button>
-                                                            <button type="submit" class="btn btn-success">Hapus</button>
+                                                            <button type="submit" class="btn btn-success">Simpan</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -243,10 +235,55 @@ class ProductCategoryController extends Controller
                                         </form>&nbsp;';
                     }
                     $btn_action .=  '</div>';
-
                     return $btn_action;
                 })
-            ->rawColumns(['action']) // to html
+            ->rawColumns(['action'])
+            ->editColumn('children', function ($productCategories) use($routeDestroy, $iconDestroy){
+                $children    = $productCategories->children;
+                $newChildren = [];
+                if (is_object($productCategories->children) && $productCategories->children->count() > 0) {
+                    foreach ($productCategories->children as $item) {
+                        $action = '';
+                        if(Auth::user()->can('Can edit product category')){
+                            $action .= "<a href='" . route('product-category.edit', ['productCategory' => $item->id]) . "' class='btn btn-warning btn-sm' title='Edit'>
+                                          <i class='bi bi-pencil'></i>
+                                        </a>&nbsp";
+                        }
+                        if(Auth::user()->can('Can delete product category')){
+                            $action .= '<form action="' . route($routeDestroy, ['productCategory' => $item->id]) . '" method="POST">' .
+                                        '<input type="hidden" name="_method" value="DELETE">' . // Add this line to specify the PATCH method
+                                        '<input type="hidden" name="_token" value="' . csrf_token() . '">' . // Add this line for CSRF protection
+                                            '<a data-bs-toggle="modal" class="btn btn-danger btn-sm" title="Delete Data" href="" data-bs-target="#staticDeleteBackdrop' . $item->id . '">' . $iconDestroy . '</a>' .
+                                            '<div class="modal fade" id="staticDeleteBackdrop' . $item->id . '" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticDeleteBackdropLabel' . $item->id . '" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                        <h1 class="modal-title fs-5" id="staticDeleteBackdropLabel' . $item->id . '">Hapus Data</h1>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="mb-3 row">
+                                                                <p>Anda yakin ingin menghapus data ini</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Tutup</button>
+                                                            <button type="submit" class="btn btn-success">Hapus</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>&nbsp;';
+                        }
+                        $item['action'] = $action;
+                        $newChildren[]  = $item;
+                    }
+                }
+    
+                return $newChildren;
+            })->escapeColumns([])->setRowClass(function ($newProductCategories) {
+                if ($newProductCategories->children && $newProductCategories->children()->count() > 0) return 'has-child';
+                else return '';})
             ->make(true);
         }
     }

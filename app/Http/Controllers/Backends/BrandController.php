@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backends;
 
 Use App\Http\Controllers\Controller;
 use App\Models\Backends\Brand;
+use App\Models\Backends\ProductCategory;
 use Illuminate\Http\Request;
 use DataTables;
 use DB;
@@ -29,11 +30,12 @@ class BrandController extends Controller
      */
     public function index()
     {
-        $confirmDelete  = 'Yakin ingin menghapus data ini?';
-        $routeAjax      = 'brand.get_data';
-        $title          = 'List Brand';
+        $confirmDelete      = 'Yakin ingin menghapus data ini?';
+        $routeAjax          = 'brand.get_data';
+        $title              = 'List Brand';
+        $productCategories  = ProductCategory::pluck('name', 'id')->put(0, 'Pilih Kategori Produk')->sortKeys();
 
-        return view('backends.brand.index', compact(['confirmDelete','routeAjax','title']));
+        return view('backends.brand.index', compact(['confirmDelete','routeAjax','title', 'productCategories']));
     }
 
     /**
@@ -41,8 +43,6 @@ class BrandController extends Controller
      */
     public function create()
     {
-        $title  = 'Tambah Brand';
-        return view('backends.brand.create', compact('title'));
     }
 
     /**
@@ -51,19 +51,21 @@ class BrandController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name'         => 'required',
-            'is_active'     => 'required|boolean',
-            'image'         => 'image|mimes:jpeg,png,jpg,gif|max:6144',
+            'name'                  => 'required',
+            'product_category_id'   => 'required',
+            'is_active'             => 'required|boolean',
+            'image'                 => 'image|mimes:jpeg,png,jpg,gif|max:6144',
         ], [
-            'nama.required'        => 'name wajib diisi',
-            'is_active.required'    => 'is active wajib diisi',
-            'image.required'        => 'Hanya gambar',
-            'image.mimes'           => 'Hanya file bertipe jpeg,png,jpg,gif',
-            'image.max'             => 'Tidak bole lebih dari 6144',
+            'nama.required'                 => 'Name wajib diisi',
+            'product_category_id.required'  => 'Product category wajib diisi',
+            'is_active.required'            => 'is active wajib diisi',
+            'image.required'                => 'Hanya gambar',
+            'image.mimes'                   => 'Hanya file bertipe jpeg,png,jpg,gif',
+            'image.max'                     => 'Tidak bole lebih dari 6144',
         ]);
 
         if ($validator->fails()) {
-            return redirect()->route('brand.create')
+            return redirect()->route('brand')
                         ->with('error',$validator->errors())
                         ->withInput();
         }
@@ -73,11 +75,10 @@ class BrandController extends Controller
 
         try {
 
-            $brand            = new Brand();
-            $brand->name      = $request->name;
-            $brand->email     = $request->email;
-            $brand->phone     = $request->phone;
-            $brand->is_active = $request->is_active;
+            $brand                      = new Brand();
+            $brand->name                = $request->name;
+            $brand->product_category_id = $request->product_category_id;
+            $brand->is_active           = $request->is_active;
             $brand->save();
 
             DB::commit();
@@ -92,7 +93,7 @@ class BrandController extends Controller
             if ($request->hasFile('image')) {
                 $file   = $request->file('image');
 
-                $image = ImageHelper::uploadImage($file,'brand',['small-thumb', 'web-smaller']);
+                $image = ImageHelper::uploadImage($file,'brand',['brand']);
 
                 $brand->image         = $image;
                 $brand->update();
@@ -114,8 +115,6 @@ class BrandController extends Controller
      */
     public function edit(Brand $brand)
     {
-        $title  = 'Edit Brand';
-        return view('backends.brand.edit', compact('title', 'brand'));
     }
 
     /**
@@ -124,19 +123,21 @@ class BrandController extends Controller
     public function update(Request $request, Brand $brand)
     {
         $validator = Validator::make($request->all(), [
-            'name'         => 'required',
-            'is_active'     => 'required|boolean',
-            'image'         => 'image|mimes:jpeg,png,jpg,gif|max:6144',
+            'name'                  => 'required',
+            'product_category_id'   => 'required',
+            'is_active'             => 'required|boolean',
+            'image'                 => 'image|mimes:jpeg,png,jpg,gif|max:6144',
         ], [
-            'name.required'        => 'name wajib diisi',
-            'is_active.required'    => 'is active wajib diisi',
-            'image.required'        => 'Hanya gambar',
-            'image.mimes'           => 'Hanya file bertipe jpeg,png,jpg,gif',
-            'image.max'             => 'Tidak bole lebih dari 6144',
+            'nama.required'                 => 'Name wajib diisi',
+            'product_category_id.required'  => 'Product category wajib diisi',
+            'is_active.required'            => 'is active wajib diisi',
+            'image.required'                => 'Hanya gambar',
+            'image.mimes'                   => 'Hanya file bertipe jpeg,png,jpg,gif',
+            'image.max'                     => 'Tidak bole lebih dari 6144',
         ]);
 
         if ($validator->fails()) {
-            return redirect()->route('brand.edit', $brand->id)
+            return redirect()->route('brand')
                         ->with('error',$validator->errors())
                         ->withInput();
         }
@@ -146,10 +147,9 @@ class BrandController extends Controller
 
         try {
 
-            $brand->name      = $request->name;
-            $brand->email     = $request->email;
-            $brand->phone     = $request->phone;
-            $brand->is_active = $request->is_active;
+            $brand->name                = $request->name;
+            $brand->product_category_id = $request->product_category_id;
+            $brand->is_active           = $request->is_active;
             $brand->update();
 
             DB::commit();
@@ -164,11 +164,11 @@ class BrandController extends Controller
         if ($success_trans == true) {
             if ($request->hasFile('image')) {
 
-                $deleteImage        = ImageHelper::deleteFileExists($brand->image,'brand',['small-thumb', 'web-smaller']);
+                $deleteImage        = ImageHelper::deleteFileExists($brand->image,'brand',['brand', 'ori']);
                 
                 $file               = $request->file('image');
 
-                $image              = ImageHelper::uploadImage($file,'brand',['small-thumb', 'web-smaller']);
+                $image              = ImageHelper::uploadImage($file,'brand',['brand']);
 
                 $brand->image      = $image;
                 $brand->update();
@@ -187,7 +187,7 @@ class BrandController extends Controller
 
         try {
             
-            $deleteImage = ImageHelper::deleteFileExists($brand->image,'brand',['small-thumb', 'web-smaller']);
+            $deleteImage = ImageHelper::deleteFileExists($brand->image,'brand',['brand', 'ori']);
 
             $brand->delete();
 
@@ -208,7 +208,7 @@ class BrandController extends Controller
     public function ajaxDatatable(Request $request)
     {
         if ($request->ajax()) {
-            $brands            = Brand::get(); // eager load roles
+            $brands            = Brand::with('category'); // eager load roles
             $routeEdit          = 'brand.edit';
             $routeDestroy       = 'brand.delete';
             $routePermission    = 'brand.permission';
@@ -229,18 +229,71 @@ class BrandController extends Controller
                         : url('assets/backend/images/png/no_image.png');
 
                     $originalPath = $item->image
-                        ? url($path . $dir . 'web-smaller/' . $item->image)
+                        ? url($path . $dir . 'brand/' . $item->image)
                         : '#';
 
                     return '<a href="' . $originalPath . '" target="_blank">
                                 <img src="' . $thumbPath . '" alt="' . e($item->name) . '" title="' . e($item->name) . '" height="50">
                             </a>';
                 })
+                ->addColumn('category_name', function ($row) {
+                    return $row->category->name ?? '-';
+                })
+                ->filterColumn('category_name', function ($query, $keyword) {
+                    $query->whereHas('category', function ($q) use ($keyword) {
+                        $q->where('name', 'like', "%{$keyword}%");
+                    });
+                })
+                ->orderColumn('category_name', function ($query, $order) {
+                    $query->join('product_categories', 'products.product_category_id', '=', 'product_categories.id')
+                        ->orderBy('product_categories.name', $order);
+                })
                 ->addColumn('action', function ($brands) use ($routeEdit, $routeDestroy, $routePermission, $iconEdit, $iconDestroy, $iconPermission) {
                     $btn_action = '';
                     $btn_action .=  '<div class="btn-group">';
                     if(Auth::user()->can('Can edit brand')){
-                        $btn_action .=  '<a title="Edit brand data" class="btn btn-warning btn-sm btn-icon" href="' . route($routeEdit, ['brand' => $brands->id]) . '">' . $iconEdit . '</a>&nbsp;';
+                        $btn_action .=  '<form action="' . route($routeEdit, ['brand' => $brands->id]) . '" method="POST">' .
+                                            '<input type="hidden" name="_method" value="PATCH">' . // Add this line to specify the PATCH method
+                                            '<input type="hidden" name="_token" value="' . csrf_token() . '">' . // Add this line for CSRF protection
+                                            '<a data-bs-toggle="modal" class="btn btn-warning btn-sm" title="Edit Data" href="" data-bs-target="#staticBackdrop' . $brands->id . '">' . $iconEdit . '</a>' .
+                                            '<div class="modal fade" id="staticBackdrop' . $brands->id . '" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel' . $brands->id . '" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                        <h1 class="modal-title fs-5" id="staticBackdropLabel' . $brands->id . '">Edit Data</h1>
+                                                            <button type="button" class="btn-close clear-form" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="row mb-3">
+                                                                <label for="name" class="col-sm-4 col-form-label">Name</label>
+                                                                <div class="col-sm-8">
+                                                                    <input type="text" name="name" class="form-control" id="name" value="' . $brands->name . '" required>
+                                                                    <div class="invalid-feedback">Harap isi sgroup</div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row mb-3">
+                                                                <label for="description" class="col-sm-4 col-form-label">description</label>
+                                                                <div class="col-sm-8">
+                                                                    <input type="text" name="description" class="form-control" id="description" value="' . $brands->description . '" required>
+                                                                    <div class="invalid-feedback">Harap isi description</div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row mb-3">
+                                                                <label for="code" class="col-sm-4 col-form-label">code</label>
+                                                                <div class="col-sm-8">
+                                                                    <input type="text" name="code" class="form-control" id="code" value="' . $brands->code . '" required>
+                                                                    <div class="invalid-feedback">Harap isi code</div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-danger clear-form" data-bs-dismiss="modal">Close</button>
+                                                            <button type="submit" class="btn btn-success">Simpan</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>&nbsp;';
 
                         $statusIcon = $brands->is_active ? '<i class="bi bi-x-circle"></i>' : '<i class="bi bi-check-circle"></i>';
                         $modalId = 'modalToggleStatus' . $brands->id;

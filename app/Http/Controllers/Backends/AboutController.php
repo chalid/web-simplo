@@ -99,7 +99,7 @@ class AboutController extends Controller
             $about->meta_keywords       = implode(',', explode(' ', Str::lower($request->title)));
             $about->meta_author         = auth()->check() ? auth()->user()->name : 'Admin';
             $about->meta_image          = $request->image ?? null;
-            $about->meta_canonical      = url()->current();
+            $about->meta_canonical      = route('web_about');
             $about->meta_robots         = 'index, follow';
             $about->slug                = Str::slug($request->title);
             $about->save();
@@ -212,7 +212,7 @@ class AboutController extends Controller
         if ($success_trans == true) {
             if ($request->hasFile('image')) {
 
-                $deleteImage        = ImageHelper::deleteFileExists($about->image,'about',['small-thumb', 'meta', 'large', 'original']);
+                $deleteImage        = ImageHelper::deleteFileExists($about->image,'about',['small-thumb', 'meta', 'large', 'ori']);
                 
                 $file               = $request->file('image');
 
@@ -235,7 +235,7 @@ class AboutController extends Controller
         $success_trans = false;
 
         try {
-            $deleteImage = ImageHelper::deleteFileExists($about->image,'about',['small-thumb', 'meta', 'large', 'original']);
+            $deleteImage = ImageHelper::deleteFileExists($about->image,'about',['small-thumb', 'meta', 'large', 'ori']);
             
             $about->delete();
 

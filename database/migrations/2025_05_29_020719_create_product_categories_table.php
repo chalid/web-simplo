@@ -13,17 +13,11 @@ return new class extends Migration
     {
         Schema::create('product_categories', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->text('description')->nullable();
+            $table->string('title');
+            $table->integer('parent_id')->default(0);
             $table->string('image')->nullable();
-            $table->string('meta_title')->nullable();
             $table->string('meta_tag')->nullable();
-            $table->text('meta_description')->nullable();
-            $table->string('meta_keywords')->nullable();
-            $table->string('meta_author')->nullable();
             $table->string('meta_image')->nullable();
-            $table->string('meta_canonical')->nullable();
-            $table->string('meta_robots')->nullable();
             $table->string('slug')->unique()->nullable(); // For SEO-friendly URLs
             $table->boolean('is_active')->default(1);
             $table->timestamps();

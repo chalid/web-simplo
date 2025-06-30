@@ -78,13 +78,14 @@ class BannerController extends Controller
             $banner                    = new Banner();
             $banner->title             = $request->title;
             $banner->description       = $request->description;
+            $banner->link              = $request->link;
             $banner->is_active         = $request->is_active;
             $banner->meta_title        = $request->title;
             $banner->meta_description  = Str::limit(strip_tags($request->description), 150);
             $banner->meta_keywords     = implode(',', explode(' ', Str::lower($request->title)));
             $banner->meta_author       = auth()->check() ? auth()->user()->name : 'Admin';
             $banner->meta_image        = null;
-            $banner->meta_canonical    = url()->current();
+            $banner->meta_canonical    = $request->filled('link') ? $request->link : route('web_index');
             $banner->meta_robots       = 'index, follow';
             $banner->slug              = Str::slug($request->title);
             $banner->save();
@@ -101,7 +102,7 @@ class BannerController extends Controller
             if ($request->hasFile('image')) {
                 $file   = $request->file('image');
 
-                $image = ImageHelper::uploadImage($file,'banner',['small-thumb', 'small','normal', 'meta', 'large']);
+                $image = ImageHelper::uploadImage($file,'banner',['small-thumb', 'meta', 'large']);
 
                 $banner->image         = $image;
                 $banner->meta_image    = $image ?? null;
@@ -158,16 +159,17 @@ class BannerController extends Controller
 
         try {
 
-            $banner->title               = $request->title;
-            $banner->description         = $request->description;
-            $banner->is_active           = $request->is_active;
-            $banner->meta_title          = $request->title;
-            $banner->meta_description    = Str::limit(strip_tags($request->description), 150);
-            $banner->meta_keywords       = implode(',', explode(' ', Str::lower($request->title)));
-            $banner->meta_author         = auth()->check() ? auth()->user()->name : 'Admin';
-            $banner->meta_canonical      = url()->current();
-            $banner->meta_robots         = 'index, follow';
-            $banner->slug                = Str::slug($request->title);
+            $banner->title              = $request->title;
+            $banner->description        = $request->description;
+            $banner->link               = $request->link;
+            $banner->is_active          = $request->is_active;
+            $banner->meta_title         = $request->title;
+            $banner->meta_description   = Str::limit(strip_tags($request->description), 150);
+            $banner->meta_keywords      = implode(',', explode(' ', Str::lower($request->title)));
+            $banner->meta_author        = auth()->check() ? auth()->user()->name : 'Admin';
+            $banner->meta_canonical     = $request->filled('link') ? $request->link : route('web_index');
+            $banner->meta_robots        = 'index, follow';
+            $banner->slug               = Str::slug($request->title);
             $banner->update();
 
             DB::commit();
@@ -182,11 +184,11 @@ class BannerController extends Controller
         if ($success_trans == true) {
             if ($request->hasFile('image')) {
 
-                $deleteImage        = ImageHelper::deleteFileExists($banner->image,'banner',['small-thumb', 'small','normal', 'meta', 'large']);
+                $deleteImage        = ImageHelper::deleteFileExists($banner->image,'banner',['small-thumb', 'meta', 'large', 'ori']);
                 
                 $file               = $request->file('image');
 
-                $image              = ImageHelper::uploadImage($file,'banner',['small-thumb', 'small','normal', 'meta', 'large']);
+                $image              = ImageHelper::uploadImage($file,'banner',['small-thumb', 'meta', 'large']);
 
                 $banner->image      = $image;
                 $banner->meta_image = $image ?? null;
@@ -206,7 +208,7 @@ class BannerController extends Controller
 
         try {
             
-            $deleteImage = ImageHelper::deleteFileExists($banner->image,'banner',['small-thumb', 'small','normal', 'meta', 'large']);
+            $deleteImage = ImageHelper::deleteFileExists($banner->image,'banner',['small-thumb', 'meta', 'large', 'ori']);
 
             $banner->delete();
 

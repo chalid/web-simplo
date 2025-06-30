@@ -10,7 +10,10 @@ class ImageHelper{
     protected static $defaultSizes = [
         ['width' => 96, 'height' => 54, 'path' => 'small-thumb'],
         ['width' => 50, 'height' => 80, 'path' => 'thumb2'],
+        ['width' => 181, 'height' => 70, 'path' => 'brand'],
+        ['width' => 22, 'height' => 18, 'path' => 'icon'],
         ['width' => 165, 'height' => 125, 'path' => 'thumb'],
+        ['width' => 257, 'height' => 171, 'path' => 'category'],
         ['width' => 360, 'height' => 240, 'path' => 'smaller'],
         ['width' => 475, 'height' => 316, 'path' => 'web-smaller'],
         ['width' => 760, 'height' => 505, 'path' => 'small'],

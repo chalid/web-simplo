@@ -25,5 +25,9 @@ class DatabaseSeeder extends Seeder
 
         $user->assignRole('Super Admin');
         $this->call(PermissionsTableSeeder::class);
+        $this->call(AboutsTableSeeder::class);
+        $this->call(BannersTableSeeder::class);
+        $this->call(ArticleCategoriesTableSeeder::class);
+        $this->call(ArticlesTableSeeder::class);
     }
 }

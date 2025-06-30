@@ -235,48 +235,25 @@ Route::middleware('auth')->group(function () {
         Route::middleware('role_or_permission:Can delete banner')->group(function () {
             Route::delete('/banner/{banner}/delete', [App\Http\Controllers\Backends\BannerController::class,'destroy'])->name('banner.delete');
         });
-    
+        
         /**
-         * Certificate
+         * Brand
          */
-        Route::middleware('role_or_permission:Certificate')->group(function () {
-            Route::get('/certificate/ajax_datatable', [App\Http\Controllers\Backends\CertificateController::class,'ajaxDatatable'])->name('certificate.get_data');
-            Route::get('/certificate',[App\Http\Controllers\Backends\CertificateController::class, 'index'])->name('certificate');
-
-        });
-        Route::middleware('role_or_permission:Can add certificate')->group(function () {
-            Route::get('/certificate/add',[App\Http\Controllers\Backends\CertificateController::class, 'create'])->name('certificate.create');
-            Route::post('/certificate/store', [App\Http\Controllers\Backends\CertificateController::class,'store'])->name('certificate.store');
-        });
-        Route::middleware('role_or_permission:Can edit certificate')->group(function () {
-            Route::get('/certificate/{certificate}/edit', [App\Http\Controllers\Backends\CertificateController::class,'edit'])->name('certificate.edit');
-            Route::patch('/certificate/{certificate}/update', [App\Http\Controllers\Backends\CertificateController::class,'update'])->name('certificate.update');
-            Route::patch('/certificate/{certificate}/active', [App\Http\Controllers\Backends\CertificateController::class,'active'])->name('certificate.active');
-        });
-        Route::middleware('role_or_permission:Can delete certificate')->group(function () {
-            Route::delete('/certificate/{certificate}/delete', [App\Http\Controllers\Backends\CertificateController::class,'destroy'])->name('certificate.delete');
-        });
-    
-        /**
-         * partner
-         */
-        Route::middleware('role_or_permission:Partner')->group(function () {
-            Route::get('/partner/ajax_datatable', [App\Http\Controllers\Backends\PartnerController::class,'ajaxDatatable'])->name('partner.get_data');
-            Route::get('/partner',[App\Http\Controllers\Backends\PartnerController::class, 'index'])->name('partner');
+        Route::middleware('role_or_permission:Brand')->group(function () {
+            Route::get('/brand/ajax_datatable', [App\Http\Controllers\Backends\BrandController::class,'ajaxDatatable'])->name('brand.get_data');
+            Route::get('/brand',[App\Http\Controllers\Backends\BrandController::class, 'index'])->name('brand');
             
         });
-        Route::middleware('role_or_permission:Can add partner')->group(function () {
-            Route::get('/partner/add',[App\Http\Controllers\Backends\PartnerController::class, 'create'])->name('partner.create');
-            Route::post('/partner/store', [App\Http\Controllers\Backends\PartnerController::class,'store'])->name('partner.store');
+        Route::middleware('role_or_permission:Can add brand')->group(function () {
+            Route::post('/brand/store', [App\Http\Controllers\Backends\BrandController::class,'store'])->name('brand.store');
         });
-        Route::middleware('role_or_permission:Can edit partner')->group(function () {
-            Route::get('/partner/{partner}/edit', [App\Http\Controllers\Backends\PartnerController::class,'edit'])->name('partner.edit');
-            Route::patch('/partner/{partner}/update', [App\Http\Controllers\Backends\PartnerController::class,'update'])->name('partner.update');
-            Route::patch('/partner/{partner}/active', [App\Http\Controllers\Backends\PartnerController::class,'active'])->name('partner.active');
+        Route::middleware('role_or_permission:Can edit brand')->group(function () {
+            Route::patch('/brand/{brand}/update', [App\Http\Controllers\Backends\BrandController::class,'update'])->name('brand.update');
+            Route::patch('/brand/{brand}/active', [App\Http\Controllers\Backends\BrandController::class,'active'])->name('brand.active');
 
         });
-        Route::middleware('role_or_permission:Can delete partner')->group(function () {
-            Route::delete('/partner/{partner}/delete', [App\Http\Controllers\Backends\PartnerController::class,'destroy'])->name('partner.delete');
+        Route::middleware('role_or_permission:Can delete brand')->group(function () {
+            Route::delete('/brand/{brand}/delete', [App\Http\Controllers\Backends\BrandController::class,'destroy'])->name('brand.delete');
         });
     
         /**
@@ -296,83 +273,6 @@ Route::middleware('auth')->group(function () {
         });
         Route::middleware('role_or_permission:Can delete customer')->group(function () {
             Route::delete('/customer/{customer}/delete', [App\Http\Controllers\Backends\CustomerController::class,'destroy'])->name('customer.delete');
-        });
-    
-        /**
-         * Ex Vessel
-         */
-        Route::middleware('role_or_permission:ExVessel')->group(function () {
-            Route::get('/exvessel/ajax_datatable', [App\Http\Controllers\Backends\ExVesselController::class,'ajaxDatatable'])->name('exvessel.get_data');
-            Route::get('/exvessel',[App\Http\Controllers\Backends\ExVesselController::class, 'index'])->name('exvessel');
-            
-        });
-        Route::middleware('role_or_permission:Can add exvessel')->group(function () {
-            Route::get('/exvessel/add',[App\Http\Controllers\Backends\ExVesselController::class, 'create'])->name('exvessel.create');
-            Route::post('/exvessel/store', [App\Http\Controllers\Backends\ExVesselController::class,'store'])->name('exvessel.store');
-        });
-        Route::middleware('role_or_permission:Can edit exvessel')->group(function () {
-            Route::get('/exvessel/{exVessel}/edit', [App\Http\Controllers\Backends\ExVesselController::class,'edit'])->name('exvessel.edit');
-            Route::patch('/exvessel/{exVessel}/update', [App\Http\Controllers\Backends\ExVesselController::class,'update'])->name('exvessel.update');
-            Route::patch('/exvessel/{exVessel}/active', [App\Http\Controllers\Backends\ExVesselController::class,'active'])->name('exvessel.active');
-        });
-        Route::middleware('role_or_permission:Can show exvessel')->group(function () {
-            Route::get('/exvessel/{exVessel}', [App\Http\Controllers\Backends\ExVesselController::class,'show'])->name('exvessel.show');
-        });
-        Route::middleware('role_or_permission:Can delete exvessel')->group(function () {
-            Route::delete('/exvessel/{exVessel}/delete', [App\Http\Controllers\Backends\ExVesselController::class,'destroy'])->name('exvessel.delete');
-        });
-        Route::middleware('role_or_permission:Can set exvessel image')->group(function () {
-            Route::post('/exvessel/{exVessel}/image', [App\Http\Controllers\Backends\ExVesselController::class,'imageAdd'])->name('exvessel.image.store');
-            Route::patch('/exvessel/{exVessel}/image/{exVesselImage}/set_default', [App\Http\Controllers\Backends\ExVesselController::class,'imageSetDefault'])->name('exvessel.image.set_default');
-            Route::delete('/exvessel/{exVessel}/image/{exVesselImage}/delete', [App\Http\Controllers\Backends\ExVesselController::class,'imageDelete'])->name('exvessel.image.delete');
-        });
-    
-        /**
-         * Facility
-         */
-        Route::middleware('role_or_permission:Facility')->group(function () {
-            Route::get('/facility/ajax_datatable', [App\Http\Controllers\Backends\FacilityController::class,'ajaxDatatable'])->name('facility.get_data');
-            Route::get('/facility',[App\Http\Controllers\Backends\FacilityController::class, 'index'])->name('facility');
-        });
-        Route::middleware('role_or_permission:Can add facility')->group(function () {
-            Route::get('/facility/add',[App\Http\Controllers\Backends\FacilityController::class, 'create'])->name('facility.create');
-            Route::post('/facility/store', [App\Http\Controllers\Backends\FacilityController::class,'store'])->name('facility.store');
-        });
-        Route::middleware('role_or_permission:Can edit facility')->group(function () {
-            Route::get('/facility/{facility}/edit', [App\Http\Controllers\Backends\FacilityController::class,'edit'])->name('facility.edit');
-            Route::patch('/facility/{facility}/update', [App\Http\Controllers\Backends\FacilityController::class,'update'])->name('facility.update');
-            Route::patch('/facility/{facility}/active', [App\Http\Controllers\Backends\FacilityController::class,'active'])->name('facility.active');
-        });
-        Route::middleware('role_or_permission:Can show facility')->group(function () {
-            Route::get('/facility/{facility}', [App\Http\Controllers\Backends\FacilityController::class,'show'])->name('facility.show');
-        });
-        Route::middleware('role_or_permission:Can delete facility')->group(function () {
-            Route::delete('/facility/{facility}/delete', [App\Http\Controllers\Backends\FacilityController::class,'destroy'])->name('facility.delete');
-        });
-        Route::middleware('role_or_permission:Can set facility image')->group(function () {
-            Route::post('/facility/{facility}/image', [App\Http\Controllers\Backends\FacilityController::class,'imageAdd'])->name('facility.image.store');
-            Route::patch('/facility/{facility}/image/{image}/set_default', [App\Http\Controllers\Backends\FacilityController::class,'imageSetDefault'])->name('facility.image.set_default');
-            Route::delete('/facility/{facility}/image/{image}/delete', [App\Http\Controllers\Backends\FacilityController::class,'imageDelete'])->name('facility.image.delete');
-        });
-    
-        /**
-         * Motto
-         */
-        Route::middleware('role_or_permission:Motto')->group(function () {
-            Route::get('/motto/ajax_datatable', [App\Http\Controllers\Backends\MottoController::class,'ajaxDatatable'])->name('motto.get_data');
-            Route::get('/motto',[App\Http\Controllers\Backends\MottoController::class, 'index'])->name('motto');
-        });
-        Route::middleware('role_or_permission:Can add motto')->group(function () {
-            Route::get('/motto/add',[App\Http\Controllers\Backends\MottoController::class, 'create'])->name('motto.create');
-            Route::post('/motto/store', [App\Http\Controllers\Backends\MottoController::class,'store'])->name('motto.store');
-        });
-        Route::middleware('role_or_permission:Can edit motto')->group(function () {
-            Route::get('/motto/{motto}/edit', [App\Http\Controllers\Backends\MottoController::class,'edit'])->name('motto.edit');
-            Route::patch('/motto/{motto}/update', [App\Http\Controllers\Backends\MottoController::class,'update'])->name('motto.update');
-            Route::patch('/motto/{motto}/active', [App\Http\Controllers\Backends\MottoController::class,'active'])->name('motto.active');
-        });
-        Route::middleware('role_or_permission:Can delete motto')->group(function () {
-            Route::delete('/motto/{motto}/delete', [App\Http\Controllers\Backends\MottoController::class,'destroy'])->name('motto.delete');
         });
     
         /**
@@ -421,94 +321,70 @@ Route::middleware('auth')->group(function () {
             Route::patch('/product/{product}/image/{image}/set_default', [App\Http\Controllers\Backends\ProductController::class,'imageSetDefault'])->name('product.image.set_default');
             Route::delete('/product/{product}/image/{image}/delete', [App\Http\Controllers\Backends\ProductController::class,'imageDelete'])->name('product.image.delete');
         });
-    
+        
         /**
-         * project Category
+         * StudyCase
+         */
+        Route::middleware('role_or_permission:Study Case')->group(function () {
+            Route::get('/study-case/ajax_datatable', [App\Http\Controllers\Backends\StudyCaseController::class,'ajaxDatatable'])->name('study-case.get_data');
+            Route::get('/study-case',[App\Http\Controllers\Backends\StudyCaseController::class, 'index'])->name('study-case');
+
+        });
+        Route::middleware('role_or_permission:Can add study case')->group(function () {
+            Route::get('/study-case/add',[App\Http\Controllers\Backends\StudyCaseController::class, 'create'])->name('study-case.create');
+            Route::post('/study-case/store', [App\Http\Controllers\Backends\StudyCaseController::class,'store'])->name('study-case.store');
+        });
+        Route::middleware('role_or_permission:Can edit study case')->group(function () {
+            Route::get('/study-case/{studyCase}/edit', [App\Http\Controllers\Backends\StudyCaseController::class,'edit'])->name('study-case.edit');
+            Route::patch('/study-case/{studyCase}/update', [App\Http\Controllers\Backends\StudyCaseController::class,'update'])->name('study-case.update');
+            Route::patch('/study-case/{studyCase}/active', [App\Http\Controllers\Backends\StudyCaseController::class,'active'])->name('study-case.active');
+        });
+        Route::middleware('role_or_permission:Can show study case')->group(function () {
+            Route::get('/study-case/{studyCase}', [App\Http\Controllers\Backends\StudyCaseController::class,'show'])->name('study-case.show');
+        });
+        Route::middleware('role_or_permission:Can delete study case')->group(function () {
+            Route::delete('/study-case/{studyCase}/delete', [App\Http\Controllers\Backends\StudyCaseController::class,'destroy'])->name('study-case.delete');
+        });
+
+        /**
+         * Faq Category
          */
         Route::middleware('role_or_permission:Faq Category')->group(function () {
-            Route::get('/faq-category/ajax_datatable', [App\Http\Controllers\Backends\ProjectCategoryController::class,'ajaxDatatable'])->name('faq-category.get_data');
-            Route::get('/faq-category',[App\Http\Controllers\Backends\ProjectCategoryController::class, 'index'])->name('faq-category');
+            Route::get('/faq-category/ajax_datatable', [App\Http\Controllers\Backends\FaqCategoryController::class,'ajaxDatatable'])->name('faq-category.get_data');
+            Route::get('/faq-category',[App\Http\Controllers\Backends\FaqCategoryController::class, 'index'])->name('faq-category');
         });
         Route::middleware('role_or_permission:Can add faq category')->group(function () {
-            Route::get('/faq-category/add',[App\Http\Controllers\Backends\ProjectCategoryController::class, 'create'])->name('faq-category.create');
-            Route::post('/faq-category/store', [App\Http\Controllers\Backends\ProjectCategoryController::class,'store'])->name('faq-category.store');
+            Route::post('/faq-category/store', [App\Http\Controllers\Backends\FaqCategoryController::class,'store'])->name('faq-category.store');
         });
         Route::middleware('role_or_permission:Can edit faq category')->group(function () {
-            Route::get('/faq-category/{faqCategory}/edit', [App\Http\Controllers\Backends\ProjectCategoryController::class,'edit'])->name('faq-category.edit');
-            Route::patch('/faq-category/{faqCategory}/update', [App\Http\Controllers\Backends\ProjectCategoryController::class,'update'])->name('faq-category.update');
+            Route::patch('/faq-category/{faqCategory}/update', [App\Http\Controllers\Backends\FaqCategoryController::class,'update'])->name('faq-category.update');
         });
         Route::middleware('role_or_permission:Can delete faq category')->group(function () {
-            Route::delete('/faq-category/{faqCategory}/delete', [App\Http\Controllers\Backends\ProjectCategoryController::class,'destroy'])->name('faq-category.delete');
+            Route::delete('/faq-category/{faqCategory}/delete', [App\Http\Controllers\Backends\FaqCategoryController::class,'destroy'])->name('faq-category.delete');
         });
     
         /**
-         * Project
+         * Faq
          */
-        Route::middleware('role_or_permission:Project')->group(function () {
-            Route::get('/project/ajax_datatable', [App\Http\Controllers\Backends\ProjectController::class,'ajaxDatatable'])->name('project.get_data');
-            Route::get('/project',[App\Http\Controllers\Backends\ProjectController::class, 'index'])->name('project');
+        Route::middleware('role_or_permission:Faq')->group(function () {
+            Route::get('/faq/ajax_datatable', [App\Http\Controllers\Backends\FaqController::class,'ajaxDatatable'])->name('faq.get_data');
+            Route::get('/faq',[App\Http\Controllers\Backends\FaqController::class, 'index'])->name('faq');
 
         });
-        Route::middleware('role_or_permission:Can add project')->group(function () {
-            Route::get('/project/add',[App\Http\Controllers\Backends\ProjectController::class, 'create'])->name('project.create');
-            Route::post('/project/store', [App\Http\Controllers\Backends\ProjectController::class,'store'])->name('project.store');
+        Route::middleware('role_or_permission:Can add faq')->group(function () {
+            Route::get('/faq/add',[App\Http\Controllers\Backends\FaqController::class, 'create'])->name('faq.create');
+            Route::post('/faq/store', [App\Http\Controllers\Backends\FaqController::class,'store'])->name('faq.store');
         });
-        Route::middleware('role_or_permission:Can edit project')->group(function () {
-            Route::get('/project/{project}/edit', [App\Http\Controllers\Backends\ProjectController::class,'edit'])->name('project.edit');
-            Route::patch('/project/{project}/update', [App\Http\Controllers\Backends\ProjectController::class,'update'])->name('project.update');
-            Route::patch('/project/{project}/active', [App\Http\Controllers\Backends\ProjectController::class,'active'])->name('project.active');
+        Route::middleware('role_or_permission:Can edit faq')->group(function () {
+            Route::get('/faq/{faq}/edit', [App\Http\Controllers\Backends\FaqController::class,'edit'])->name('faq.edit');
+            Route::patch('/faq/{faq}/update', [App\Http\Controllers\Backends\FaqController::class,'update'])->name('faq.update');
+            Route::patch('/faq/{faq}/active', [App\Http\Controllers\Backends\FaqController::class,'active'])->name('faq.active');
         });
-        Route::middleware('role_or_permission:Can show project')->group(function () {
-            Route::get('/project/{project}', [App\Http\Controllers\Backends\ProjectController::class,'show'])->name('project.show');
+        Route::middleware('role_or_permission:Can show faq')->group(function () {
+            Route::get('/faq/{faq}', [App\Http\Controllers\Backends\FaqController::class,'show'])->name('faq.show');
         });
-        Route::middleware('role_or_permission:Can delete project')->group(function () {
-            Route::delete('/project/{project}/delete', [App\Http\Controllers\Backends\ProjectController::class,'destroy'])->name('project.delete');
-        });
-        Route::middleware('role_or_permission:Can set project image')->group(function () {
-            Route::post('/project/{project}/image', [App\Http\Controllers\Backends\ProjectController::class,'imageAdd'])->name('project.image.store');
-            Route::patch('/project/{project}/image/{image}/set_default', [App\Http\Controllers\Backends\ProjectController::class,'imageSetDefault'])->name('project.image.set_default');
-            Route::delete('/project/{project}/image/{image}/delete', [App\Http\Controllers\Backends\ProjectController::class,'imageDelete'])->name('project.image.delete');
-        });
-    
-        /**
-         * Client
-         */
-        Route::middleware('role_or_permission:Client')->group(function () {
-            Route::get('/client/ajax_datatable', [App\Http\Controllers\Backends\ClientController::class,'ajaxDatatable'])->name('client.get_data');
-            Route::get('/client',[App\Http\Controllers\Backends\ClientController::class, 'index'])->name('client');
-        });
-        Route::middleware('role_or_permission:Can add client')->group(function () {
-            Route::get('/client/add',[App\Http\Controllers\Backends\ClientController::class, 'create'])->name('client.create');
-            Route::post('/client/store', [App\Http\Controllers\Backends\ClientController::class,'store'])->name('client.store');
-        });
-        Route::middleware('role_or_permission:Can edit client')->group(function () {
-            Route::get('/client/{client}/edit', [App\Http\Controllers\Backends\ClientController::class,'edit'])->name('client.edit');
-            Route::patch('/client/{client}/update', [App\Http\Controllers\Backends\ClientController::class,'update'])->name('client.update');
-            Route::patch('/client/{client}/active', [App\Http\Controllers\Backends\ClientController::class,'active'])->name('client.active');
-        });
-        Route::middleware('role_or_permission:Can delete client')->group(function () {
-            Route::delete('/client/{client}/delete', [App\Http\Controllers\Backends\ClientController::class,'destroy'])->name('client.delete');
-        });
-    
-        /**
-         * Vision
-         */
-        Route::middleware('role_or_permission:Vision')->group(function () {
-            Route::get('/vision/ajax_datatable', [App\Http\Controllers\Backends\VisionController::class,'ajaxDatatable'])->name('vision.get_data');
-            Route::get('/vision',[App\Http\Controllers\Backends\VisionController::class, 'index'])->name('vision');
-
-        });
-        Route::middleware('role_or_permission:Can add vision')->group(function () {
-            Route::get('/vision/add',[App\Http\Controllers\Backends\VisionController::class, 'create'])->name('vision.create');
-            Route::post('/vision/store', [App\Http\Controllers\Backends\VisionController::class,'store'])->name('vision.store');
-        });
-        Route::middleware('role_or_permission:Can edit vision')->group(function () {
-            Route::get('/vision/{vision}/edit', [App\Http\Controllers\Backends\VisionController::class,'edit'])->name('vision.edit');
-            Route::patch('/vision/{vision}/update', [App\Http\Controllers\Backends\VisionController::class,'update'])->name('vision.update');
-            Route::patch('/vision/{vision}/active', [App\Http\Controllers\Backends\VisionController::class,'active'])->name('vision.active');
-        });
-        Route::middleware('role_or_permission:Can delete vision')->group(function () {
-            Route::delete('/vision/{vision}/delete', [App\Http\Controllers\Backends\VisionController::class,'destroy'])->name('vision.delete');
+        Route::middleware('role_or_permission:Can delete faq')->group(function () {
+            Route::delete('/faq/{faq}/delete', [App\Http\Controllers\Backends\FaqController::class,'destroy'])->name('faq.delete');
         });
     });
 });

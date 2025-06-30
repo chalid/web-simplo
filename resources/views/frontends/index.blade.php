@@ -11,146 +11,30 @@
                 <div class="swiper-custom-arrow swiper-button-next"></div>
                 <div class="swiper-custom-arrow swiper-button-prev"></div>
                 <div class="swiper-wrapper">
+                    @foreach($banners as $item)
                     <div class="swiper-slide">
                         <div class="content-swipe">
                             <div class="hero-image">
                                 <figure data-aos="fade-in">
-                                    <img src="assets/img/photos/dummy_3.jpeg" alt="">
+                                    <img src="{{ url('storage/upload_files/images/banner/large') . '/' . $item->image }}" alt="{{ $item->meta_tag }}">
                                 </figure>
                             </div>
                             <div class="hero-desc">
                                 <div class="desc-wrapper" data-aos="fade-right" data-aos-delay="600">
-                                    <h4 class="font-text-bold">One Gateway Controller for Total Security</h4>
+                                    <h4 class="font-text-bold">{{ $item->title }}</h4>
                                     <p>
-                                        Seamlessly connect CCTV, access control, and visitor management into a single, powerful platform for enhanced security and efficiency.
+                                        {{ $item->description }}
                                     </p>
-                                    <div class="button-area">
-                                        <a href="#" class="button outline font-text-bold">Learn More</a>
-                                    </div>
+                                    @if($item->link)
+                                        <div class="button-area">
+                                            <a href="{{ $item->link }}" class="button outline font-text-bold">Learn More</a>
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="swiper-slide">
-                        <div class="content-swipe">
-                            <div class="hero-image">
-                                <figure data-aos="fade-in">
-                                    <img src="assets/img/photos/dummy_2.jpeg" alt="">
-                                </figure>
-                            </div>
-                            <div class="hero-desc">
-                                <div class="desc-wrapper" data-aos="fade-right" data-aos-delay="600">
-                                    <h4 class="font-text-bold">One Gateway Controller for Total Security</h4>
-                                    <p>
-                                        Seamlessly connect CCTV, access control, and visitor management into a single, powerful platform for enhanced security and efficiency.
-                                    </p>
-                                    <div class="button-area">
-                                        <a href="#" class="button outline font-text-bold">Learn More</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="content-swipe">
-                            <div class="hero-image">
-                                <figure data-aos="fade-in">
-                                    <img src="assets/img/photos/dummy_1.jpeg" alt="">
-                                </figure>
-                            </div>
-                            <div class="hero-desc">
-                                <div class="desc-wrapper" data-aos="fade-right" data-aos-delay="600">
-                                    <h4 class="font-text-bold">One Gateway Controller for Total Security</h4>
-                                    <p>
-                                        Seamlessly connect CCTV, access control, and visitor management into a single, powerful platform for enhanced security and efficiency.
-                                    </p>
-                                    <div class="button-area">
-                                        <a href="#" class="button outline font-text-bold">Learn More</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="content-swipe">
-                            <div class="hero-image">
-                                <figure data-aos="fade-in">
-                                    <img src="assets/img/photos/dummy_4.jpg" alt="">
-                                </figure>
-                            </div>
-                            <div class="hero-desc">
-                                <div class="desc-wrapper" data-aos="fade-right" data-aos-delay="600">
-                                    <h4 class="font-text-bold">One Gateway Controller for Total Security</h4>
-                                    <p>
-                                        Seamlessly connect CCTV, access control, and visitor management into a single, powerful platform for enhanced security and efficiency.
-                                    </p>
-                                    <div class="button-area">
-                                        <a href="#" class="button outline font-text-bold">Learn More</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="content-swipe">
-                            <div class="hero-image">
-                                <figure data-aos="fade-in">
-                                    <img src="assets/img/photos/dummy_5.jpeg" alt="">
-                                </figure>
-                            </div>
-                            <div class="hero-desc">
-                                <div class="desc-wrapper" data-aos="fade-right" data-aos-delay="600">
-                                    <h4 class="font-text-bold">One Gateway Controller for Total Security</h4>
-                                    <p>
-                                        Seamlessly connect CCTV, access control, and visitor management into a single, powerful platform for enhanced security and efficiency.
-                                    </p>
-                                    <div class="button-area">
-                                        <a href="#" class="button outline font-text-bold">Learn More</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="content-swipe">
-                            <div class="hero-image">
-                                <figure data-aos="fade-in">
-                                    <img src="assets/img/photos/dummy_6.jpeg" alt="">
-                                </figure>
-                            </div>
-                            <div class="hero-desc">
-                                <div class="desc-wrapper" data-aos="fade-right" data-aos-delay="600">
-                                    <h4 class="font-text-bold">One Gateway Controller for Total Security</h4>
-                                    <p>
-                                        Seamlessly connect CCTV, access control, and visitor management into a single, powerful platform for enhanced security and efficiency.
-                                    </p>
-                                    <div class="button-area">
-                                        <a href="#" class="button outline font-text-bold">Learn More</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="content-swipe">
-                            <div class="hero-image">
-                                <figure data-aos="fade-in">
-                                    <img src="assets/img/photos/dummy_7.jpg" alt="">
-                                </figure>
-                            </div>
-                            <div class="hero-desc">
-                                <div class="desc-wrapper" data-aos="fade-right" data-aos-delay="600">
-                                    <h4 class="font-text-bold">One Gateway Controller for Total Security</h4>
-                                    <p>
-                                        Seamlessly connect CCTV, access control, and visitor management into a single, powerful platform for enhanced security and efficiency.
-                                    </p>
-                                    <div class="button-area">
-                                        <a href="#" class="button outline font-text-bold">Learn More</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
                 <div class="swiper-pagination"></div>
             </div>
@@ -485,126 +369,23 @@
             <div class="container">
                 <div class="facility-wrapper">
                     <div class="row no-gutters">
-                        <div class="col-md-6 col-lg-4 col-xl-3">
-                            <div class="thumbnail-info" data-aos="zoom-in">
-                                <div class="thumbnail-wrapper">
-                                    <div class="image-area">
-                                        <figure>
-                                            <img src="assets/img/photos/dummy_2.jpeg" alt="">
-                                        </figure>
+                        @foreach($productCategories as $productCategory)
+                            <div class="col-md-6 col-lg-4 col-xl-3">
+                                <div class="thumbnail-info" data-aos="zoom-in">
+                                    <div class="thumbnail-wrapper">
+                                        <div class="image-area">
+                                            <figure>
+                                                <img src="{{ url('storage/upload_files/images/product_category/category') . '/' . $productCategory->image }}" alt="{{ $productCategory->meta_tag }}">
+                                            </figure>
+                                        </div>
+                                        <div class="info-area">
+                                            <p class="text-ellipsis overflow-hidden line-clamp-2">{{ $productCategory->title }}</p>
+                                        </div>
+                                        <a href="#" class="click-area"></a>
                                     </div>
-                                    <div class="info-area">
-                                        <p class="text-ellipsis overflow-hidden line-clamp-2">Visitor Management System</p>
-                                    </div>
-                                    <a href="#" class="click-area"></a>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-md-6 col-lg-4 col-xl-3">
-                            <div class="thumbnail-info" data-aos="zoom-in">
-                                <div class="thumbnail-wrapper">
-                                    <div class="image-area">
-                                        <figure>
-                                            <img src="assets/img/photos/dummy_6.jpeg" alt="">
-                                        </figure>
-                                    </div>
-                                    <div class="info-area">
-                                        <p class="text-ellipsis overflow-hidden line-clamp-2">Room Booking System</p>
-                                    </div>
-                                    <a href="#" class="click-area"></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-lg-4 col-xl-3">
-                            <div class="thumbnail-info" data-aos="zoom-in">
-                                <div class="thumbnail-wrapper">
-                                    <div class="image-area">
-                                        <figure>
-                                            <img src="assets/img/photos/dummy_7.jpg" alt="">
-                                        </figure>
-                                    </div>
-                                    <div class="info-area">
-                                        <p class="text-ellipsis overflow-hidden line-clamp-2">Computerized Maintanance Management System</p>
-                                    </div>
-                                    <a href="#" class="click-area"></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-lg-4 col-xl-3">
-                            <div class="thumbnail-info" data-aos="zoom-in">
-                                <div class="thumbnail-wrapper">
-                                    <div class="image-area">
-                                        <figure>
-                                            <img src="assets/img/photos/dummy_1.jpeg" alt="">
-                                        </figure>
-                                    </div>
-                                    <div class="info-area">
-                                        <p class="text-ellipsis overflow-hidden line-clamp-2">Locker Management System</p>
-                                    </div>
-                                    <a href="#" class="click-area"></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-lg-4 col-xl-3">
-                            <div class="thumbnail-info" data-aos="zoom-in">
-                                <div class="thumbnail-wrapper">
-                                    <div class="image-area">
-                                        <figure>
-                                            <img src="assets/img/photos/dummy_4.jpg" alt="">
-                                        </figure>
-                                    </div>
-                                    <div class="info-area">
-                                        <p class="text-ellipsis overflow-hidden line-clamp-2">Parking Management System</p>
-                                    </div>
-                                    <a href="#" class="click-area"></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-lg-4 col-xl-3">
-                            <div class="thumbnail-info" data-aos="zoom-in">
-                                <div class="thumbnail-wrapper">
-                                    <div class="image-area">
-                                        <figure>
-                                            <img src="assets/img/photos/dummy_5.jpeg" alt="">
-                                        </figure>
-                                    </div>
-                                    <div class="info-area">
-                                        <p class="text-ellipsis overflow-hidden line-clamp-2">Stock Management System</p>
-                                    </div>
-                                    <a href="#" class="click-area"></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-lg-4 col-xl-3">
-                            <div class="thumbnail-info" data-aos="zoom-in">
-                                <div class="thumbnail-wrapper">
-                                    <div class="image-area">
-                                        <figure>
-                                            <img src="assets/img/photos/dummy_3.jpeg" alt="">
-                                        </figure>
-                                    </div>
-                                    <div class="info-area">
-                                        <p class="text-ellipsis overflow-hidden line-clamp-2">Document Management System</p>
-                                    </div>
-                                    <a href="#" class="click-area"></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-lg-4 col-xl-3">
-                            <div class="thumbnail-info" data-aos="zoom-in">
-                                <div class="thumbnail-wrapper">
-                                    <div class="image-area">
-                                        <figure>
-                                            <img src="assets/img/photos/dummy_2.jpeg" alt="">
-                                        </figure>
-                                    </div>
-                                    <div class="info-area">
-                                        <p class="text-ellipsis overflow-hidden line-clamp-2">School Pick Up Management System</p>
-                                    </div>
-                                    <a href="#" class="click-area"></a>
-                                </div>
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
                 </div>
             </div>

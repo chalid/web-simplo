@@ -214,7 +214,7 @@ class ArticleController extends Controller
         try {
             
             foreach($article->images as $image){
-                $deleteImage = ImageHelper::deleteFileExists($image->uri,'article',['small-thumb', 'small','normal', 'meta', 'original']);
+                $deleteImage = ImageHelper::deleteFileExists($image->uri,'article',['small-thumb', 'small','normal', 'meta', 'ori']);
             }
             $article->images->each->delete();
 

@@ -19,6 +19,7 @@
                     @csrf
                     <x-form.input name="title" label="Title name" :value="old('title')" :required="true" />
                     <x-form.textarea name="description" label="Description" :value="old('description')" />
+                    <x-form.input name="link" label="Button Link" :value="old('link')" />
                     <x-form.select name="is_active" label="Is Active" :options="[1 => 'Active', 0 => 'In Active']" :selected="old('is_active')" :required="true"/>
                     <x-form.file name="image" label="Banner Image" />
                     <div class="col-12">

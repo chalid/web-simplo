@@ -15,13 +15,18 @@ class Brand extends Model
 
     protected $fillable = [
         'name',
+        'product_category_id',
         'image',
-        'slug',
         'is_active',
     ];
 
-    public function brands()
+    public function products()
     {
-        return $this->hasMany(Brand::class, 'brand_id');
+        return $this->hasMany(Product::class, 'brand_id');
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(ProductCategory::class, 'product_category_id');
     }
 }
