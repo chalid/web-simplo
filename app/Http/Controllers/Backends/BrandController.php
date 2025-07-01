@@ -33,7 +33,7 @@ class BrandController extends Controller
         $confirmDelete      = 'Yakin ingin menghapus data ini?';
         $routeAjax          = 'brand.get_data';
         $title              = 'List Brand';
-        $productCategories  = ProductCategory::pluck('name', 'id')->put(0, 'Pilih Kategori Produk')->sortKeys();
+        $productCategories  = ProductCategory::where('parent_id', 0)->pluck('title', 'id')->put(0, 'Pilih Kategori Produk')->sortKeys();
 
         return view('backends.brand.index', compact(['confirmDelete','routeAjax','title', 'productCategories']));
     }
@@ -51,12 +51,12 @@ class BrandController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name'                  => 'required',
+            'title'                 => 'required',
             'product_category_id'   => 'required',
             'is_active'             => 'required|boolean',
             'image'                 => 'image|mimes:jpeg,png,jpg,gif|max:6144',
         ], [
-            'nama.required'                 => 'Name wajib diisi',
+            'title.required'                => 'Name wajib diisi',
             'product_category_id.required'  => 'Product category wajib diisi',
             'is_active.required'            => 'is active wajib diisi',
             'image.required'                => 'Hanya gambar',
@@ -76,7 +76,7 @@ class BrandController extends Controller
         try {
 
             $brand                      = new Brand();
-            $brand->name                = $request->name;
+            $brand->title               = $request->title;
             $brand->product_category_id = $request->product_category_id;
             $brand->is_active           = $request->is_active;
             $brand->save();
@@ -93,7 +93,7 @@ class BrandController extends Controller
             if ($request->hasFile('image')) {
                 $file   = $request->file('image');
 
-                $image = ImageHelper::uploadImage($file,'brand',['brand']);
+                $image = ImageHelper::uploadImage($file,'brand',['small-thumb', 'brand']);
 
                 $brand->image         = $image;
                 $brand->update();
@@ -123,12 +123,12 @@ class BrandController extends Controller
     public function update(Request $request, Brand $brand)
     {
         $validator = Validator::make($request->all(), [
-            'name'                  => 'required',
+            'title'                 => 'required',
             'product_category_id'   => 'required',
             'is_active'             => 'required|boolean',
             'image'                 => 'image|mimes:jpeg,png,jpg,gif|max:6144',
         ], [
-            'nama.required'                 => 'Name wajib diisi',
+            'title.required'                => 'Name wajib diisi',
             'product_category_id.required'  => 'Product category wajib diisi',
             'is_active.required'            => 'is active wajib diisi',
             'image.required'                => 'Hanya gambar',
@@ -147,7 +147,7 @@ class BrandController extends Controller
 
         try {
 
-            $brand->name                = $request->name;
+            $brand->title               = $request->title;
             $brand->product_category_id = $request->product_category_id;
             $brand->is_active           = $request->is_active;
             $brand->update();
@@ -164,11 +164,11 @@ class BrandController extends Controller
         if ($success_trans == true) {
             if ($request->hasFile('image')) {
 
-                $deleteImage        = ImageHelper::deleteFileExists($brand->image,'brand',['brand', 'ori']);
+                $deleteImage        = ImageHelper::deleteFileExists($brand->image,'brand',['small-thumb', 'brand', 'ori']);
                 
                 $file               = $request->file('image');
 
-                $image              = ImageHelper::uploadImage($file,'brand',['brand']);
+                $image              = ImageHelper::uploadImage($file,'brand',['small-thumb', 'brand']);
 
                 $brand->image      = $image;
                 $brand->update();
@@ -187,7 +187,7 @@ class BrandController extends Controller
 
         try {
             
-            $deleteImage = ImageHelper::deleteFileExists($brand->image,'brand',['brand', 'ori']);
+            $deleteImage = ImageHelper::deleteFileExists($brand->image,'brand',['small-thumb', 'brand', 'ori']);
 
             $brand->delete();
 
@@ -208,13 +208,14 @@ class BrandController extends Controller
     public function ajaxDatatable(Request $request)
     {
         if ($request->ajax()) {
-            $brands            = Brand::with('category'); // eager load roles
+            $brands             = Brand::with('category'); // eager load roles
             $routeEdit          = 'brand.edit';
             $routeDestroy       = 'brand.delete';
             $routePermission    = 'brand.permission';
             $iconEdit           = '<i class="bi bi-pencil"></i>';
             $iconDestroy        = '<i class="bi bi-trash"></i>';
             $iconPermission     = '<i class="bi bi-lock"></i>';
+            $productCategories  = ProductCategory::where('parent_id', 0)->pluck('title', 'id')->put(0, 'Pilih Kategori Produk')->sortKeys();
 
             return DataTables::of($brands)
                 ->addIndexColumn()
@@ -248,11 +249,11 @@ class BrandController extends Controller
                     $query->join('product_categories', 'products.product_category_id', '=', 'product_categories.id')
                         ->orderBy('product_categories.name', $order);
                 })
-                ->addColumn('action', function ($brands) use ($routeEdit, $routeDestroy, $routePermission, $iconEdit, $iconDestroy, $iconPermission) {
+                ->addColumn('action', function ($brands) use ($routeEdit, $routeDestroy, $routePermission, $iconEdit, $iconDestroy, $iconPermission, $productCategories) {
                     $btn_action = '';
                     $btn_action .=  '<div class="btn-group">';
                     if(Auth::user()->can('Can edit brand')){
-                        $btn_action .=  '<form action="' . route($routeEdit, ['brand' => $brands->id]) . '" method="POST">' .
+                        $btn_action .=  '<form action="' . route($routeEdit, ['brand' => $brands->id]) . '" method="POST" enctype="multipart/form-data">' .
                                             '<input type="hidden" name="_method" value="PATCH">' . // Add this line to specify the PATCH method
                                             '<input type="hidden" name="_token" value="' . csrf_token() . '">' . // Add this line for CSRF protection
                                             '<a data-bs-toggle="modal" class="btn btn-warning btn-sm" title="Edit Data" href="" data-bs-target="#staticBackdrop' . $brands->id . '">' . $iconEdit . '</a>' .
@@ -265,10 +266,34 @@ class BrandController extends Controller
                                                         </div>
                                                         <div class="modal-body">
                                                             <div class="row mb-3">
-                                                                <label for="name" class="col-sm-4 col-form-label">Name</label>
+                                                                <label for="title" class="col-sm-4 col-form-label">Brand Name</label>
                                                                 <div class="col-sm-8">
-                                                                    <input type="text" name="name" class="form-control" id="name" value="' . $brands->name . '" required>
-                                                                    <div class="invalid-feedback">Harap isi sgroup</div>
+                                                                    <input type="text" name="title" class="form-control" id="title" value="' . $brands->name . '" required>
+                                                                    <div class="invalid-feedback">Harap isi brand name</div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row mb-3">
+                                                                <label for="is_active" class="col-sm-4 col-form-label">Active ?</label>
+                                                                <div class="col-sm-8">
+                                                                    <select name="is_active" id="is_active" class="form-control"}}>
+                                                                        @foreach($productCategories as $value => $text)
+                                                                            <option value="{{ $value }}" @selected(in_array($value, $selectedValues))>
+                                                                                {{ $text }}
+                                                                            </option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row mb-3">
+                                                                <label for="is_active" class="col-sm-4 col-form-label">Active ?</label>
+                                                                <div class="col-sm-8">
+                                                                    <select name="is_active" id="is_active" class="form-control"}}>
+                                                                        @foreach($options as $value => $text)
+                                                                            <option value="{{ $value }}" @selected(in_array($value, $selectedValues))>
+                                                                                {{ $text }}
+                                                                            </option>
+                                                                        @endforeach
+                                                                    </select>
                                                                 </div>
                                                             </div>
                                                             <div class="row mb-3">
@@ -276,13 +301,6 @@ class BrandController extends Controller
                                                                 <div class="col-sm-8">
                                                                     <input type="text" name="description" class="form-control" id="description" value="' . $brands->description . '" required>
                                                                     <div class="invalid-feedback">Harap isi description</div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row mb-3">
-                                                                <label for="code" class="col-sm-4 col-form-label">code</label>
-                                                                <div class="col-sm-8">
-                                                                    <input type="text" name="code" class="form-control" id="code" value="' . $brands->code . '" required>
-                                                                    <div class="invalid-feedback">Harap isi code</div>
                                                                 </div>
                                                             </div>
                                                         </div>

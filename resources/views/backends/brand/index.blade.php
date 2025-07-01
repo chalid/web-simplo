@@ -41,11 +41,11 @@
                 <h1 class="modal-title fs-5" id="addBrandLabel">Anda ingin menambah data?</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="{{ route('brand.store') }}" method="POST" class="row g-3 needs-validation" novalidate>
+            <form action="{{ route('brand.store') }}" method="POST" class="row g-3 needs-validation" novalidate enctype="multipart/form-data">
                 @csrf
                 @method('POST')
                 <div class="modal-body">
-                    <x-form.input name="title" label="Title name" :value="old('title')" :required="true" />
+                    <x-form.input name="title" label="Brand Name" :value="old('title')" :required="true" />
                     <x-form.select name="product_category_id" label="Product Category" :options="$productCategories" :selected="old('product_category_id')" :required="true"/>
                     <x-form.select name="is_active" label="Is Active" :options="[1 => 'Active', 0 => 'In Active']" :selected="old('is_active')" :required="true"/>
                     <x-form.file name="image" label="Brand Image" />

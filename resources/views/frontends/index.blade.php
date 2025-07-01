@@ -395,126 +395,23 @@
         <div class="container">
             <div class="news-area">
                 <div class="row no-gutters">
-                    <div class="col-md-6">
-                        <div class="news-wrapper" data-aos="zoom-in">
-                            <div class="news-date">
-                                <h4 class="font-text-black">
-                                    30
-                                    <small>Mar</small>
-                                </h4>
-                            </div>
-                            <div class="news-title">
-                                <h5 class="text-ellipsis overflow-hidden line-clamp-2">
-                                    <a href="news-detail.html">Integrating the Future: How SIMPLO Unifies Physical Security Systems</a>
-                                </h5>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="news-wrapper" data-aos="zoom-in">
-                            <div class="news-date">
-                                <h4 class="font-text-black">
-                                    29
-                                    <small>Mar</small>
-                                </h4>
-                            </div>
-                            <div class="news-title">
-                                <h5 class="text-ellipsis overflow-hidden line-clamp-2">
-                                    <a href="news-detail.html">Beyond Security: How SIMPLO Transforms Facility Management</a>
-                                </h5>
+                    @foreach($articles as $article)
+                        <div class="col-md-6">
+                            <div class="news-wrapper" data-aos="zoom-in">
+                                <div class="news-date">
+                                    <h4 class="font-text-black">
+                                        {{ $article->created_at->format('j') }}
+                                        <small>{{ $article->created_at->format('M') }}</small>
+                                    </h4>
+                                </div>
+                                <div class="news-title">
+                                    <h5 class="text-ellipsis overflow-hidden line-clamp-2">
+                                        <a href="{{ route('web_article.show',$article->slug) }}">{{ $article->title }}</a>
+                                    </h5>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="news-wrapper" data-aos="zoom-in">
-                            <div class="news-date">
-                                <h4 class="font-text-black">
-                                    28
-                                    <small>Mar</small>
-                                </h4>
-                            </div>
-                            <div class="news-title">
-                                <h5 class="text-ellipsis overflow-hidden line-clamp-2">
-                                    <a href="news-detail.html">The Power of Customization: Why On-Premise Security Matters with SIMPLO</a>
-                                </h5>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="news-wrapper" data-aos="zoom-in">
-                            <div class="news-date">
-                                <h4 class="font-text-black">
-                                    27
-                                    <small>Mar</small>
-                                </h4>
-                            </div>
-                            <div class="news-title">
-                                <h5 class="text-ellipsis overflow-hidden line-clamp-2">
-                                    <a href="news-detail.html">The Evolution of Security: Trends and Innovations Powered by SIMPLO</a>
-                                </h5>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="news-wrapper" data-aos="zoom-in">
-                            <div class="news-date">
-                                <h4 class="font-text-black">
-                                    26
-                                    <small>Mar</small>
-                                </h4>
-                            </div>
-                            <div class="news-title">
-                                <h5 class="text-ellipsis overflow-hidden line-clamp-2">
-                                    <a href="news-detail.html">Enhancing Security with SIMPLO: Seamless Integration with Global Brands</a>
-                                </h5>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="news-wrapper" data-aos="zoom-in">
-                            <div class="news-date">
-                                <h4 class="font-text-black">
-                                    25
-                                    <small>Mar</small>
-                                </h4>
-                            </div>
-                            <div class="news-title">
-                                <h5 class="text-ellipsis overflow-hidden line-clamp-2">
-                                    <a href="news-detail.html">Success Stories: How Businesses Secure Their Future with SIMPLO</a>
-                                </h5>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="news-wrapper" data-aos="zoom-in">
-                            <div class="news-date">
-                                <h4 class="font-text-black">
-                                    24
-                                    <small>Mar</small>
-                                </h4>
-                            </div>
-                            <div class="news-title">
-                                <h5 class="text-ellipsis overflow-hidden line-clamp-2">
-                                    <a href="news-detail.html">Smart Access Control: How SIMPLO Optimizes Visitor Management</a>
-                                </h5>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="news-wrapper" data-aos="zoom-in">
-                            <div class="news-date">
-                                <h4 class="font-text-black">
-                                    23
-                                    <small>Mar</small>
-                                </h4>
-                            </div>
-                            <div class="news-title">
-                                <h5 class="text-ellipsis overflow-hidden line-clamp-2">
-                                    <a href="news-detail.html">Efficiency & Security Combined: SIMPLO's Role in Smart Building Solutions</a>
-                                </h5>
-                            </div>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
             </div>
         </div>

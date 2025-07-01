@@ -30,6 +30,8 @@ class Article extends Model
         'is_active',
     ];
 
+    protected $casts = ['created_at' => 'datetime'];
+
     public function category()
     {
         return $this->belongsTo(ArticleCategory::class, 'article_category_id');

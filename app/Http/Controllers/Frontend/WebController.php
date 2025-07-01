@@ -39,7 +39,7 @@ class WebController extends Controller
         // $projects   = Project::where('is_active', 1)->latest()->limit(5)->get();
         // $clients    = ClientModel::where('is_active', 1)->latest()->limit(7)->get();
         // $partners   = Partner::where('is_active', 1)->latest()->limit(7)->get();
-        // $articles   = Article::where('is_active', 1)->latest()->limit(7)->get();
+        $articles   = Article::where('is_active', 1)->latest()->limit(8)->get();
         $title      = 'Simplo';
         $body       = 'index';
         // Use SEO metadata from first banner or fallback
@@ -55,7 +55,7 @@ class WebController extends Controller
                 'meta_robots'       => $seo->meta_robots,
             ]);
         }
-        return view('frontends.index', compact(['title', 'body', 'banners', 'productCategories']));
+        return view('frontends.index', compact(['title', 'body', 'banners', 'productCategories', 'articles']));
     }
 
     public function story()
@@ -106,6 +106,7 @@ class WebController extends Controller
         $projects   = Project::where('is_active', 1)->paginate(4);
         $seo        = $projects->first();
         $title      = 'Proyek PT. Arjaya Berkah Marine | PT. Arjaya Berkah Marine';
+        $body       = 'index';
         // Use SEO metadata from first banner or fallback
         if ($seo) {
             SeoHelper::setMeta([
@@ -145,6 +146,7 @@ class WebController extends Controller
     {
         $seo    = About::where('is_active', 1)->first();
         $title  = 'Hubungi Kami PT. Arjaya Berkah Marine | PT. Arjaya Berkah Marine';
+        $body       = 'index';
         // Use SEO metadata from first banner or fallback
         if ($seo) {
             SeoHelper::setMeta([
@@ -304,6 +306,7 @@ class WebController extends Controller
         $clients    = ClientModel::where('is_active', 1)->get();
         $seo        = About::where('is_active', 1)->first();
         $title      = 'Klien PT. Arjaya Berkah Marine | PT. Arjaya Berkah Marine';
+        $body       = 'faq-page';
         // Use SEO metadata from first banner or fallback
         if ($seo) {
             SeoHelper::setMeta([
@@ -317,6 +320,6 @@ class WebController extends Controller
                 'meta_robots'       => $seo->meta_robots,
             ]);
         }
-        return view('frontends.client', compact(['clients', 'title']));
+        return view('frontends.client', compact(['clients', 'title', 'body']));
     }
 }
