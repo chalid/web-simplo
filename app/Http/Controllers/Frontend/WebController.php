@@ -8,17 +8,11 @@ use App\Models\Backends\Article;
 use App\Models\Backends\ArticleCategory;
 use App\Models\Backends\Banner;
 use App\Models\Backends\Certificate;
-use App\Models\Backends\ClientModel;
 use App\Models\Backends\Customer;
-use App\Models\Backends\ExVessel;
-use App\Models\Backends\Facility;
-use App\Models\Backends\Motto;
+use App\Models\Backends\Brand;
 use App\Models\Backends\Partner;
 use App\Models\Backends\Product;
 use App\Models\Backends\ProductCategory;
-use App\Models\Backends\Project;
-use App\Models\Backends\ProjectCategory;
-use App\Models\Backends\Vision;
 use App\Http\Helpers\SeoHelper;
 use Illuminate\Http\Request;
 use DB;
@@ -35,7 +29,7 @@ class WebController extends Controller
         $seo        = About::where('is_active', 1)->first();
         $banners    = Banner::where('is_active', 1)->limit(5)->get();
         $productCategories  = ProductCategory::where('parent_id', 0)->where('is_active', 1)->get();
-        // $mottos     = Motto::where('is_active', 1)->limit(3)->get();
+        $brands     = Brand::where('is_active', 1)->get();
         // $projects   = Project::where('is_active', 1)->latest()->limit(5)->get();
         // $clients    = ClientModel::where('is_active', 1)->latest()->limit(7)->get();
         // $partners   = Partner::where('is_active', 1)->latest()->limit(7)->get();
@@ -55,7 +49,7 @@ class WebController extends Controller
                 'meta_robots'       => $seo->meta_robots,
             ]);
         }
-        return view('frontends.index', compact(['title', 'body', 'banners', 'productCategories', 'articles']));
+        return view('frontends.index', compact(['title', 'body', 'banners', 'productCategories', 'articles', 'brands']));
     }
 
     public function story()
@@ -146,7 +140,7 @@ class WebController extends Controller
     {
         $seo    = About::where('is_active', 1)->first();
         $title  = 'Hubungi Kami PT. Arjaya Berkah Marine | PT. Arjaya Berkah Marine';
-        $body       = 'index';
+        $body   = 'contact-page';
         // Use SEO metadata from first banner or fallback
         if ($seo) {
             SeoHelper::setMeta([
@@ -160,7 +154,7 @@ class WebController extends Controller
                 'meta_robots'       => $seo->meta_robots,
             ]);
         }
-        return view('frontends.contact', compact('title'));
+        return view('frontends.contact', compact('title', 'body'));
     }
 
     public function addQuestion(Request $request)

@@ -273,78 +273,17 @@
             <div class="image-slider">
                 <div class="swiper-container">
                     <div class="swiper-wrapper">
-                        <div class="swiper-slide">
-                            <div class="content-swipe" data-aos="zoom-in">
-                                <div class="image-area">
-                                    <figure>
-                                        <img src="assets/img/brand/brand-1.png" alt="">
-                                    </figure>
+                        @foreach($brands as $brand)
+                            <div class="swiper-slide">
+                                <div class="content-swipe" data-aos="zoom-in">
+                                    <div class="image-area">
+                                        <figure>
+                                            <img src="{{ url('storage/upload_files/images/brand/brand') . '/' . $brand->image }}" alt="{{ $brand->name }}">
+                                        </figure>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="content-swipe" data-aos="zoom-in">
-                                <div class="image-area">
-                                    <figure>
-                                        <img src="assets/img/brand/brand-2.png" alt="">
-                                    </figure>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="content-swipe" data-aos="zoom-in">
-                                <div class="image-area">
-                                    <figure>
-                                        <img src="assets/img/brand/brand-3.png" alt="">
-                                    </figure>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="content-swipe" data-aos="zoom-in">
-                                <div class="image-area">
-                                    <figure>
-                                        <img src="assets/img/brand/brand-4.png" alt="">
-                                    </figure>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="content-swipe" data-aos="zoom-in">
-                                <div class="image-area">
-                                    <figure>
-                                        <img src="assets/img/brand/brand-5.png" alt="">
-                                    </figure>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="content-swipe" data-aos="zoom-in">
-                                <div class="image-area">
-                                    <figure>
-                                        <img src="assets/img/brand/brand-1.png" alt="">
-                                    </figure>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="content-swipe" data-aos="zoom-in">
-                                <div class="image-area">
-                                    <figure>
-                                        <img src="assets/img/brand/brand-2.png" alt="">
-                                    </figure>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="content-swipe" data-aos="zoom-in">
-                                <div class="image-area">
-                                    <figure>
-                                        <img src="assets/img/brand/brand-3.png" alt="">
-                                    </figure>
-                                </div>
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
                     <div class="swiper-pagination"></div>
                 </div>
@@ -428,7 +367,7 @@
                     <h5 class="font-text-light">The gateway controller that seamlessly integrates your physical security systems for maximum efficiency and control!</h5>
                 </div>
                 <div class="button-area" data-aos="zoom-in">
-                    <a href="contact.html" class="button font-text-bold">Contact Us</a>
+                    <a href="{{ route('web_contact') }}" class="button font-text-bold">Contact Us</a>
                 </div>
             </div>
         </div>

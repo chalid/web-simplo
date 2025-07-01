@@ -16,14 +16,15 @@
             <div class="card-header">{{ $title }}</div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-bordered table-hover table-striped brand">
+                    <table class="table table-bordered table-hover table-striped product">
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Name</th>
-                                <th>Product Category</th>
-                                <th>Is Active</th>
-                                <th>Image</th>
+                                <th>Category</th>
+                                <th>Position</th>
+                                <th>Question</th>
+                                <th>Answer</th>
+                                <th>Active</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -33,46 +34,22 @@
         </div>
     </div>
 </div>
-<!-- Modal -->
-<div class="modal fade" id="addBrand" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addBrandLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="addBrandLabel">Anda ingin menambah data?</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form action="{{ route('brand.store') }}" method="POST" class="row g-3 needs-validation" novalidate enctype="multipart/form-data">
-                @csrf
-                @method('POST')
-                <div class="modal-body">
-                    <x-form.input name="name" label="Brand Name" :value="old('name')" :required="true" />
-                    <x-form.select name="product_category_id" label="Product Category" :options="$productCategories" :selected="old('product_category_id')" :required="true"/>
-                    <x-form.select name="is_active" label="Is Active" :options="[1 => 'Active', 0 => 'In Active']" :selected="old('is_active')" :required="true"/>
-                    <x-form.file name="image" label="Brand Image" />
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Tutup</button>
-                    <button type="submit" class="btn btn-success">Simpan</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
 @endsection
 @push('scripts')
 @include('layouts.backend.partials.script_form')
 <script>
     $(function() {
-        var t = $('.brand').DataTable({
+        var t = $('.product').DataTable({
             processing: true,
             serverSide: true,
             ajax: '{{ route($routeAjax) }}',
             columns: [
                 {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
-                {data: 'name', name: 'name', orderable:true, searchable: true},
-                {data: 'category_name', name: 'category_name', orderable:true, searchable: true},
+                {data: 'category_name'},
+                {data: 'position', name: 'position', orderable:true, searchable: true},
+                {data: 'question', name: 'question', orderable:true, searchable: true},
+                {data: 'answer', name: 'answer', orderable:true, searchable: true},
                 {data: 'is_active', name: 'is_active', orderable:true, searchable: false},
-                {data: 'image', name: 'image', orderable:false, searchable: false},
                 {data: 'action'},
             ],
             "drawCallback": function(settings) {
@@ -81,7 +58,7 @@
         });
 
         // Check permission before initializing DataTable Buttons
-        checkPermission('Can add partner', function(hasPermission) {
+        checkPermission('Can add faq', function(hasPermission) {
             if (hasPermission || isSuperAdmin()) {
                 // Add the "Tambah Data" button if the user has permission or is a Super Admin
                 new DataTable.Buttons(t, {
@@ -89,7 +66,9 @@
                         {
                             text: 'Tambah Data',
                             action: function (e, dt, node, config) {
-                                $('#addBrand').modal('show');
+                                // Redirect to a Laravel route named 'new-data'
+                                var routeUrl = '{{ route("faq.create") }}';
+                                window.location.href = routeUrl;
                             }
                         }
                     ]

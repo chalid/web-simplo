@@ -45,7 +45,7 @@ class ProductController extends Controller
     public function create()
     {
         $title              = 'Tambah Product';
-        $productCategories  = ProductCategory::pluck('name', 'id')->put(0, 'Pilih Kategori Produk')->sortKeys();
+        $productCategories  = ProductCategory::pluck('title', 'id')->put(0, 'Pilih Kategori Produk')->sortKeys();
         return view('backends.product.create', compact('title', 'productCategories'));
     }
 
@@ -155,7 +155,7 @@ class ProductController extends Controller
     public function edit(Product $product)
     {
         $title              = 'Edit Product';
-        $productCategories  = ProductCategory::pluck('name', 'id')->put(0, 'Pilih Kategori Produk')->sortKeys();
+        $productCategories  = ProductCategory::pluck('title', 'id')->put(0, 'Pilih Kategori Produk')->sortKeys();
         return view('backends.product.edit', compact('title', 'product', 'productCategories'));
     }
 

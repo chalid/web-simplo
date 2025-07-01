@@ -248,6 +248,7 @@ Route::middleware('auth')->group(function () {
             Route::post('/brand/store', [App\Http\Controllers\Backends\BrandController::class,'store'])->name('brand.store');
         });
         Route::middleware('role_or_permission:Can edit brand')->group(function () {
+            Route::get('/brand/{brand}/edit', [App\Http\Controllers\Backends\BrandController::class,'edit'])->name('brand.edit');
             Route::patch('/brand/{brand}/update', [App\Http\Controllers\Backends\BrandController::class,'update'])->name('brand.update');
             Route::patch('/brand/{brand}/active', [App\Http\Controllers\Backends\BrandController::class,'active'])->name('brand.active');
 

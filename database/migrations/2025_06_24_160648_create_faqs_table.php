@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('faqs', function (Blueprint $table) {
             $table->id();
             $table->integer('faq_category_id');
-            $table->string('position');
+            $table->integer('position');
             $table->text('question');
             $table->text('answer');
-            $table->boolean('is_active')->default(1);
+            $table->boolean('is_active')->default(0);
             $table->timestamps();
         });
     }
