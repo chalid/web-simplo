@@ -18,9 +18,9 @@
                 <form class="row g-3 needs-validation" method="POST" action="{{ route('faq.store') }}" novalidate enctype="multipart/form-data">
                     @csrf
                     <x-form.select name="faq_category_id" label="Kategori Produk" :options="$faqCategories" :selected="old('faq_category_id')" :required="true"/>
-                    <x-form.input name="position" label="Position" :value="old('position')" :required="true" />
-                    <x-form.textarea name="question" label="Question" :value="old('question')" />
-                    <x-form.textarea name="answer" label="Answer" :value="old('answer')" />
+                    <x-form.input name="position" label="Position" :value="old('position')" :required="true"/>
+                    <x-form.textarea name="question" label="Question" :value="old('question')" :rich="true"/>
+                    <x-form.textarea name="answer" label="Answer" :value="old('answer')" :rich="true"/>
                     <x-form.select name="is_active" label="Is Active" :options="[1 => 'Active', 0 => 'In Active']" :selected="old('is_active')" :required="true"/>
                     <div class="col-12">
                         <a href="{{ route('faq') }}" class="btn btn-danger">
@@ -58,24 +58,26 @@
         })
     })();
 
-    var description = document.getElementById("description");
-    CKEDITOR.replace(description, {
-        // Disable upload tabs from dialogs
-        removeDialogTabs: 'image:Upload;link:upload',
+    // Dynamically apply CKEditor to textareas with class "ckeditor"
+    document.querySelectorAll('textarea.ckeditor').forEach(function (textarea) {
+        if (!textarea.id) return; // CKEditor needs an ID
+        CKEDITOR.replace(textarea.id, {
+            // Disable upload tabs from dialogs
+            removeDialogTabs: 'image:Upload;link:upload',
 
-        // Remove upload plugins completely
-        removePlugins: 'uploadimage,uploadfile,uploadwidget,uploadbrowser',
+            // Remove upload plugins completely
+            removePlugins: 'uploadimage,uploadfile,uploadwidget,uploadbrowser',
 
-        // Optional: Remove toolbar buttons if you want to hide image tools entirely
-        // toolbar: [
-        //     ['Bold', 'Italic', 'Underline', 'Link', 'Unlink', 'NumberedList', 'BulletedList'] // No image button
-        // ],
+            // Optional: Remove toolbar buttons if you want to hide image tools entirely
+            // toolbar: [
+            //     ['Bold', 'Italic', 'Underline', 'Link', 'Unlink', 'NumberedList', 'BulletedList'] // No image button
+            // ],
 
-        // Keep the rest of your config
-        language: 'en-en'
+            // Keep the rest of your config
+            language: 'en-en'
+        });
     });
 
-    // Keep allowed content if you want to allow inline styles
     CKEDITOR.config.allowedContent = true;
 </script>
 @endpush

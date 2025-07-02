@@ -12,7 +12,8 @@ Route::get('/contact', [App\Http\Controllers\Frontend\WebController::class, 'con
 Route::post('/add_question', [App\Http\Controllers\Frontend\WebController::class, 'addQuestion'])->name('web_add_question');
 Route::get('/article', [App\Http\Controllers\Frontend\WebController::class, 'article'])->name('web_article');
 Route::get('/article/{slug}', [App\Http\Controllers\Frontend\WebController::class, 'articleShow'])->name('web_article.show');
-Route::get('/faq', [App\Http\Controllers\Frontend\WebController::class, 'faq'])->name('web_faq');
+Route::get('/faq/{slug?}', [App\Http\Controllers\Frontend\WebController::class, 'faq'])->name('web_faq');
+// Route::get('/faq/{category:slug}', [App\Http\Controllers\Frontend\WebController::class, 'faqShow'])->name('web_faq.show');
 
 // Add this instead:
 Route::get('/login', function () {

@@ -13,6 +13,8 @@ use App\Models\Backends\Brand;
 use App\Models\Backends\Partner;
 use App\Models\Backends\Product;
 use App\Models\Backends\ProductCategory;
+use App\Models\Backends\Faq;
+use App\Models\Backends\FaqCategory;
 use App\Http\Helpers\SeoHelper;
 use Illuminate\Http\Request;
 use DB;
@@ -295,11 +297,20 @@ class WebController extends Controller
         return view('frontends.partner', compact(['partners', 'title']));
     }
 
-    public function faq()
+    public function faq(?string $slug = null)
     {
-        $clients    = ClientModel::where('is_active', 1)->get();
-        $seo        = About::where('is_active', 1)->first();
-        $title      = 'Klien PT. Arjaya Berkah Marine | PT. Arjaya Berkah Marine';
+        // 1.  Ambil kategori sidebar (urut nama)
+        $categories = FaqCategory::orderBy('name')->get();
+        // 2.  Tentukan kategori aktif
+        $category = $slug
+            ? FaqCategory::where('slug', $slug)->firstOrFail()
+            : $categories->first();                 // jika /faq tanpa slug
+
+        // 3.  FAQ untuk kategori tsb (urut position)
+        $faqs = $category->faqs;                    // relasi sudah di‑order
+
+        $seo        = $category->first();
+        $title      = 'Faq | Simplo';
         $body       = 'faq-page';
         // Use SEO metadata from first banner or fallback
         if ($seo) {
@@ -308,12 +319,12 @@ class WebController extends Controller
                 'meta_description'  => $seo->meta_description,
                 'meta_keywords'     => $seo->meta_keywords,
                 'meta_author'       => $seo->meta_author,
-                'meta_image_path'   => 'about', // ensure this is a relative path, e.g., 'storage/banners/xyz.jpg'
+                'meta_image_path'   => 'faq', // ensure this is a relative path, e.g., 'storage/banners/xyz.jpg'
                 'meta_image'        => $seo->meta_image, // ensure this is a relative path, e.g., 'storage/banners/xyz.jpg'
                 'meta_canonical'    => url()->current(),
                 'meta_robots'       => $seo->meta_robots,
             ]);
         }
-        return view('frontends.client', compact(['clients', 'title', 'body']));
+        return view('frontends.faq', compact(['categories', 'category', 'faqs', 'title', 'body']));
     }
 }

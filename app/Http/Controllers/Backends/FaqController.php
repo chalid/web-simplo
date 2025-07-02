@@ -200,7 +200,7 @@ class FaqController extends Controller
                     return strip_tags(Str::limit($row->question, 50)); // limit to 50 characters
                 })
                 ->editColumn('answer', function ($row) {
-                    return strip_tags(Str::limit($row->question, 50)); // limit to 50 characters
+                    return strip_tags(Str::limit($row->answer, 50)); // limit to 50 characters
                 })
                 ->addColumn('category_name', function ($row) {
                     return $row->category->name ?? '-';
