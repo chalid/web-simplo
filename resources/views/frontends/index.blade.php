@@ -50,126 +50,28 @@
             <div class="image-slider">
                 <div class="swiper-container">
                     <div class="swiper-wrapper">
-                        <div class="swiper-slide">
-                            <div class="content-swipe">
-                                <div class="image-area">
-                                    <figure data-aos="fade-in">
-                                        <img src="assets/img/photos/dummy_4.jpg" alt="">
-                                    </figure>
-                                </div>
-                                <div class="desc-area">
-                                    <div class="desc-wrapper" data-aos="fade-in" data-aos-delay="600">
-                                        <h4 class="font-text-bold">Infrastructure</h4>
-                                        <p class="show-desktop">
-                                            Langkah – Langkah kemanan dalam melindungi infrastruktur penting telah berkembang dan, dalam lingkup global, undang – undang terus diperkuat dari waktu ke waktu. Dengan keahlian dan pengalaman yang terbukti dalam penawaran produk dan jasa instalasi akses kontrol, cctv, sistem alarm yang sesuai untuk fasilitas penting dalam infrastruktur penting utama. Termasuk pembangkit listrik tenaga nuklir, fasilitas pengolahan air, dan pabrik petrokimia. Lumbatech memiliki solusi produk juga instalasi yang tepat untuk mengatasi infrastruktur tersebut termasuk biometric, integrasi alarm, kontrol darurat dan integrasi pengawasan video. Konsultasi kepada tim Lumbatech baik penempatan dan produk yang sesuai sebelum instalasi di lakukan.
-                                        </p>
-                                        <div class="button-area">
-                                            <a href="#" class="button outline font-text-bold">Learn More</a>
+                        @foreach($studyCases as $studyCase)
+                            <div class="swiper-slide">
+                                <div class="content-swipe">
+                                    <div class="image-area">
+                                        <figure data-aos="fade-in">
+                                            <img src="{{ url('storage/upload_files/images/study_case_banner/normal') . '/' . $studyCase->image }}" alt="{{ $studyCase->meta_tag }}">
+                                        </figure>
+                                    </div>
+                                    <div class="desc-area">
+                                        <div class="desc-wrapper" data-aos="fade-in" data-aos-delay="600">
+                                            <h4 class="font-text-bold">{{ $studyCase->title }}</h4>
+                                            <p class="show-desktop">
+                                                {!! $studyCase->description !!}
+                                            </p>
+                                            <div class="button-area">
+                                                <a href="{{ $studyCase->slug }}" class="button outline font-text-bold">Learn More</a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="content-swipe">
-                                <div class="image-area">
-                                    <figure data-aos="fade-in">
-                                        <img src="assets/img/photos/dummy_7.jpg" alt="">
-                                    </figure>
-                                </div>
-                                <div class="desc-area">
-                                    <div class="desc-wrapper" data-aos="fade-in" data-aos-delay="600">
-                                        <h4 class="font-text-bold">Data Center</h4>
-                                        <p class="show-desktop">
-                                            Data Center adalah asset bernilai dan utama suatu perusahaan karena sebagai sarana penyimpanan transaksi yang penting. Pemasangan sistem keamanan yaitu pembatasan akses, mencegah orang yang tidak berwenang masuk kedalam ruangan tersebut.Solusi Sistem Keamanan dapat berupa Access control, Kunci Digital, CCTV, dan alarm sebagai penunjang utama pencegahan terjadinya tindakan kriminalitas.Produk sistem keamanan yang diperlukan tentunya kualitas terbaik dengan sistem sebaiknya mudah dihubungkan dan di integrasikan dengan software manajemen existing yang memiliki SDK dan Open API. Juga memiliki memori yang cukup karena jumlah pengguna yang banyak. Konsultasi kepada tim Lumbatech baik penempatan dan produk yang sesuai sebelum instalasi di lakukan.
-                                        </p>
-                                        <div class="button-area">
-                                            <a href="#" class="button outline font-text-bold">Learn More</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="content-swipe">
-                                <div class="image-area">
-                                    <figure data-aos="fade-in">
-                                        <img src="assets/img/photos/dummy_6.jpeg" alt="">
-                                    </figure>
-                                </div>
-                                <div class="desc-area">
-                                    <div class="desc-wrapper" data-aos="fade-in" data-aos-delay="600">
-                                        <h4 class="font-text-bold">Hospital</h4>
-                                        <p class="show-desktop">
-                                            Pemasangan cctv, akses kontrol, sistem parkir dan smart lock pada fasilitas kesehatan tidaklah semudah yang di tawarkan, diperlukan pengamanan, penempatan dan produk terbaik.Tantangan Sistem keamanan pada fasilitas kesehatan adalah adanya fasilitas yang beroperasi 24/7 dengan tingginya akses terbuka pada area umum, yang memiliki kebutuhan keamanan yang cukup tinggi untuk menjaga keamanan pasien, informasi medis, ruangan operasi, dan penyimpanan obat. Berdasarkan pengalaman industri kesehatan. Lumbatech memiliki produk yang dapat mengakomodir keamanan tersebut, fleksible dan solusi kemanan yang tinggi untuk kebutuhan tantangan dari fasilitas kesehatan.Konsultasi kepada tim Lumbatech baik penempatan dan produk yang sesuai sebelum instalasi di lakukan.
-                                        </p>
-                                        <div class="button-area">
-                                            <a href="#" class="button outline font-text-bold">Learn More</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="content-swipe">
-                                <div class="image-area">
-                                    <figure data-aos="fade-in">
-                                        <img src="assets/img/photos/dummy_2.jpeg" alt="">
-                                    </figure>
-                                </div>
-                                <div class="desc-area">
-                                    <div class="desc-wrapper" data-aos="fade-in" data-aos-delay="600">
-                                        <h4 class="font-text-bold">Public Transportation</h4>
-                                        <p class="show-desktop">
-                                            Langkah – Langkah kemanan dalam melindungi infrastruktur penting telah berkembang dan, dalam lingkup global, undang – undang terus diperkuat dari waktu ke waktu. Dengan keahlian dan pengalaman yang terbukti dalam penawaran produk dan jasa instalasi akses kontrol, cctv, sistem alarm yang sesuai untuk fasilitas penting dalam infrastruktur penting utama. Termasuk pembangkit listrik tenaga nuklir, fasilitas pengolahan air, dan pabrik petrokimia. Lumbatech memiliki solusi produk juga instalasi yang tepat untuk mengatasi infrastruktur tersebut termasuk biometric, integrasi alarm, kontrol darurat dan integrasi pengawasan video. Konsultasi kepada tim Lumbatech baik penempatan dan produk yang sesuai sebelum instalasi di lakukan.
-                                        </p>
-                                        <div class="button-area">
-                                            <a href="#" class="button outline font-text-bold">Learn More</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="content-swipe">
-                                <div class="image-area">
-                                    <figure data-aos="fade-in">
-                                        <img src="assets/img/photos/dummy_1.jpeg" alt="">
-                                    </figure>
-                                </div>
-                                <div class="desc-area">
-                                    <div class="desc-wrapper" data-aos="fade-in" data-aos-delay="600">
-                                        <h4 class="font-text-bold">Commercial</h4>
-                                        <p class="show-desktop">
-                                            Operasional fasilitas kantor komersil memastikan keamanan adalah sesuatu yang diperlukan, mengoptimalkan proses kontrol dan kemungkinan keamanan tingkat tinggi untuk kenyamanan dengan memperhatikan efisiensi. Kami dapat memberikan solusi penempatan dan juga produk CCTV, Akses Kontrol, Alarm sesuai kebutuhan pelanggan yang dinamis dari sistem integrator, installers dan end user. Lumbatech dapat menyediakan dan menawarkan tingkat keamanan tersebut untuk memenuhi efektifitas dan efisiensi suatu lingkungan, tidak selalu dengan tingkat keamanan yang tinggi namun disesuaikan dengan kenyamanan dan efisiensi. Mulai dari perusahaan kecil sampai perusahaan internasional.Konsultasi kepada tim Lumbatech baik penempatan dan produk yang sesuai sebelum instalasi di lakukan.
-                                        </p>
-                                        <div class="button-area">
-                                            <a href="#" class="button outline font-text-bold">Learn More</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="content-swipe">
-                                <div class="image-area">
-                                    <figure data-aos="fade-in">
-                                        <img src="assets/img/photos/dummy_5.jpeg" alt="">
-                                    </figure>
-                                </div>
-                                <div class="desc-area">
-                                    <div class="desc-wrapper" data-aos="fade-in" data-aos-delay="600">
-                                        <h4 class="font-text-bold">School</h4>
-                                        <p class="show-desktop">
-                                            Pemasangan cctv, akses kontrol, sistem parkir dan smart lock pada fasilitas kesehatan tidaklah semudah yang di tawarkan, diperlukan pengamanan, penempatan dan produk terbaik.Tantangan Sistem keamanan pada fasilitas kesehatan adalah adanya fasilitas yang beroperasi 24/7 dengan tingginya akses terbuka pada area umum, yang memiliki kebutuhan keamanan yang cukup tinggi untuk menjaga keamanan pasien, informasi medis, ruangan operasi, dan penyimpanan obat. Berdasarkan pengalaman industri kesehatan. Lumbatech memiliki produk yang dapat mengakomodir keamanan tersebut, fleksible dan solusi kemanan yang tinggi untuk kebutuhan tantangan dari fasilitas kesehatan.Konsultasi kepada tim Lumbatech baik penempatan dan produk yang sesuai sebelum instalasi di lakukan.
-                                        </p>
-                                        <div class="button-area">
-                                            <a href="#" class="button outline font-text-bold">Learn More</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
                 </div>
             </div>
@@ -178,81 +80,26 @@
                     <div class="slider-area">
                         <div class="swiper-container">
                             <div class="swiper-wrapper">
+                                @foreach($studyCases as $studyCase)
                                 <div class="swiper-slide">
                                     <div class="icon-wrapper">
                                         <div class="content-swipe">
                                             <div class="icon-area">
                                                 <!-- ========== Kalo mau pake icon image ========== -->
                                                 <!-- <div class="icon-product" style="background-image: url('assets/img/icon/icon-infrastructure.png');"></div> -->
+                                                <!-- ========== <div class="icon-product fa fa-cogs"></div> ========== -->
                                                 <!-- ========== End icon image ========== -->
-                                                <div class="icon-product fa fa-cogs"></div>
+                                                <div class="icon-product"
+                                                    style="background-image: url('{{ asset('storage/upload_files/images/study_case_icon/thumb2/'.$studyCase->icon) }}');">
+                                                </div>
                                             </div>
                                             <div class="desc-area">
-                                                <h6>Infrastructure</h6>
+                                                <h6>{{ $studyCase->title }}</h6>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="swiper-slide">
-                                    <div class="icon-wrapper">
-                                        <div class="content-swipe">
-                                            <div class="icon-area">
-                                                <div class="icon-product fa fa-database"></div>
-                                            </div>
-                                            <div class="desc-area">
-                                                <h6>Data Centre</h6>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="swiper-slide">
-                                    <div class="icon-wrapper">
-                                        <div class="content-swipe">
-                                            <div class="icon-area">
-                                                <div class="icon-product fa fa-hospital"></div>
-                                            </div>
-                                            <div class="desc-area">
-                                                <h6>Hospital</h6>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="swiper-slide">
-                                    <div class="icon-wrapper">
-                                        <div class="content-swipe">
-                                            <div class="icon-area">
-                                                <div class="icon-product fa fa-subway"></div>
-                                            </div>
-                                            <div class="desc-area">
-                                                <h6>Public Transportation</h6>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="swiper-slide">
-                                    <div class="icon-wrapper">
-                                        <div class="content-swipe">
-                                            <div class="icon-area">
-                                                <div class="icon-product fa fa-building"></div>
-                                            </div>
-                                            <div class="desc-area">
-                                                <h6>Commercial</h6>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="swiper-slide">
-                                    <div class="icon-wrapper">
-                                        <div class="content-swipe">
-                                            <div class="icon-area">
-                                                <div class="icon-product fa fa-graduation-cap"></div>
-                                            </div>
-                                            <div class="desc-area">
-                                                <h6>School</h6>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                @endforeach
                             </div>
                         </div>
                     </div>

@@ -15,6 +15,7 @@ use App\Models\Backends\Product;
 use App\Models\Backends\ProductCategory;
 use App\Models\Backends\Faq;
 use App\Models\Backends\FaqCategory;
+use App\Models\Backends\StudyCase;
 use App\Http\Helpers\SeoHelper;
 use Illuminate\Http\Request;
 use DB;
@@ -28,16 +29,16 @@ class WebController extends Controller
      */
     public function index()
     {
-        $seo        = About::where('is_active', 1)->first();
-        $banners    = Banner::where('is_active', 1)->limit(5)->get();
+        $seo                = About::where('is_active', 1)->first();
+        $banners            = Banner::where('is_active', 1)->limit(5)->get();
         $productCategories  = ProductCategory::where('parent_id', 0)->where('is_active', 1)->get();
-        $brands     = Brand::where('is_active', 1)->get();
-        // $projects   = Project::where('is_active', 1)->latest()->limit(5)->get();
+        $brands             = Brand::where('is_active', 1)->get();
+        $studyCases         = StudyCase::where('is_active', 1)->latest()->limit(6)->get();
         // $clients    = ClientModel::where('is_active', 1)->latest()->limit(7)->get();
         // $partners   = Partner::where('is_active', 1)->latest()->limit(7)->get();
-        $articles   = Article::where('is_active', 1)->latest()->limit(8)->get();
-        $title      = 'Simplo';
-        $body       = 'index';
+        $articles           = Article::where('is_active', 1)->latest()->limit(8)->get();
+        $title              = 'Simplo';
+        $body               = 'index';
         // Use SEO metadata from first banner or fallback
         if ($seo) {
             SeoHelper::setMeta([
@@ -51,7 +52,7 @@ class WebController extends Controller
                 'meta_robots'       => $seo->meta_robots,
             ]);
         }
-        return view('frontends.index', compact(['title', 'body', 'banners', 'productCategories', 'articles', 'brands']));
+        return view('frontends.index', compact(['title', 'body', 'banners', 'productCategories', 'articles', 'brands', 'studyCases']));
     }
 
     public function story()
@@ -95,47 +96,6 @@ class WebController extends Controller
             ]);
         }
         return view('frontends.product', compact(['products', 'title', 'body']));
-    }
-
-    public function studyCase()
-    {
-        $projects   = Project::where('is_active', 1)->paginate(4);
-        $seo        = $projects->first();
-        $title      = 'Proyek PT. Arjaya Berkah Marine | PT. Arjaya Berkah Marine';
-        $body       = 'index';
-        // Use SEO metadata from first banner or fallback
-        if ($seo) {
-            SeoHelper::setMeta([
-                'meta_title'        => $seo->meta_title,
-                'meta_description'  => $seo->meta_description,
-                'meta_keywords'     => $seo->meta_keywords,
-                'meta_author'       => $seo->meta_author,
-                'meta_image_path'   => 'project', // ensure this is a relative path, e.g., 'storage/banners/xyz.jpg'
-                'meta_image'        => $seo->meta_image, // ensure this is a relative path, e.g., 'storage/banners/xyz.jpg'
-                'meta_canonical'    => url()->current(),
-                'meta_robots'       => $seo->meta_robots,
-            ]);
-        }
-        return view('frontends.project', compact(['projects', 'title']));
-    }
-
-    public function studyCaseShow($slug)
-    {
-        $project    = Project::where('slug', $slug)->firstOrFail();
-        $title      = 'Detail Proyek PT. Arjaya Berkah Marine | PT. Arjaya Berkah Marine';
-        if ($project) {
-            SeoHelper::setMeta([
-                'meta_title'        => $project->meta_title,
-                'meta_description'  => $project->meta_description,
-                'meta_keywords'     => $project->meta_keywords,
-                'meta_author'       => $project->meta_author,
-                'meta_image_path'   => 'project', // ensure this is a relative path, e.g., 'storage/banners/xyz.jpg'
-                'meta_image'        => $project->meta_image, // ensure this is a relative path, e.g., 'storage/banners/xyz.jpg'
-                'meta_canonical'    => url()->current(),
-                'meta_robots'       => $project->meta_robots,
-            ]);
-        }
-        return view('frontends.project-show', compact('project', 'title'));
     }
 
     public function contact()
@@ -326,5 +286,34 @@ class WebController extends Controller
             ]);
         }
         return view('frontends.faq', compact(['categories', 'category', 'faqs', 'title', 'body']));
+    }
+
+    public function studyCase(Request $request)
+    {
+        // Filter by category if available
+        $query  = StudyCase::where('is_active', 1);
+        $title  = 'Study Case';
+        $body   = 'news-page';
+
+        if ($request->has('slug')) {
+            $query->where('slug', $request->slug);
+        }
+
+        $seo = $query->first();
+        if ($seo) {
+            SeoHelper::setMeta([
+                'meta_title'        => $seo->meta_title,
+                'meta_tag'          => $seo->meta_tag,
+                'meta_description'  => $seo->meta_description,
+                'meta_keywords'     => $seo->meta_keywords,
+                'meta_author'       => $seo->meta_author,
+                'meta_image_path'   => 'article',
+                'meta_image'        => $seo->meta_image,
+                'meta_canonical'    => url()->current(),
+                'meta_robots'       => $seo->meta_robots,
+            ]);
+        }
+
+        return view('frontends.study_case', compact('studyCase', 'title', 'body'));
     }
 }

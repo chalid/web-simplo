@@ -13,6 +13,7 @@ Route::post('/add_question', [App\Http\Controllers\Frontend\WebController::class
 Route::get('/article', [App\Http\Controllers\Frontend\WebController::class, 'article'])->name('web_article');
 Route::get('/article/{slug}', [App\Http\Controllers\Frontend\WebController::class, 'articleShow'])->name('web_article.show');
 Route::get('/faq/{slug?}', [App\Http\Controllers\Frontend\WebController::class, 'faq'])->name('web_faq');
+Route::get('/study-case/{slug?}', [App\Http\Controllers\Frontend\WebController::class, 'studyCase'])->name('web_study_case');
 // Route::get('/faq/{category:slug}', [App\Http\Controllers\Frontend\WebController::class, 'faqShow'])->name('web_faq.show');
 
 // Add this instead:
@@ -339,7 +340,6 @@ Route::middleware('auth')->group(function () {
         Route::middleware('role_or_permission:Can edit study case')->group(function () {
             Route::get('/study-case/{studyCase}/edit', [App\Http\Controllers\Backends\StudyCaseController::class,'edit'])->name('study-case.edit');
             Route::patch('/study-case/{studyCase}/update', [App\Http\Controllers\Backends\StudyCaseController::class,'update'])->name('study-case.update');
-            Route::patch('/study-case/{studyCase}/active', [App\Http\Controllers\Backends\StudyCaseController::class,'active'])->name('study-case.active');
         });
         Route::middleware('role_or_permission:Can show study case')->group(function () {
             Route::get('/study-case/{studyCase}', [App\Http\Controllers\Backends\StudyCaseController::class,'show'])->name('study-case.show');

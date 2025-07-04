@@ -4,7 +4,7 @@
 <!-- <meta name="author" content="Codescandy"> -->
 
 <!-- Favicon icon-->
-<link rel="shortcut icon" type="image/x-icon" href="{{ asset('assets/backend/img/favicon/favicon.ico') }}">
+<link rel="shortcut icon" type="image/x-icon" href="{{ asset('assets/favicon.ico') }}">
 
 
 <!-- Libs CSS -->
