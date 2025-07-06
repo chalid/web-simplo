@@ -10,24 +10,37 @@
     </div>
 </div>
 <div class="row">
-        <div class="col-8">
+        <div class="col-12">
             <div class="card mb-4">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    {{ $product->title }}
-                    <a href="{{ route('product') }}" class="btn btn-primary btn-sm">
+                    {{ $faq->title }}
+                    <a href="{{ route('faq') }}" class="btn btn-primary btn-sm">
                         <i data-feather="arrow-left" class="nav-icon me-2 icon-xxs"></i> back
                     </a>
                 </div>
                 <div class="card-body">
-                    {!! $product->description !!}
+                    <div class="row mb-3">
+                        <label for="position" class="col-sm-4 col-form-label">Position</label>
+                        <div class="col-sm-8">
+                            <p>{{ $faq->position }}</p>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="question" class="col-sm-4 col-form-label">Question</label>
+                        <div class="col-sm-8">
+                            <p>{!! $faq->question !!}</p>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="answer" class="col-sm-4 col-form-label">Answer</label>
+                        <div class="col-sm-8">
+                            <p>{!! $faq->answer !!}</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 </div>
 @endsection
 @push('scripts')
-@include('layouts.backend.partials.script_form')
-<script>
-</script>
-@include('layouts.backend.partials.script_form_index')
 @endpush

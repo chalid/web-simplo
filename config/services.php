@@ -44,4 +44,12 @@ return [
         'property_id' => env('GA_MEASUREMENT_ID'),
     ],
 
+    'social' => [
+        'linkedin'  => env('LINKEDIN_URL',  '#'),
+        'facebook'  => env('FACEBOOK_URL',  '#'),
+        'instagram' => env('INSTAGRAM_URL', '#'),
+        'youtube'   => env('YOUTUBE_URL',   '#'),
+        'tiktok'    => env('TIKTOK_URL',    '#'),
+    ],
+
 ];

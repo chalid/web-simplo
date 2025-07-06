@@ -167,7 +167,7 @@
                                         <div class="info-area">
                                             <p class="text-ellipsis overflow-hidden line-clamp-2">{{ $productCategory->title }}</p>
                                         </div>
-                                        <a href="#" class="click-area"></a>
+                                        <a href="{{ route('web_product', ['cat'=>$productCategory->slug]) }}" class="click-area"></a>
                                     </div>
                                 </div>
                             </div>

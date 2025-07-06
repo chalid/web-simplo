@@ -73,7 +73,7 @@
 				<nav class="header-menu">
 					<div class="search-web">
 						<div class="search-input" data-aos="zoom-in">
-							<button type="button" class="button button-search">
+							<button id="searchToggle" type="button" class="button button-search">
 								<span class="fa fa-search"></span>
 							</button>
 						</div>
@@ -94,10 +94,9 @@
 						</div>
 					</div>
 				</nav>
-				<div class="search-field">
-					<form id="search-form">
-						<input type="text" class="search-text" name="" placeholder="Search here....">
-						<input type="hidden" name="">
+				<div id="searchField" class="search-field">
+					<form id="search-form" action="{{ route('web_search') }}" method="get">
+						<input type="text" class="search-text" name="q" placeholder="Search here...." value="{{ request('q') }}">
 					</form>
 				</div>
 			</div>
@@ -131,7 +130,7 @@
 			@yield('content')
             <div class="floating-button inquiry-button">
 				<div class="button-wrapper">
-					<a href="#" class="button-inside">
+					<a href="https://api.whatsapp.com/send?phone=62811881901&text=" class="button-inside" target="_blank">
 						<span class="arrow"></span>
 						<strong>?</strong>
 						<small>Inquiry</small>
@@ -164,27 +163,27 @@
 								<div class="footer-sosmed">
 									<ul class="content-list social flat">
 										<li class="linkedin" data-aos="zoom-in">
-											<a href="#" target="_blank">
+											<a href="{{ config('services.social.linkedin') }}" target="_blank">
 												<i class="fab fa-linkedin"></i>
 											</a>
 										</li>
 										<li class="facebook" data-aos="zoom-in">
-											<a href="#" target="_blank">
+											<a href="{{ config('services.social.facebook') }}" target="_blank">
 												<i class="fa fa-facebook"></i>
 											</a>
 										</li>
 										<li class="instagram" data-aos="zoom-in">
-											<a href="#" target="_blank">
+											<a href="{{ config('services.social.instagram') }}" target="_blank">
 												<i class="fab fa-instagram"></i>
 											</a>
 										</li>
 										<li class="youtube" data-aos="zoom-in">
-											<a href="#" target="_blank">
+											<a href="{{ config('services.social.youtube') }}" target="_blank">
 												<i class="fab fa-youtube"></i>
 											</a>
 										</li>
 										<li class="tiktok" data-aos="zoom-in">
-											<a href="#" target="_blank">
+											<a href="{{ config('services.social.tiktok') }}" target="_blank">
 												<i class="icon-buttom fa-tiktok"></i>
 											</a>
 										</li>
@@ -204,5 +203,26 @@
         <script src="{{ asset('assets/frontend/js/vendor.js') }}"></script>
 		<script src="{{ asset('assets/frontend/js/bootstrap.js') }}"></script>
 		<script src="{{ asset('assets/frontend/js/main.min.js') }}"></script>
+		@push('scripts')
+		<script>
+			document.addEventListener('DOMContentLoaded', () => {
+
+				const input = document.querySelector('#searchField input[type=text]');
+
+				if (!input) return;
+
+				/* redirect after user stops typing */
+				const handleSearch = debounce(() => {
+					const q = input.value.trim();
+					if (q.length > 1) {                             // e.g. min 2 chars
+						/* keep ?cat= or other params if you want: use URLSearchParams */
+						window.location.href = '{{ route('web_search') }}' + '?q=' + encodeURIComponent(q);
+					}
+				}, 400);                                           // 400 ms idle time
+
+				input.addEventListener('input', handleSearch);
+			});
+		</script>
+		@endpush
 	</body>
 </html>

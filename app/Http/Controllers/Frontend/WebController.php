@@ -76,12 +76,30 @@ class WebController extends Controller
         return view('frontends.story', compact(['title', 'about', 'body']));
     }
 
-    public function product()
+    public function product(Request $request)
     {
-        $products   = Product::where('is_active', 1)->paginate(4);
+        $catSlug    = $request->query('cat');
+        $activeCat  = null;
+        $query      = Product::with('category')->latest();
+
+        if ($catSlug) {
+            $activeCat = ProductCategory::whereSlug($catSlug)->firstOrFail();
+            $ids = collect([$activeCat->id])
+                   ->merge($activeCat->children()->pluck('id'))
+                   ->all();
+            $query->whereIn('product_category_id', $ids);
+        }
+
+        $products = $query->paginate(6)->withQueryString();
+
+        $menuRoots = ProductCategory::with('children')
+                     ->where('parent_id', 0)
+                     ->orderBy('title')
+                     ->get();
+
         $seo        = $products->first();
-        $title      = 'Produk PT. Arjaya Berkah Marine | PT. Arjaya Berkah Marine';
-        $body       = 'product';
+        $title      = 'Produk Simplo | Simplo';
+        $body       = 'product-page';
         // Use SEO metadata from first banner or fallback
         if ($seo) {
             SeoHelper::setMeta([
@@ -95,13 +113,34 @@ class WebController extends Controller
                 'meta_robots'       => $seo->meta_robots,
             ]);
         }
-        return view('frontends.product', compact(['products', 'title', 'body']));
+        return view('frontends.product', compact(['products', 'title', 'body', 'menuRoots', 'activeCat']));
+    }
+
+    public function productShow(Product $product)
+    {
+        $seo        = $product;
+        $title      = $product->title . ' | Simplo';
+        $body       = 'product-detail-page';
+        // Use SEO metadata from first banner or fallback
+        if ($seo) {
+            SeoHelper::setMeta([
+                'meta_title'        => $seo->meta_title,
+                'meta_description'  => $seo->meta_description,
+                'meta_keywords'     => $seo->meta_keywords,
+                'meta_author'       => $seo->meta_author,
+                'meta_image_path'   => 'product', // ensure this is a relative path, e.g., 'storage/banners/xyz.jpg'
+                'meta_image'        => $seo->meta_image, // ensure this is a relative path, e.g., 'storage/banners/xyz.jpg'
+                'meta_canonical'    => url()->current(),
+                'meta_robots'       => $seo->meta_robots,
+            ]);
+        }
+        return view('frontends.product-show', compact(['product', 'title', 'body']));
     }
 
     public function contact()
     {
         $seo    = About::where('is_active', 1)->first();
-        $title  = 'Hubungi Kami PT. Arjaya Berkah Marine | PT. Arjaya Berkah Marine';
+        $title  = 'Hubungi Kami Simplo | Simplo';
         $body   = 'contact-page';
         // Use SEO metadata from first banner or fallback
         if ($seo) {

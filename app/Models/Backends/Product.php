@@ -48,4 +48,18 @@ class Product extends Model
     {
         return $this->belongsTo(Brand::class, 'brand_id');
     }
+
+    public function getYoutubeEmbedUrlAttribute(): ?string
+    {
+        return $this->youtube_id
+            ? "https://www.youtube.com/embed/{$this->youtube_id}"
+            : null;
+    }
+
+    public function getYoutubeThumbnailAttribute(): ?string
+    {
+        return $this->youtube_id
+            ? "https://img.youtube.com/vi/{$this->youtube_id}/hqdefault.jpg"
+            : null;                       // high‑quality (480 × 360) frame
+    }
 }

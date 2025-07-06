@@ -136,13 +136,29 @@
         <div class="col-8">
             <div class="card mb-4">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    {{ $product->title }}
+                    {{ __('Deskripsi') }}
                     <a href="{{ route('product') }}" class="btn btn-primary btn-sm">
                         <i data-feather="arrow-left" class="nav-icon me-2 icon-xxs"></i> back
                     </a>
                 </div>
                 <div class="card-body">
                     {!! $product->description !!}
+                </div>
+            </div>
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    {{ __('Fitur') }}
+                </div>
+                <div class="card-body">
+                    {!! $product->feature !!}
+                </div>
+            </div>
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    {{ __('Spesifikasi') }}
+                </div>
+                <div class="card-body">
+                    {!! $product->specification !!}
                 </div>
             </div>
         </div>

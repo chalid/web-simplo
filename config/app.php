@@ -141,6 +141,7 @@ return [
         // 'Yajra_datatable' => App\Http\Helpers\Yajra_datatable::class,
         'Image' => Intervention\Image\Facades\Image::class,
         'ImageHelper' => App\Http\Helpers\ImageHelper::class,
+        'FileHelper' => App\Http\Helpers\FileHelper::class,
         'UserHelper' => App\Http\Helpers\UserHelper::class,
         // 'CpanelHelper' => App\Http\Helpers\CpanelHelper::class,
         'GeneralHelper' => App\Http\Helpers\GeneralHelper::class,

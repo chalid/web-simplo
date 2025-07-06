@@ -18,9 +18,36 @@
                 <form class="row g-3 needs-validation" method="POST" action="{{ route('product.store') }}" novalidate enctype="multipart/form-data">
                     @csrf
                     <x-form.input name="title" label="Title name" :value="old('title')" :required="true" />
-                    <x-form.textarea name="description" label="Description" :value="old('description')" />
-                    <x-form.select name="product_category_id" label="Kategori Produk" :options="$productCategories" :selected="old('product_category_id')" :required="true"/>
+                    <x-form.textarea name="description" label="Deskripsi" :value="old('description')" />
+                    <x-form.textarea name="feature" label="Fitur" :value="old('feature')" />
+                    <x-form.textarea name="specification" label="Spesifikasi" :value="old('specification')" />
+                    <div class="row mb-3">
+                        <label for="product_category_id" class="col-sm-4 col-form-label">{{ __('Product Category') }}</label>
+                        <div class="col-sm-8">
+                            <select id="product_category_id" class="form-control select2" name="product_category_id">
+                                <option value="">— Choose category —</option>
+        
+                                @foreach ($categories as $parent)
+                                    {{-- show the parent ONLY as a header --}}
+                                    @if($parent->children->count())
+                                        <optgroup label="{{ $parent->title }}">
+                                            @foreach ($parent->children as $child)
+                                                <option value="{{ $child->id }}">{{ $child->title }}</option>
+                                            @endforeach
+                                        </optgroup>
+                                    @endif
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <x-form.select name="brand_id" label="Brand" :options="$brands" :selected="old('brand_id')" :required="true"/>
                     <x-form.select name="is_active" label="Is Active" :options="[1 => 'Active', 0 => 'In Active']" :selected="old('is_active')" :required="true"/>
+                    <div class="row mb-3">
+                        <label for="brochure" class="col-sm-4 col-form-label">Brosur</label>
+                        <div class="col-sm-8">
+                            <input type="file" name="brochure" id="brochure" class="form-control"/>
+                        </div>
+                    </div>
                     <x-form.file name="image" label="Product Picture" />
                     <div class="col-12">
                         <a href="{{ route('product') }}" class="btn btn-danger">
@@ -37,45 +64,55 @@
 @include('layouts.backend.partials.script_form')
 <script src="{{ asset('vendor/ckeditor/ckeditor.js') }}"></script>
 <script>
-    // Example starter JavaScript for disabling form submissions if there are invalid fields
-    (function () {
-    'use strict'
+    document.addEventListener('DOMContentLoaded', () => {
+        'use strict';
 
-    // Fetch all the forms we want to apply custom Bootstrap validation styles to
-    var forms = document.querySelectorAll('.needs-validation')
+        /* ------------------------------------------------------------------
+        BOOTSTRAP 5 custom validation
+        ------------------------------------------------------------------ */
+        document.querySelectorAll('.needs-validation').forEach(form => {
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            }, false);
+        });
 
-    // Loop over them and prevent submission
-    Array.prototype.slice.call(forms)
-        .forEach(function (form) {
-        form.addEventListener('submit', function (event) {
-            if (!form.checkValidity()) {
-            event.preventDefault()
-            event.stopPropagation()
-            }
+        /* ------------------------------------------------------------------
+        CKEditor — shared config + loop
+        ------------------------------------------------------------------ */
+        const ckConfig = {
+            // Remove every upload route
+            removeDialogTabs : 'image:Upload;link:upload',
+            removePlugins    : 'uploadimage,uploadfile,uploadwidget,uploadbrowser',
+            language         : 'en-en',
+            // Keep inline styles if you need them
+            allowedContent   : true
+        };
 
-            form.classList.add('was-validated')
-        }, false)
-        })
-    })();
+        ['description', 'feature', 'specification']   // ← make sure the IDs match!
+            .forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    CKEDITOR.replace(el, ckConfig);
+                }
+            });
 
-    var description = document.getElementById("description");
-    CKEDITOR.replace(description, {
-        // Disable upload tabs from dialogs
-        removeDialogTabs: 'image:Upload;link:upload',
-
-        // Remove upload plugins completely
-        removePlugins: 'uploadimage,uploadfile,uploadwidget,uploadbrowser',
-
-        // Optional: Remove toolbar buttons if you want to hide image tools entirely
-        // toolbar: [
-        //     ['Bold', 'Italic', 'Underline', 'Link', 'Unlink', 'NumberedList', 'BulletedList'] // No image button
-        // ],
-
-        // Keep the rest of your config
-        language: 'en-en'
+        /* ------------------------------------------------------------------
+        Select2
+        ------------------------------------------------------------------ */
+        if (window.jQuery && $.fn.select2) {
+            $('.select2').select2({
+                placeholder : 'Choose category',
+                allowClear  : true,
+                theme: "bootstrap-5",
+                width       : '100%'        // full‑width inside Bootstrap form‑control
+            });
+        } else {
+            console.warn('Select2 or jQuery not found ‑‑ the Select2 widget was not initialised.');
+        }
     });
-
-    // Keep allowed content if you want to allow inline styles
-    CKEDITOR.config.allowedContent = true;
 </script>
 @endpush

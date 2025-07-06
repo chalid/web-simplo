@@ -19,8 +19,60 @@
                     @csrf
                     @method('PATCH')
                     <x-form.input name="title" label="Title name" :value="$product->title" :required="true" />
-                    <x-form.textarea name="description" label="Description" :value="old('description', $product->description)"  :rich="true" />
-                    <x-form.select name="product_category_id" label="Kategori Produk" :options="$productCategories" :selected="$product->product_category_id ?? ''" :required="true"/>
+                    <x-form.textarea name="description" label="Description" :value="old('description', $product->description)" :rich="true"/>
+                    <x-form.textarea name="feature" label="Fitur" :value="old('feature', $product->description)" :rich="true"/>
+                    <x-form.textarea name="specification" label="Spesifikasi" :value="old('specification', $product->description)" :rich="true"/>
+                    <div class="row mb-3">
+                        <label for="product_category_id" class="col-sm-4 col-form-label">Category</label>
+                        <div class="col-sm-8">
+                            <select id="product_category_id"
+                                    name="product_category_id"
+                                    class="form-control select2">
+                                <option value="">— Choose category —</option>
+                                @foreach($categories as $parent)
+                                    @if($parent->children->isNotEmpty())
+                                        {{-- Parent WITH kids → header --}}
+                                        <optgroup label="{{ $parent->title }}">
+                                            @foreach($parent->children as $child)
+                                                <option value="{{ $child->id }}"
+                                                        @selected(old('product_category_id', $product->product_category_id) == $child->id)>
+                                                    {{ $child->title }}
+                                                </option>
+                                            @endforeach
+                                        </optgroup>
+                                    @else
+                                        {{-- Parent WITHOUT kids → selectable --}}
+                                        <option value="{{ $parent->id }}"
+                                                @selected(old('product_category_id', $product->product_category_id) == $parent->id)>
+                                            {{ $parent->title }}
+                                        </option>
+                                    @endif
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <x-form.select name="brand_id" label="Brand" :options="$brands" :selected="$product->brand_id ?? ''" :required="true"/>
+                    <div class="row mb-3">
+                        <label for="brochure" class="col-sm-4 col-form-label">Brosur</label>
+                        <div class="col-sm-8">
+                            <input type="file" name="brochure" id="brochure" class="form-control"/>
+                        </div>
+                    </div>
+                    @if($product->brochure)
+                    <div class="row mb-3">
+                        <label for="brochure" class="col-sm-4 col-form-label"></label>
+                        <div class="col-sm-8">
+                            <a href="{{ url('storage/upload_files/documents/product/ori/' . $product->brochure) }}"><i class="bi bi-file-earmark-pdf-fill text-danger"></i></a>
+                        </div>
+                    </div>
+                    @endif
+                    <x-form.file name="image" label="Product Picture" />
+                    <div class="row mb-3">
+                        <label for="images" class="col-sm-4 col-form-label"></label>
+                        <div class="col-sm-8">
+                            <img src="{{ url('storage/upload_files/images/product/small-thumb/' . $product->image) }}" alt="">
+                        </div>
+                    </div>
                     <x-form.select name="is_active" label="Is Active" :options="[1 => 'Active', 0 => 'In Active']" :selected="$product->is_active ?? ''" :required="true"/>
                     <div class="col-12">
                         <a href="{{ route('product') }}" class="btn btn-danger">

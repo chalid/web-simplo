@@ -35,11 +35,11 @@ class ProductCategory extends Model
 
     public function children()
     {
-        return $this->hasMany(ProductCategory::class, 'parent_id', 'id');
+        return $this->hasMany(self::class, 'parent_id');
     }
 
     public function parent()
     {
-        return $this->belongsTo(ProductCategory::class, 'parent_id', 'id');
+        return $this->belongsTo(self::class, 'parent_id');
     }
 }

@@ -1,6 +1,7 @@
 @extends('layouts.backend.app')
 @section('content')
 @include('layouts.backend.partials.css_form')
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tiny-slider@2.9.4/dist/tiny-slider.css">
 <div class="row">
     <div class="col-lg-12 col-md-12 col-12">
         <!-- Page header -->
@@ -22,9 +23,13 @@
                                 <th>No</th>
                                 <th>Title</th>
                                 <th>Description</th>
-                                <th>Is Active</th>
-                                <th>Categori</th>
+                                <th>Fitur</th>
+                                <th>Spesifikasi</th>
+                                <th>Kategori</th>
+                                <th>Brand</th>
+                                <th>Brosur</th>
                                 <th>Image</th>
+                                <th>Is Active</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -47,9 +52,13 @@
                 {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
                 {data: 'title', name: 'title', orderable:true, searchable: true},
                 {data: 'description', name: 'description', orderable:true, searchable: true},
-                {data: 'is_active', name: 'is_active', orderable:true, searchable: false},
+                {data: 'feature', name: 'feature', orderable:true, searchable: true},
+                {data: 'specification', name: 'specification', orderable:true, searchable: true},
                 {data: 'category_name'},
+                {data: 'brand_name'},
+                {data: 'brochure', name: 'brochure', orderable:false, searchable: false},
                 {data: 'image', name: 'image', orderable:false, searchable: false},
+                {data: 'is_active', name: 'is_active', orderable:true, searchable: false},
                 {data: 'action'},
             ],
             "drawCallback": function(settings) {

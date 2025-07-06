@@ -6,6 +6,7 @@ Use App\Http\Controllers\Controller;
 use App\Models\Backends\Product;
 use App\Models\Backends\ProductCategory;
 use App\Models\Backends\ProductImage;
+use App\Models\Backends\Brand;
 use App\Models\Backends\Sequence;
 use Illuminate\Http\Request;
 use DataTables;
@@ -13,6 +14,7 @@ use DB;
 use Auth;
 use Validator;
 use ImageHelper;
+use FileHelper;
 use Str;
 
 class ProductController extends Controller
@@ -44,9 +46,13 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $title              = 'Tambah Product';
-        $productCategories  = ProductCategory::pluck('title', 'id')->put(0, 'Pilih Kategori Produk')->sortKeys();
-        return view('backends.product.create', compact('title', 'productCategories'));
+        $title      = 'Tambah Product';
+        $brands     = Brand::pluck('name', 'id')->put(0, 'Pilih Brand Produk')->sortKeys();
+        $categories = ProductCategory::with('children')
+                    ->where('parent_id', 0)
+                    ->orderBy('title')
+                    ->get();
+        return view('backends.product.create', compact('title', 'categories', 'brands'));
     }
 
     /**
@@ -58,16 +64,24 @@ class ProductController extends Controller
             'title'                 => 'required',
             'description'           => 'required',
             'product_category_id'   => 'required',
+            'brand_id'              => 'required',
+            'feature'               => 'required',
+            'specification'         => 'required',
             'is_active'             => 'required|boolean',
             'image'                 => 'image|mimes:jpeg,png,jpg,gif|max:6144',
+            'brochure'              => 'file|mimes:pdf|max:6144',
         ], [
-            'title.required'                => 'title wajib diisi',
-            'description.required'          => 'description wajib diisi',
-            'product_category_id.required'  => 'kategori produk wajib diisi',
+            'title.required'                => 'Title wajib diisi',
+            'description.required'          => 'Description wajib diisi',
+            'product_category_id.required'  => 'Kategori produk wajib diisi',
+            'brand_id.required'             => 'Brand produk wajib diisi',
+            'feature.required'              => 'Fitur produk wajib diisi',
+            'specification.required'        => 'Spesifikasi produk wajib diisi',
             'is_active.required'            => 'is active wajib diisi',
             'image.required'                => 'Hanya gambar',
             'image.mimes'                   => 'Hanya file bertipe jpeg,png,jpg,gif',
             'image.max'                     => 'Tidak bole lebih dari 6144',
+            'brochure.mimes'                => 'Hanya file bertipe pdf',
         ]);
 
         if ($validator->fails()) {
@@ -82,25 +96,17 @@ class ProductController extends Controller
         try {
 
             $category = ProductCategory::findOrFail($request->product_category_id);
-            $skey = $category->code;
-            $format = '%05d';
-
-            // Fetch or create new sequence
-            $sequence = Sequence::firstOrNew(['skey' => $skey]);
-
-            // Increment and save
-            $sequence->sequence = ($sequence->sequence ?? 0) + 1;
-            $sequence->save();
-
-            // Format the sequence
-            $seq = sprintf($format, $sequence->sequence);
 
             $product                        = new Product();
             $product->title                 = $request->title;
             $product->description           = $request->description;
+            $product->feature               = $request->feature;
+            $product->specification         = $request->specification;
             $product->is_active             = $request->is_active;
             $product->product_category_id   = $request->product_category_id;
-            $product->code_no               = $skey . $seq;
+            $product->brand_id              = $request->brand_id;
+            $videoId                        = youtubeId($request->youtube_url);   // full URL user pasted
+            $product->youtube_id            = $videoId;                           // may be null
             $product->meta_title            = $request->title;
             $product->meta_description      = Str::limit(strip_tags($request->description), 150);
             $product->meta_keywords         = implode(',', explode(' ', Str::lower($request->title)));
@@ -135,6 +141,13 @@ class ProductController extends Controller
                 $productImage->is_default   = true;
                 $productImage->save();
             }
+
+            if ($request->hasFile('brochure')) {
+                $brochure           = $request->file('brochure');
+                $doc                = FileHelper::uploadPdf($brochure,'product');
+                $product->brochure  = $doc;
+                $product->update();
+            }
             return redirect()->route('product')->with('success', 'Berhasil terkirim');
         }
     }
@@ -154,9 +167,13 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        $title              = 'Edit Product';
-        $productCategories  = ProductCategory::pluck('title', 'id')->put(0, 'Pilih Kategori Produk')->sortKeys();
-        return view('backends.product.edit', compact('title', 'product', 'productCategories'));
+        $title      = 'Edit Product';
+        $brands     = Brand::pluck('name', 'id')->put(0, 'Pilih Brand Produk')->sortKeys();
+        $categories = ProductCategory::with('children')
+                    ->where('parent_id', 0)
+                    ->orderBy('title')
+                    ->get();
+        return view('backends.product.edit', compact('title', 'product', 'categories', 'brands'));
     }
 
     /**
@@ -168,12 +185,22 @@ class ProductController extends Controller
             'title'                 => 'required',
             'description'           => 'required',
             'product_category_id'   => 'required',
+            'brand_id'              => 'required',
+            'feature'               => 'required',
+            'specification'         => 'required',
             'is_active'             => 'required|boolean',
+            'image'                 => 'image|mimes:jpeg,png,jpg,gif|max:6144',
         ], [
-            'title.required'                => 'title wajib diisi',
-            'description.required'          => 'description wajib diisi',
-            'product_category_id.required'  => 'kategori produk wajib diisi',
+            'title.required'                => 'Title wajib diisi',
+            'description.required'          => 'Description wajib diisi',
+            'product_category_id.required'  => 'Kategori produk wajib diisi',
+            'brand_id.required'             => 'Brand produk wajib diisi',
+            'feature.required'              => 'Fitur produk wajib diisi',
+            'specification.required'        => 'Spesifikasi produk wajib diisi',
             'is_active.required'            => 'is active wajib diisi',
+            'image.required'                => 'Hanya gambar',
+            'image.mimes'                   => 'Hanya file bertipe jpeg,png,jpg,gif',
+            'image.max'                     => 'Tidak bole lebih dari 6144',
         ]);
 
         if ($validator->fails()) {
@@ -189,8 +216,13 @@ class ProductController extends Controller
 
             $product->title                 = $request->title;
             $product->description           = $request->description;
-            $product->product_category_id   = $request->product_category_id;
+            $product->feature               = $request->feature;
+            $product->specification         = $request->specification;
             $product->is_active             = $request->is_active;
+            $product->product_category_id   = $request->product_category_id;
+            $product->brand_id              = $request->brand_id;
+            $videoId                        = youtubeId($request->youtube_url);   // full URL user pasted
+            $product->youtube_id            = $videoId;                           // may be null
             $product->meta_title            = $request->title;
             $product->meta_description      = Str::limit(strip_tags($request->description), 150);
             $product->meta_keywords         = implode(',', explode(' ', Str::lower($request->title)));
@@ -210,6 +242,16 @@ class ProductController extends Controller
         }
 
         if ($success_trans == true) {
+            if ($request->hasFile('brochure')) {
+                if($product->brochure){
+                    FileHelper::deletePdf($product->brochure, 'product');
+                }
+
+                $brochure           = $request->file('brochure');
+                $doc                = FileHelper::uploadPdf($brochure,'product');
+                $product->brochure  = $doc;
+                $product->update();
+            }
             return redirect()->route('product')->with('success', 'Berhasil terkirim');
         }
     }
@@ -225,6 +267,9 @@ class ProductController extends Controller
         try {
             foreach($product->images as $image){
                 $deleteImage = ImageHelper::deleteFileExists($image->uri,'product',['small-thumb', 'small','normal', 'meta', 'large', 'ori']);
+            }
+            if($product->brochure){
+                FileHelper::deletePdf($product->brochure, 'product');
             }
             $product->images->each->delete();
 
@@ -247,7 +292,7 @@ class ProductController extends Controller
     public function ajaxDatatable(Request $request)
     {
         if ($request->ajax()) {
-            $products           = Product::with('category'); // eager load roles
+            $products           = Product::with('category')->with('brand'); // eager load roles
             $routeEdit          = 'product.edit';
             $routeDestroy       = 'product.delete';
             $routePermission    = 'product.permission';
@@ -264,6 +309,33 @@ class ProductController extends Controller
                 })
                 ->editColumn('description', function ($row) {
                     return strip_tags(Str::limit($row->description, 50)); // limit to 50 characters
+                })
+                ->editColumn('feature', function ($row) {
+                    return strip_tags(Str::limit($row->feature, 50)); // limit to 50 characters
+                })
+                ->editColumn('specification', function ($row) {
+                    return strip_tags(Str::limit($row->specification, 50)); // limit to 50 characters
+                })
+                ->editColumn('brochure', function ($item) {
+
+                    // 1.  Bail out if no file recorded
+                    if (blank($item->brochure)) {
+                        return '-';                           // or return '&nbsp;' if you prefer
+                    }
+
+                    // 2.  Build a public URL the right way
+                    //     (assumes `php artisan storage:link` was run)
+                    $originalPath = asset(
+                        'storage/upload_files/documents/product/ori/' . $item->brochure
+                    );
+
+                    // 3.  Use the correct Bootstrap‑Icons class (needs both `bi` + icon name)
+                    //     and mark the link as "noopener" for security
+                    return <<<HTML
+                        <a href="{$originalPath}" target="_blank" rel="noopener">
+                            <i class="bi bi-file-earmark-pdf-fill text-danger"></i>
+                        </a>
+                    HTML;
                 })
                 ->editColumn('image', function ($item) {
                     $path   = 'storage/upload_files/images/';
@@ -291,6 +363,18 @@ class ProductController extends Controller
                 ->orderColumn('category_name', function ($query, $order) {
                     $query->join('product_categories', 'products.product_category_id', '=', 'product_categories.id')
                         ->orderBy('product_categories.name', $order);
+                })
+                ->addColumn('brand_name', function ($row) {
+                    return $row->brand->name ?? '-';
+                })
+                ->filterColumn('brand_name', function ($query, $keyword) {
+                    $query->whereHas('brand', function ($q) use ($keyword) {
+                        $q->where('name', 'like', "%{$keyword}%");
+                    });
+                })
+                ->orderColumn('brand_name', function ($query, $order) {
+                    $query->join('brands', 'products.brand_id', '=', 'brands.id')
+                        ->orderBy('brands.name', $order);
                 })
                 ->addColumn('action', function ($products) use ($routeEdit, $routeDestroy, $routePermission, $routeShow, $iconEdit, $iconDestroy, $iconPermission, $iconShow) {
                     $btn_action = '';
@@ -359,7 +443,7 @@ class ProductController extends Controller
 
                     return $btn_action;
                 })
-            ->rawColumns(['products', 'image', 'action']) // to html
+            ->rawColumns(['products', 'image', 'action', 'brochure']) // to html
             ->make(true);
         }
     }
@@ -499,5 +583,15 @@ class ProductController extends Controller
         if ($success_trans == true) {
             return redirect()->route('product.show', $product->id)->with('success', 'Berhasil terkirim');
         }
+    }
+
+    function youtubeId(string $url): ?string
+    {
+        if (preg_match('~youtu\.be/([A-Za-z0-9_-]{11})~', $url, $m) ||
+            preg_match('~v=([A-Za-z0-9_-]{11})~', $url, $m) ||
+            preg_match('~/embed/([A-Za-z0-9_-]{11})~', $url, $m)) {
+            return $m[1];
+        }
+        return null;
     }
 }

@@ -90,7 +90,7 @@ class FaqController extends Controller
      */
     public function show(Faq $faq)
     {
-        $title          = 'Detail Faq';
+        $title  = 'Detail Faq';
         return view('backends.faq.show', compact('title', 'faq'));
     }
 

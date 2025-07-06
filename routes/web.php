@@ -7,13 +7,14 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [App\Http\Controllers\Frontend\WebController::class, 'index'])->name('web_index');
 Route::get('/about', [App\Http\Controllers\Frontend\WebController::class, 'story'])->name('web_about');
 Route::get('/product', [App\Http\Controllers\Frontend\WebController::class, 'product'])->name('web_product');
-Route::get('/product/{slug}', [App\Http\Controllers\Frontend\WebController::class, 'productShow'])->name('web_product.show');
+Route::get('/product/{product:slug}', [App\Http\Controllers\Frontend\WebController::class, 'productShow'])->name('web_product.show');
 Route::get('/contact', [App\Http\Controllers\Frontend\WebController::class, 'contact'])->name('web_contact');
 Route::post('/add_question', [App\Http\Controllers\Frontend\WebController::class, 'addQuestion'])->name('web_add_question');
 Route::get('/article', [App\Http\Controllers\Frontend\WebController::class, 'article'])->name('web_article');
 Route::get('/article/{slug}', [App\Http\Controllers\Frontend\WebController::class, 'articleShow'])->name('web_article.show');
 Route::get('/faq/{slug?}', [App\Http\Controllers\Frontend\WebController::class, 'faq'])->name('web_faq');
 Route::get('/study-case/{slug?}', [App\Http\Controllers\Frontend\WebController::class, 'studyCase'])->name('web_study_case');
+Route::get('/search', [App\Http\Controllers\Frontend\SearchController::class, 'index'])->name('web_search');
 // Route::get('/faq/{category:slug}', [App\Http\Controllers\Frontend\WebController::class, 'faqShow'])->name('web_faq.show');
 
 // Add this instead:
