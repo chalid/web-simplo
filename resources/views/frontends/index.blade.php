@@ -40,68 +40,36 @@
             </div>
         </div>
     </section>
-    <section class="product-slider">
+    <section class="facility">
         <div class="title-section">
             <div class="container">
-                <h3 class="font-text-light" data-aos="zoom-in">Gateway Controller & One Platform Customisation to Secure Your Business</h3>
+                <h3 class="font-text-light" data-aos="zoom-in">
+                    <strong>On-Premise & Fully Customizable</strong>
+                    The Future of Integrated Security & Facility Management 
+                </h3>
             </div>
         </div>
-        <div class="slider-area">
-            <div class="image-slider">
-                <div class="swiper-container">
-                    <div class="swiper-wrapper">
-                        @foreach($studyCases as $studyCase)
-                            <div class="swiper-slide">
-                                <div class="content-swipe">
-                                    <div class="image-area">
-                                        <figure data-aos="fade-in">
-                                            <img src="{{ url('storage/upload_files/images/study_case_banner/normal') . '/' . $studyCase->image }}" alt="{{ $studyCase->meta_tag }}">
-                                        </figure>
-                                    </div>
-                                    <div class="desc-area">
-                                        <div class="desc-wrapper" data-aos="fade-in" data-aos-delay="600">
-                                            <h4 class="font-text-bold">{{ $studyCase->title }}</h4>
-                                            <p class="show-desktop">
-                                                {!! $studyCase->description !!}
-                                            </p>
-                                            <div class="button-area">
-                                                <a href="{{ $studyCase->slug }}" class="button outline font-text-bold">Learn More</a>
-                                            </div>
+        <div class="facility-area">
+            <div class="container">
+                <div class="facility-wrapper">
+                    <div class="row no-gutters">
+                        @foreach($productCategories as $productCategory)
+                            <div class="col-md-6 col-lg-4 col-xl-3">
+                                <div class="thumbnail-info" data-aos="zoom-in">
+                                    <div class="thumbnail-wrapper">
+                                        <div class="image-area">
+                                            <figure>
+                                                <img src="{{ url('storage/upload_files/images/product_category/category') . '/' . $productCategory->image }}" alt="{{ $productCategory->meta_tag }}">
+                                            </figure>
                                         </div>
+                                        <div class="info-area">
+                                            <p class="text-ellipsis overflow-hidden line-clamp-2">{{ $productCategory->title }}</p>
+                                        </div>
+                                        <a href="{{ route('web_product', ['cat'=>$productCategory->slug]) }}" class="click-area"></a>
                                     </div>
                                 </div>
                             </div>
                         @endforeach
-                    </div>
-                </div>
-            </div>
-            <div class="nav-slider" data-aos="fade-in" data-aos-delay="600">
-                <div class="container">
-                    <div class="slider-area">
-                        <div class="swiper-container">
-                            <div class="swiper-wrapper">
-                                @foreach($studyCases as $studyCase)
-                                <div class="swiper-slide">
-                                    <div class="icon-wrapper">
-                                        <div class="content-swipe">
-                                            <div class="icon-area">
-                                                <!-- ========== Kalo mau pake icon image ========== -->
-                                                <!-- <div class="icon-product" style="background-image: url('assets/img/icon/icon-infrastructure.png');"></div> -->
-                                                <!-- ========== <div class="icon-product fa fa-cogs"></div> ========== -->
-                                                <!-- ========== End icon image ========== -->
-                                                <div class="icon-product"
-                                                    style="background-image: url('{{ asset('storage/upload_files/images/study_case_icon/thumb2/'.$studyCase->icon) }}');">
-                                                </div>
-                                            </div>
-                                            <div class="desc-area">
-                                                <h6>{{ $studyCase->title }}</h6>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                @endforeach
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -142,36 +110,68 @@
             </div>
         </div>
     </section>
-    <section class="facility">
+    <section class="product-slider">
         <div class="title-section">
             <div class="container">
-                <h3 class="font-text-light" data-aos="zoom-in">
-                    <strong>On-Premise & Fully Customizable</strong>
-                    The Future of Integrated Security & Facility Management 
-                </h3>
+                <h3 class="font-text-light" data-aos="zoom-in">Gateway Controller & One Platform Customisation to Secure Your Business</h3>
             </div>
         </div>
-        <div class="facility-area">
-            <div class="container">
-                <div class="facility-wrapper">
-                    <div class="row no-gutters">
-                        @foreach($productCategories as $productCategory)
-                            <div class="col-md-6 col-lg-4 col-xl-3">
-                                <div class="thumbnail-info" data-aos="zoom-in">
-                                    <div class="thumbnail-wrapper">
-                                        <div class="image-area">
-                                            <figure>
-                                                <img src="{{ url('storage/upload_files/images/product_category/category') . '/' . $productCategory->image }}" alt="{{ $productCategory->meta_tag }}">
-                                            </figure>
+        <div class="slider-area">
+            <div class="image-slider">
+                <div class="swiper-container">
+                    <div class="swiper-wrapper">
+                        @foreach($studyCases as $studyCase)
+                            <div class="swiper-slide">
+                                <div class="content-swipe">
+                                    <div class="image-area">
+                                        <figure data-aos="fade-in">
+                                            <img src="{{ url('storage/upload_files/images/study_case_banner/normal') . '/' . $studyCase->image }}" alt="{{ $studyCase->meta_tag }}">
+                                        </figure>
+                                    </div>
+                                    <div class="desc-area">
+                                        <div class="desc-wrapper" data-aos="fade-in" data-aos-delay="600">
+                                            <h4 class="font-text-bold">{{ $studyCase->title }}</h4>
+                                            <p class="show-desktop">
+                                                {!! $studyCase->description !!}
+                                            </p>
+                                            <div class="button-area">
+                                                <a href="{{ route('web_study_case', $studyCase->slug) }}" class="button outline font-text-bold">Learn More</a>
+                                            </div>
                                         </div>
-                                        <div class="info-area">
-                                            <p class="text-ellipsis overflow-hidden line-clamp-2">{{ $productCategory->title }}</p>
-                                        </div>
-                                        <a href="{{ route('web_product', ['cat'=>$productCategory->slug]) }}" class="click-area"></a>
                                     </div>
                                 </div>
                             </div>
                         @endforeach
+                    </div>
+                </div>
+            </div>
+            <div class="nav-slider" data-aos="fade-in" data-aos-delay="600">
+                <div class="container">
+                    <div class="slider-area">
+                        <div class="swiper-container">
+                            <div class="swiper-wrapper">
+                                @foreach($studyCases as $studyCase)
+                                <div class="swiper-slide">
+                                    <div class="icon-wrapper">
+                                        <div class="content-swipe">
+                                            <div class="icon-area">
+                                                <!-- ========== Kalo mau pake icon image ========== -->
+                                                <!-- <div class="icon-product" style="background-image: url('assets/img/icon/icon-infrastructure.png');"></div> -->
+                                                <!-- ========== <div class="icon-product fa fa-cogs"></div> ========== -->
+                                                <!-- ========== End icon image ========== -->
+                                                <div class="icon-product"
+                                                    style="background-image: url('{{ asset('storage/upload_files/images/study_case_icon/thumb2/'.$studyCase->icon) }}');">
+                                                </div>
+                                            </div>
+                                            <div class="desc-area">
+                                                <h6>{{ $studyCase->title }}</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                @endforeach
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

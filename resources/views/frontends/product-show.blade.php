@@ -133,7 +133,7 @@
                                             <span>Share :</span>
                                         </li>
                                         <li class="linkedin" data-aos="zoom-in">
-                                            <a href="#" target="_blank">
+                                            <a href="{{ config('services.social.linkedin') }}" target="_blank">
                                                 <i class="fab fa-linkedin"></i>
                                             </a>
                                         </li>
@@ -152,11 +152,11 @@
                                                 <i class="fab fa-whatsapp"></i>
                                             </a>
                                         </li>
-                                        <li class="link" data-aos="zoom-in">
+                                        <!-- <li class="link" data-aos="zoom-in">
                                             <a href="#" target="_blank">
                                                 <i class="fa fa-link"></i>
                                             </a>
-                                        </li>
+                                        </li> -->
                                     </ul>
                                 </div>
                             </div>

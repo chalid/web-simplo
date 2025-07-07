@@ -275,27 +275,6 @@ class WebController extends Controller
         return view('frontends.article-show', compact('article', 'categories', 'recent_articles', 'previous', 'next', 'title', 'body'));
     }
 
-    public function partner()
-    {
-        $partners   = Partner::where('is_active', 1)->get();
-        $seo        = About::where('is_active', 1)->first();
-        $title      = 'Partner PT. Arjaya Berkah Marine | PT. Arjaya Berkah Marine';
-        // Use SEO metadata from first banner or fallback
-        if ($seo) {
-            SeoHelper::setMeta([
-                'meta_title'        => $seo->meta_title,
-                'meta_description'  => $seo->meta_description,
-                'meta_keywords'     => $seo->meta_keywords,
-                'meta_author'       => $seo->meta_author,
-                'meta_image_path'   => 'about', // ensure this is a relative path, e.g., 'storage/banners/xyz.jpg'
-                'meta_image'        => $seo->meta_image, // ensure this is a relative path, e.g., 'storage/banners/xyz.jpg'
-                'meta_canonical'    => url()->current(),
-                'meta_robots'       => $seo->meta_robots,
-            ]);
-        }
-        return view('frontends.partner', compact(['partners', 'title']));
-    }
-
     public function faq(?string $slug = null)
     {
         // 1.  Ambil kategori sidebar (urut nama)
@@ -327,18 +306,15 @@ class WebController extends Controller
         return view('frontends.faq', compact(['categories', 'category', 'faqs', 'title', 'body']));
     }
 
-    public function studyCase(Request $request)
+    public function studyCase(?string $slug = null)
     {
         // Filter by category if available
-        $query  = StudyCase::where('is_active', 1);
+        $query  = StudyCase::where('slug', $slug)->firstOrFail();
         $title  = 'Study Case';
-        $body   = 'news-page';
+        $body   = 'about-page';
+        $studyCase = $query;
 
-        if ($request->has('slug')) {
-            $query->where('slug', $request->slug);
-        }
-
-        $seo = $query->first();
+        $seo = $query;
         if ($seo) {
             SeoHelper::setMeta([
                 'meta_title'        => $seo->meta_title,
@@ -346,7 +322,7 @@ class WebController extends Controller
                 'meta_description'  => $seo->meta_description,
                 'meta_keywords'     => $seo->meta_keywords,
                 'meta_author'       => $seo->meta_author,
-                'meta_image_path'   => 'article',
+                'meta_image_path'   => 'study_case',
                 'meta_image'        => $seo->meta_image,
                 'meta_canonical'    => url()->current(),
                 'meta_robots'       => $seo->meta_robots,

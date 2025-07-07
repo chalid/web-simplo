@@ -500,3 +500,245 @@ Let me know!
 </div>
 @endsection
 
+<div class="product-inside">
+    <div class="row no-gutters">
+        <div class="col-md-4 col-lg-3">
+            <div class="sidebar-area" data-aos="zoom-in">
+                <div class="sidebar-category">
+                    <div class="sidebar-head show-desktop">
+                        <h5 class="font-text-bold">
+                            <span>Kategori</span>
+                        </h5>
+                    </div>
+                    <div class="sidebar-head show-mobile collapse-button">
+                        <h5 class="font-text-bold">
+                            <span>Kategori</span>
+                            <span class="icon fa fa-angle-down"></span>
+                        </h5>
+                    </div>
+                    <div class="sidebar-body">
+                        <ul class="sidebar-list">
+                            <li>
+                                <a href="#">
+                                    <span>Project Implementation</span>
+                                    <span class="icon fa fa-angle-right"></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <span>Maintenance & Support</span>
+                                    <span class="icon fa fa-angle-right"></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <span>Customized Integration Services</span>
+                                    <span class="icon fa fa-angle-right"></span>
+                                </a>
+                            </li>
+                            <li>
+                                <!-- ======== Tambahin class "active" kalo di klik ======== -->
+                                <a href="#" class="active">
+                                    <span>Cloud Services</span>
+                                    <span class="icon fa fa-angle-right"></span>
+                                </a>
+                                <!-- ======== End Active ======== -->
+                                <!-- ======== Sub Category ======== -->
+                                <ul class="sidebar-list nested">
+                                    <li>
+                                        <a href="#">
+                                            <span>Project Implementation</span>
+                                            <span class="icon fa fa-angle-right"></span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <span>Maintenance & Support</span>
+                                            <span class="icon fa fa-angle-right"></span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <span>Customized Integration Services</span>
+                                            <span class="icon fa fa-angle-right"></span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <span>Cloud Services</span>
+                                            <span class="icon fa fa-angle-right"></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <!-- ======== End Sub Category ======== -->
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <span>Access Control System</span>
+                                    <span class="icon fa fa-angle-right"></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <span>Simplo Solution</span>
+                                    <span class="icon fa fa-angle-right"></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <span>CCTV & Surveillance System</span>
+                                    <span class="icon fa fa-angle-right"></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <span>Wireless Call System</span>
+                                    <span class="icon fa fa-angle-right"></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <span>Daftar Produk</span>
+                                    <span class="icon fa fa-angle-right"></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8 col-lg-9">
+            <div class="content-area">
+                <div class="content-wrapper">
+                    <div class="row no-gutters">
+                        <div class="col-md-6 col-lg-4">
+                            <div class="thumbnail-info model-2 square-image" data-aos="zoom-in">
+                                <div class="thumbnail-wrapper">
+                                    <div class="image-area">
+                                        <figure>
+                                            <img src="https://lumbatech.com/files/Products/276/e7d088bb-c439-48a1-a45f-a9c2777dca2a/thumb-Entrypass S3400.jpg" alt="">
+                                        </figure>
+                                    </div>
+                                    <div class="info-area">
+                                        <span class="category-label text-ellipsis overflow-hidden line-clamp-1">Face Recognation, NFC Reader</span>
+                                        <p class="font-text-bold text-ellipsis overflow-hidden line-clamp-2">Suprema BioEntry W3</p>
+                                    </div>
+                                    <a href="product-detail.html" class="click-area"></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-4">
+                            <div class="thumbnail-info model-2 square-image" data-aos="zoom-in">
+                                <div class="thumbnail-wrapper">
+                                    <div class="image-area">
+                                        <figure>
+                                            <img src="https://lumbatech.com/files/Products/279/7007e9f7-f29e-498e-ac49-29356192529d/thumb-Dahua DHI-KTP02 Video Intercom.jpg" alt="">
+                                        </figure>
+                                    </div>
+                                    <div class="info-area">
+                                        <span class="category-label text-ellipsis overflow-hidden line-clamp-1">Video Intercom</span>
+                                        <p class="font-text-bold text-ellipsis overflow-hidden line-clamp-2">Dahua DHI-KTP02</p>
+                                    </div>
+                                    <a href="product-detail.html" class="click-area"></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-4">
+                            <div class="thumbnail-info model-2 square-image" data-aos="zoom-in">
+                                <div class="thumbnail-wrapper">
+                                    <div class="image-area">
+                                        <figure>
+                                            <img src="https://lumbatech.com/files/Products/278/dab22f73-2cd5-4914-99b7-90ca2cf4d29f/thumb-Dahua ST1000VX001.jpg" alt="">
+                                        </figure>
+                                    </div>
+                                    <div class="info-area">
+                                        <span class="category-label text-ellipsis overflow-hidden line-clamp-1">Harddisk CCTV</span>
+                                        <p class="font-text-bold text-ellipsis overflow-hidden line-clamp-2">Dahua ST1000VX001 1 TB HDD</p>
+                                    </div>
+                                    <a href="product-detail.html" class="click-area"></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-4">
+                            <div class="thumbnail-info model-2 square-image" data-aos="zoom-in">
+                                <div class="thumbnail-wrapper">
+                                    <div class="image-area">
+                                        <figure>
+                                            <img src="https://lumbatech.com/files/Products/270/8bef20ea-8a63-499f-8d08-be7804c2c1aa/thumb-CAME Guardian.jpg" alt="">
+                                        </figure>
+                                    </div>
+                                    <div class="info-area">
+                                        <span class="category-label text-ellipsis overflow-hidden line-clamp-1">Turnstile</span>
+                                        <p class="font-text-bold text-ellipsis overflow-hidden line-clamp-2">CAME Guardian</p>
+                                    </div>
+                                    <a href="product-detail.html" class="click-area"></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-4">
+                            <div class="thumbnail-info model-2 square-image" data-aos="zoom-in">
+                                <div class="thumbnail-wrapper">
+                                    <div class="image-area">
+                                        <figure>
+                                            <img src="https://lumbatech.com/files/Products/268/4a351f77-cd00-44f8-a02b-5ac97f807a78/thumb-CAME Bridge.jpg" alt="">
+                                        </figure>
+                                    </div>
+                                    <div class="info-area">
+                                        <span class="category-label text-ellipsis overflow-hidden line-clamp-1">Turnstile</span>
+                                        <p class="font-text-bold text-ellipsis overflow-hidden line-clamp-2">CAME Bridge</p>
+                                    </div>
+                                    <a href="product-detail.html" class="click-area"></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-4">
+                            <div class="thumbnail-info model-2 square-image" data-aos="zoom-in">
+                                <div class="thumbnail-wrapper">
+                                    <div class="image-area">
+                                        <figure>
+                                            <img src="https://lumbatech.com/files/Products/267/d2f7bfbc-2a4c-4d1f-a437-6b4e8658e157/thumb-CAME FLY.jpg" alt="">
+                                        </figure>
+                                    </div>
+                                    <div class="info-area">
+                                        <span class="category-label text-ellipsis overflow-hidden line-clamp-1">Swing Gate</span>
+                                        <p class="font-text-bold text-ellipsis overflow-hidden line-clamp-2">Sistem Parkir CAME FLY</p>
+                                    </div>
+                                    <a href="product-detail.html" class="click-area"></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="paging-area">
+                    <nav aria-label="Product navigation">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item disabled" data-aos="zoom-in">
+                                <!-- <a class="page-link">
+                                    <span class="fa fa-angle-left"></span>
+                                </a> -->
+                                <span class="page-link">
+                                    <span class="fa fa-angle-left"></span>
+                                </span>
+                            </li>
+                            <li class="page-item" data-aos="zoom-in">
+                                <a class="page-link" href="#">1</a>
+                            </li>
+                            <li class="page-item active" aria-current="page" data-aos="zoom-in">
+                                <span class="page-link">2</span>
+                            </li>
+                            <li class="page-item" data-aos="zoom-in">
+                                <a class="page-link" href="#">3</a>
+                            </li>
+                            <li class="page-item" data-aos="zoom-in">
+                                <a class="page-link" href="#">
+                                    <span class="fa fa-angle-right"></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
