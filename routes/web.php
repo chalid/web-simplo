@@ -267,17 +267,17 @@ Route::middleware('auth')->group(function () {
             Route::get('/customer/ajax_datatable', [App\Http\Controllers\Backends\CustomerController::class,'ajaxDatatable'])->name('customer.get_data');
             Route::get('/customer',[App\Http\Controllers\Backends\CustomerController::class, 'index'])->name('customer');
         });
-        Route::middleware('role_or_permission:Can add customer')->group(function () {
-            Route::get('/customer/add',[App\Http\Controllers\Backends\CustomerController::class, 'create'])->name('customer.create');
-            Route::post('/customer/store', [App\Http\Controllers\Backends\CustomerController::class,'store'])->name('customer.store');
-        });
-        Route::middleware('role_or_permission:Can edit customer')->group(function () {
-            Route::get('/customer/{customer}/edit', [App\Http\Controllers\Backends\CustomerController::class,'edit'])->name('customer.edit');
-            Route::patch('/customer/{customer}/update', [App\Http\Controllers\Backends\CustomerController::class,'update'])->name('customer.update');
-        });
-        Route::middleware('role_or_permission:Can delete customer')->group(function () {
-            Route::delete('/customer/{customer}/delete', [App\Http\Controllers\Backends\CustomerController::class,'destroy'])->name('customer.delete');
-        });
+        // Route::middleware('role_or_permission:Can add customer')->group(function () {
+        //     Route::get('/customer/add',[App\Http\Controllers\Backends\CustomerController::class, 'create'])->name('customer.create');
+        //     Route::post('/customer/store', [App\Http\Controllers\Backends\CustomerController::class,'store'])->name('customer.store');
+        // });
+        // Route::middleware('role_or_permission:Can edit customer')->group(function () {
+        //     Route::get('/customer/{customer}/edit', [App\Http\Controllers\Backends\CustomerController::class,'edit'])->name('customer.edit');
+        //     Route::patch('/customer/{customer}/update', [App\Http\Controllers\Backends\CustomerController::class,'update'])->name('customer.update');
+        // });
+        // Route::middleware('role_or_permission:Can delete customer')->group(function () {
+        //     Route::delete('/customer/{customer}/delete', [App\Http\Controllers\Backends\CustomerController::class,'destroy'])->name('customer.delete');
+        // });
     
         /**
          * Product Category

@@ -90,9 +90,9 @@ class WebController extends Controller
             $query->whereIn('product_category_id', $ids);
         }
 
-        $products = $query->paginate(6)->withQueryString();
+        $products   = $query->paginate(6)->withQueryString();
 
-        $menuRoots = ProductCategory::with('children')
+        $menuRoots  = ProductCategory::with('children')
                      ->where('parent_id', 0)
                      ->orderBy('title')
                      ->get();
@@ -139,9 +139,11 @@ class WebController extends Controller
 
     public function contact()
     {
-        $seo    = About::where('is_active', 1)->first();
-        $title  = 'Hubungi Kami Simplo | Simplo';
-        $body   = 'contact-page';
+        $seo        = About::where('is_active', 1)->first();
+        $title      = $seo->title . ' | Simplo';
+        $body       = 'contact-page';
+        $products   = Product::where('is_active', true)->pluck('title', 'title')->put('', 'Pilih Produk');
+        $faqs       = FaqCategory::with('faqs')->where('is_active', true)->limit(2)->get();
         // Use SEO metadata from first banner or fallback
         if ($seo) {
             SeoHelper::setMeta([
@@ -155,17 +157,19 @@ class WebController extends Controller
                 'meta_robots'       => $seo->meta_robots,
             ]);
         }
-        return view('frontends.contact', compact('title', 'body'));
+        return view('frontends.contact', compact('title', 'body', 'products', 'faqs'));
     }
 
     public function addQuestion(Request $request)
     {
         $validator = Validator::make($request->all(), [
+            'title'     => 'required',
             'name'      => 'required',
             'email'     => 'required|email:rfc,dns',
             'phone'     => 'required',
             'message'   => 'required',
         ], [
+            'title.required'    => 'Title wajib diisi, agar kami tidak salah dalam menyapa anda',
             'name.required'     => 'Nama wajib diisi',
             'email.required'    => 'Email wajib diisi',
             'email.email'       => 'Format email belum sesuai',
@@ -184,6 +188,7 @@ class WebController extends Controller
         try {
 
             $customer               = new Customer();
+            $customer->title        = $request->title;
             $customer->name         = $request->name;
             $customer->email        = $request->email;
             $customer->phone        = $request->phone;
@@ -202,12 +207,12 @@ class WebController extends Controller
 
         if ($success_trans == true) {
             Mail::send('emails.customer', ['request' => $request], function ($m) use ($request) {
-                $m->from('noreply@arjayamarine.com', 'PT. Arjaya Berkah Marine');
+                $m->from('noreply@arjayamarine.com', 'Simploo');
                 $m->to($request->email, $request->nama)->subject('Arjaya Marine - Info Produk ' . $request->product_name);
             });
             Mail::send('emails.user', ['request' => $request], function ($m) use ($request) {
-                $m->from('noreply@arjayamarine.com', 'PT. Arjaya Berkah Marine');
-                $m->to(['arjayamarine@gmail.com','chalid.alys@gmail.com'], 'Info Arjaya')->subject('Arjaya Marine - Request Info Produk Dari ' . $request->name . ' mengenai ' . $request->product_name);
+                $m->from('noreply@arjayamarine.com', 'Simploo');
+                $m->to(['arjayamarine@gmail.com','chalid.alys@gmail.com'], 'Info Simploo')->subject('Arjaya Marine - Request Info Produk Dari ' . $request->name . ' mengenai ' . $request->product_name);
             });
 
             return redirect()->back()->with('success', 'Message sent successfully!');
