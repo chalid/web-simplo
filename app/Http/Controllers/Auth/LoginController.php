@@ -35,6 +35,15 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
-        $this->middleware('auth')->only('logout');
+    }
+
+    /**
+     * After a successful login.
+     * No role‑based logic – every user lands on $redirectTo
+     * unless they were trying to reach a protected page first.
+     */
+    protected function authenticated(Request $request, $user)
+    {
+        return redirect()->intended($this->redirectTo);
     }
 }
