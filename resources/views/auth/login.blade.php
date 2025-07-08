@@ -6,9 +6,7 @@
     <!-- Card body -->
     <div class="card-body p-6">
         <div class="mb-4">
-            <a href="/">
-                <img src="{{ asset('assets/backend/images/logo/logo.png') }}" class="mb-2 text-inverse" width="100" alt="{{ config('app.name', 'Laravel') }}">
-            <p class="mb-6">{{ __('Email Address') }}</p>
+            <img src="{{ asset('assets/backend/images/logo/logo.png') }}" class="mb-2 text-inverse" width="100" alt="{{ config('app.name', 'Laravel') }}">
         </div>
         <!-- Form -->
         <form method="POST" action="{{ route('login') }}">

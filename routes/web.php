@@ -1,7 +1,19 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\LoginController;
 
+// redirect /login → /admin/login  (optional, remove if not needed)
+// Route::get('/login', fn () => redirect()->route('login'));
+
+// ── guest‑only admin login ──
+Route::prefix('admin')->middleware('guest')->group(function () {
+    Route::get('/login',  [LoginController::class, 'showLoginForm'])->name('login');
+    Route::post('/login', [LoginController::class, 'login']);
+});
+
+// ── logout ──
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 //Frontend
 
 Route::get('/', [App\Http\Controllers\Frontend\WebController::class, 'index'])->name('web_index');
@@ -17,20 +29,7 @@ Route::get('/study-case/{slug?}', [App\Http\Controllers\Frontend\WebController::
 Route::get('/search', [App\Http\Controllers\Frontend\SearchController::class, 'index'])->name('web_search');
 // Route::get('/faq/{category:slug}', [App\Http\Controllers\Frontend\WebController::class, 'faqShow'])->name('web_faq.show');
 
-// Redirect plain /login to admin login
-Route::get('/login', fn () => redirect()->route('login'));
-
-// Admin login (guest only)
-Route::prefix('admin')->middleware('guest')->group(function () {
-    Route::get('/login', [App\Http\Controllers\Auth\LoginController::class, 'showLoginForm'])->name('login');
-    Route::post('/login', [App\Http\Controllers\Auth\LoginController::class, 'login']);
-});
-
-// Logout (must be outside guest group)
-Route::post('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
-
 Route::prefix('admin')->middleware('auth')->group(function () {
-        
     /**
      * home
      */
