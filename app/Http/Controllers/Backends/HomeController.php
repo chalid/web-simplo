@@ -24,8 +24,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $anu = 'ini siapa, ';
-        $ini = 'ini melani';
+        $anu = 'ini anu, ';
+        $ini = 'ini ani';
         return view('home',compact(['anu', 'ini']));
     }
 }
