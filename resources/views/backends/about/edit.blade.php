@@ -24,7 +24,13 @@
                     <x-form.textarea name="mission" label="Mission" :value="old('mission', $about->mission)"  :rich="true" />
                     <x-form.textarea name="history" label="History" :value="old('history', $about->history)"  :rich="true" />
                     <x-form.select name="is_active" label="Is Active" :options="[1 => 'Active', 0 => 'In Active']" :selected="$about->is_active ?? ''" :required="true"/>
-                    <x-form.file name="image" label="About Image" />
+                    <div class="row mb-3">
+                        <label for="image" class="col-sm-4 col-form-label">{{ __('About Image') }}</label>
+                        <div class="col-sm-8">
+                            <input type="file" name="image" id="image" class="form-control" accept="image/*">
+                            <div class="form-text text-danger" id="basic-addon4">Size 1720px x 1143px.</div>
+                        </div>
+                    </div>
                     <div class="row mb-3">
                         <label for="images" class="col-sm-4 col-form-label"></label>
                         <div class="col-sm-8">

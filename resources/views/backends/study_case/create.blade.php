@@ -19,8 +19,20 @@
                     @csrf
                     <x-form.input name="title" label="Title name" :value="old('title')" :required="true" />
                     <x-form.textarea name="description" label="Description" :value="old('description')" />
-                    <x-form.file name="image" label="Study Case Banner" />
-                    <x-form.file name="icon" label="Study Case Icon" />
+                    <div class="row mb-3">
+                        <label for="image" class="col-sm-4 col-form-label">{{ __('Study Case Banner') }}</label>
+                        <div class="col-sm-8">
+                            <input type="file" name="image" id="image" class="form-control" accept="image/*">
+                            <div class="form-text text-danger" id="basic-addon4">Size 1074px x 805px.</div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="icon" class="col-sm-4 col-form-label">{{ __('Study Case Icon') }}</label>
+                        <div class="col-sm-8">
+                            <input type="file" name="icon" id="icon" class="form-control" accept="image/*">
+                            <div class="form-text text-danger" id="basic-addon4">Size 22px x 18px.</div>
+                        </div>
+                    </div>
                     <x-form.input name="uri" label="Link" :value="old('uri')"/>
                     <x-form.select name="is_active" label="Is Active" :options="[1 => 'Active', 0 => 'In Active']" :selected="old('is_active')" :required="true"/>
                     <div class="col-12">

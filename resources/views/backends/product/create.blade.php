@@ -48,7 +48,13 @@
                             <input type="file" name="brochure" id="brochure" class="form-control"/>
                         </div>
                     </div>
-                    <x-form.file name="image" label="Product Picture" />
+                    <div class="row mb-3">
+                        <label for="image" class="col-sm-4 col-form-label">{{ __('Product Image') }}</label>
+                        <div class="col-sm-8">
+                            <input type="file" name="image" id="image" class="form-control" accept="image/*">
+                            <div class="form-text text-danger" id="basic-addon4">Size 1720px x 1143px.</div>
+                        </div>
+                    </div>
                     <div class="col-12">
                         <a href="{{ route('product') }}" class="btn btn-danger">
                         <i data-feather="arrow-left" class="nav-icon me-2 icon-xs"></i>Kembali</a>

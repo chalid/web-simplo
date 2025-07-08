@@ -66,7 +66,13 @@
                         </div>
                     </div>
                     @endif
-                    <x-form.file name="image" label="Product Picture" />
+                    <div class="row mb-3">
+                        <label for="image" class="col-sm-4 col-form-label">{{ __('Product Image') }}</label>
+                        <div class="col-sm-8">
+                            <input type="file" name="image" id="image" class="form-control" accept="image/*">
+                            <div class="form-text text-danger" id="basic-addon4">Size 1720px x 1143px.</div>
+                        </div>
+                    </div>
                     <div class="row mb-3">
                         <label for="images" class="col-sm-4 col-form-label"></label>
                         <div class="col-sm-8">

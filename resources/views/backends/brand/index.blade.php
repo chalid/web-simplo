@@ -48,7 +48,13 @@
                     <x-form.input name="name" label="Brand Name" :value="old('name')" :required="true" />
                     <x-form.select name="product_category_id" label="Product Category" :options="$productCategories" :selected="old('product_category_id')" :required="true"/>
                     <x-form.select name="is_active" label="Is Active" :options="[1 => 'Active', 0 => 'In Active']" :selected="old('is_active')" :required="true"/>
-                    <x-form.file name="image" label="Brand Image" />
+                    <div class="row mb-3">
+                        <label for="image" class="col-sm-4 col-form-label">{{ __('Brand Image') }}</label>
+                        <div class="col-sm-8">
+                            <input type="file" name="image" id="image" class="form-control" accept="image/*">
+                            <div class="form-text text-danger" id="basic-addon4">Size 181px x 70px.</div>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Tutup</button>

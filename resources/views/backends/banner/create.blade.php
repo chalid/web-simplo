@@ -21,7 +21,13 @@
                     <x-form.textarea name="description" label="Description" :value="old('description')" />
                     <x-form.input name="link" label="Button Link" :value="old('link')" />
                     <x-form.select name="is_active" label="Is Active" :options="[1 => 'Active', 0 => 'In Active']" :selected="old('is_active')" :required="true"/>
-                    <x-form.file name="image" label="Banner Image" />
+                    <div class="row mb-3">
+                        <label for="image" class="col-sm-4 col-form-label">{{ __('Banner Image') }}</label>
+                        <div class="col-sm-8">
+                            <input type="file" name="image" id="image" class="form-control" accept="image/*">
+                            <div class="form-text text-danger" id="basic-addon4">Size 1720px x 1143px.</div>
+                        </div>
+                    </div>
                     <div class="col-12">
                         <a href="{{ route('banner') }}" class="btn btn-danger">
                         <i data-feather="arrow-left" class="nav-icon me-2 icon-xs"></i>Kembali</a>

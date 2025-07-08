@@ -20,14 +20,26 @@
                     @method('PATCH')
                     <x-form.input name="title" label="Title name" :value="$studyCase->title" :required="true" />
                     <x-form.textarea name="description" label="Description" :value="old('description', $studyCase->description)"  :rich="true" />
-                    <x-form.file name="image" label="Study Case Banner" />
+                    <div class="row mb-3">
+                        <label for="image" class="col-sm-4 col-form-label">{{ __('Study Case Banner') }}</label>
+                        <div class="col-sm-8">
+                            <input type="file" name="image" id="image" class="form-control" accept="image/*">
+                            <div class="form-text text-danger" id="basic-addon4">Size 1074px x 805px.</div>
+                        </div>
+                    </div>
                     <div class="row mb-3">
                         <label for="images" class="col-sm-4 col-form-label"></label>
                         <div class="col-sm-8">
                             <img src="{{ url('storage/upload_files/images/study_case_banner/small-thumb/' . $studyCase->image) }}" alt="">
                         </div>
                     </div>
-                    <x-form.file name="icon" label="Study Case Icon" />
+                    <div class="row mb-3">
+                        <label for="icon" class="col-sm-4 col-form-label">{{ __('Study Case Icon') }}</label>
+                        <div class="col-sm-8">
+                            <input type="file" name="icon" id="icon" class="form-control" accept="image/*">
+                            <div class="form-text text-danger" id="basic-addon4">Size 22px x 18px.</div>
+                        </div>
+                    </div>
                     <div class="row mb-3">
                         <label for="images" class="col-sm-4 col-form-label"></label>
                         <div class="col-sm-8">

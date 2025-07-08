@@ -21,7 +21,21 @@
                     <x-form.input name="title" label="Title name" :value="$banner->title" :required="true" />
                     <x-form.textarea name="description" label="Description" :value="old('description', $banner->description)"  :rich="true" />
                     <x-form.select name="is_active" label="Is Active" :options="[1 => 'Active', 0 => 'In Active']" :selected="$banner->is_active ?? ''" :required="true"/>
-                    <x-form.file name="image" label="Banner Image" />
+                    <div class="row mb-3">
+                        <label for="image" class="col-sm-4 col-form-label">{{ __('Banner Image') }}</label>
+                        <div class="col-sm-8">
+                            <input type="file" name="image" id="image" class="form-control" accept="image/*">
+                            <div class="form-text text-danger" id="basic-addon4">Size 1720px x 1143px.</div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="images" class="col-sm-4 col-form-label"></label>
+                        <div class="col-sm-8">
+                            <a href="{{ url('storage/upload_files/images/banner/large/' . $banner->image) }}" target="blank">
+                                <img src="{{ url('storage/upload_files/images/banner/small-thumb/' . $banner->image) }}" alt="{{ $banner->meta_tag }}">
+                            </a>
+                        </div>
+                    </div>
                     <div class="col-12">
                         <a href="{{ route('banner') }}" class="btn btn-danger">
                         <i data-feather="arrow-left" class="nav-icon me-2 icon-xs"></i>Kembali</a>
