@@ -19,15 +19,11 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
         $user = User::factory()->create([
             'name' => 'Admin',
-            'email' => 'chalid.alys@gmail.com',
+            'email' => 'admin@simploo.id',
             'password' => Hash::make('password'),
         ]);
 
         $user->assignRole('Super Admin');
         $this->call(PermissionsTableSeeder::class);
-        $this->call(AboutsTableSeeder::class);
-        $this->call(BannersTableSeeder::class);
-        $this->call(ArticleCategoriesTableSeeder::class);
-        $this->call(ArticlesTableSeeder::class);
     }
 }
