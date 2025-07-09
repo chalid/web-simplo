@@ -190,7 +190,7 @@ class ProductCategoryController extends Controller
     public function ajaxDatatable(Request $request)
     {
         if ($request->ajax()) {
-            $productCategories  = ProductCategory::with('children')->where('parent_id',0)->get();
+            $productCategories  = ProductCategory::with('children')->where('parent_id',null)->get();
 
             $routeEdit          = 'product-category.edit';
             $routeDestroy       = 'product-category.delete';

@@ -31,7 +31,7 @@ class WebController extends Controller
     {
         $seo                = About::where('is_active', 1)->first();
         $banners            = Banner::where('is_active', 1)->limit(5)->get();
-        $productCategories  = ProductCategory::where('parent_id', 0)->where('is_active', 1)->get();
+        $productCategories  = ProductCategory::where('parent_id', null)->where('is_active', 1)->get();
         $brands             = Brand::where('is_active', 1)->get();
         $studyCases         = StudyCase::where('is_active', 1)->latest()->limit(6)->get();
         // $clients    = ClientModel::where('is_active', 1)->latest()->limit(7)->get();
@@ -93,7 +93,7 @@ class WebController extends Controller
         $products   = $query->paginate(6)->withQueryString();
 
         $menuRoots  = ProductCategory::with('children')
-                     ->where('parent_id', 0)
+                     ->where('parent_id', null)
                      ->orderBy('title')
                      ->get();
 
