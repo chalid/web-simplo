@@ -41,7 +41,6 @@
                         </div>
                     </div>
                     <x-form.select name="brand_id" label="Brand" :options="$brands" :selected="old('brand_id')" :required="true"/>
-                    <x-form.select name="is_active" label="Is Active" :options="[1 => 'Active', 0 => 'In Active']" :selected="old('is_active')" :required="true"/>
                     <div class="row mb-3">
                         <label for="brochure" class="col-sm-4 col-form-label">Brosur</label>
                         <div class="col-sm-8">
@@ -55,6 +54,8 @@
                             <div class="form-text text-danger" id="basic-addon4">Size 1720px x 1143px.</div>
                         </div>
                     </div>
+                    <x-form.input name="youtube_url" label="Youtube Url" :value="old('youtube_url')"/>
+                    <x-form.select name="is_active" label="Is Active" :options="[1 => 'Active', 0 => 'In Active']" :selected="old('is_active')" :required="true"/>
                     <div class="col-12">
                         <a href="{{ route('product') }}" class="btn btn-danger">
                         <i data-feather="arrow-left" class="nav-icon me-2 icon-xs"></i>Kembali</a>

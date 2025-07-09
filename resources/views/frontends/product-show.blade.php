@@ -57,7 +57,9 @@
                                                     <div class="swiper-slide">
                                                         <div class="image-area" data-aos="zoom-in">
                                                             <figure class="ratio ratio-16x9">
-                                                                <iframe src="{{ $ytEmbed }}" allowfullscreen></iframe>
+                                                                <iframe src="{{ $ytEmbed }}?rel=0&modestbranding=1&enablejsapi=1&origin={{ request()->getSchemeAndHttpHost() }}"
+                                                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                                    allowfullscreen loading="lazy"></iframe>
                                                             </figure>
                                                         </div>
                                                     </div>
@@ -230,6 +232,22 @@
                 tip.show();
                 setTimeout(() => { tip.hide(); this.dataset.bsTitle = 'Copy link'; }, 1200);
             });
+    });
+    const mainSwiper = new Swiper('#primarySwiper', {
+        slidesPerView: 1,
+        loop: true,
+        grabCursor: true,
+        allowTouchMove: true,
+        on: {
+            touchStart(e){
+                if (e.target.tagName === 'IFRAME') {
+                    this.allowTouchMove = false;   // stop drag saat klik video
+                }
+            },
+            touchEnd(){
+                this.allowTouchMove = true;
+            }
+        }
     });
 </script>
 @endpush

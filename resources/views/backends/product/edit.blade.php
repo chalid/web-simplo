@@ -79,6 +79,7 @@
                             <img src="{{ url('storage/upload_files/images/product/small-thumb/' . $product->image) }}" alt="">
                         </div>
                     </div>
+                    <x-form.input name="youtube_url" label="Youtube Url" :value="old('youtube_url')"/>
                     <x-form.select name="is_active" label="Is Active" :options="[1 => 'Active', 0 => 'In Active']" :selected="$product->is_active ?? ''" :required="true"/>
                     <div class="col-12">
                         <a href="{{ route('product') }}" class="btn btn-danger">
