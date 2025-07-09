@@ -32,7 +32,7 @@ class ProductCategoryController extends Controller
         $confirmDelete  = 'Yakin ingin menghapus data ini?';
         $routeAjax      = 'product-category.get_data';
         $title          = 'List Product Category';
-        $parents        = ProductCategory::where('parent_id', 0)->pluck('title', 'id')->put(0, 'Sebagai Parent')->sortKeys();
+        $parents        = ProductCategory::where('parent_id', null)->pluck('title', 'id')->put('', 'Sebagai Parent')->sortKeys();
 
         return view('backends.product_category.index', compact(['confirmDelete','routeAjax','title', 'parents']));
     }
@@ -114,7 +114,7 @@ class ProductCategoryController extends Controller
     public function edit(ProductCategory $productCategory)
     {
         $title      = 'Edit Product Category';
-        $parents    = ProductCategory::where('parent_id', 0)->pluck('title', 'id')->put(0, 'Sebagai Parent')->sortKeys();
+        $parents    = ProductCategory::where('parent_id', null)->pluck('title', 'id')->put(null, 'Sebagai Parent')->sortKeys();
 
         return view('backends.product_category.edit', compact(['productCategory', 'title', 'parents']));
     }

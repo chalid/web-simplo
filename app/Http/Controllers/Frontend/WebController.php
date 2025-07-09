@@ -57,7 +57,7 @@ class WebController extends Controller
 
     public function story()
     {
-        $about  = About::where('is_active', 1)->first();
+        $about  = About::where('is_active', 1)->firstOrFail();
         $title  = $about->title;
         $body   = 'about-page';
         // Use SEO metadata from first banner or fallback

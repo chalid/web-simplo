@@ -23,7 +23,7 @@
                     <a class="rounded-circle" href="#!" role="button" id="dropdownUser" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <div class="avatar avatar-md avatar-indicators avatar-online">
                             @if(Auth::user()->avatar)
-                            <img alt="avatar" src="{{ asset('storage/upload_files/images/avatar/avatar/' . Auth::user()->avatar) }}" class="rounded-circle">
+                            <img alt="avatar" src="{{ asset('storage/upload_files/images/avatar/ori/' . Auth::user()->avatar) }}" class="rounded-circle">
                             @else
                             <img alt="avatar" src="{{ asset('assets/backend/images/avatar/avatar-11.jpg') }}" class="rounded-circle">
                             @endif

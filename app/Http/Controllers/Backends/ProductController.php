@@ -49,7 +49,7 @@ class ProductController extends Controller
         $title      = 'Tambah Product';
         $brands     = Brand::pluck('name', 'id')->put(0, 'Pilih Brand Produk')->sortKeys();
         $categories = ProductCategory::with('children')
-                    ->where('parent_id', 0)
+                    ->where('parent_id', null)
                     ->orderBy('title')
                     ->get();
         return view('backends.product.create', compact('title', 'categories', 'brands'));
@@ -170,7 +170,7 @@ class ProductController extends Controller
         $title      = 'Edit Product';
         $brands     = Brand::pluck('name', 'id')->put(0, 'Pilih Brand Produk')->sortKeys();
         $categories = ProductCategory::with('children')
-                    ->where('parent_id', 0)
+                    ->where('parent_id', null)
                     ->orderBy('title')
                     ->get();
         return view('backends.product.edit', compact('title', 'product', 'categories', 'brands'));
