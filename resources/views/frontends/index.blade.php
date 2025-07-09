@@ -135,7 +135,7 @@
                                                 {!! $studyCase->description !!}
                                             </p>
                                             <div class="button-area">
-                                                <a href="{{ route('web_study_case', $studyCase->slug) }}" class="button outline font-text-bold">Learn More</a>
+                                                <a href="{{ $studyCase->uri ?: route('web_study_case', $studyCase->slug) }}" class="button outline font-text-bold">Learn More</a>
                                             </div>
                                         </div>
                                     </div>
