@@ -132,31 +132,38 @@
                                         <li class="share-label" data-aos="zoom-in">
                                             <span>Share :</span>
                                         </li>
+                                        @php
+                                            $shareUrl   = urlencode( url()->current() );        // full URL of this page
+                                            $shareTitle = urlencode( $product->title ?? config('app.name') );
+                                        @endphp
                                         <li class="linkedin" data-aos="zoom-in">
-                                            <a href="{{ config('services.social.linkedin') }}" target="_blank">
+                                            <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ $shareUrl }}" target="_blank">
                                                 <i class="fab fa-linkedin"></i>
                                             </a>
                                         </li>
                                         <li class="facebook" data-aos="zoom-in">
-                                            <a href="#" target="_blank">
+                                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ $shareUrl }}" target="_blank">
                                                 <i class="fa fa-facebook"></i>
                                             </a>
                                         </li>
                                         <li class="twitter" data-aos="zoom-in">
-                                            <a href="#" target="_blank">
+                                            <a href="https://twitter.com/intent/tweet?url={{ $shareUrl }}&text={{ $shareTitle }}" target="_blank">
                                                 <i class="icon-custom"></i>
                                             </a>
                                         </li>
                                         <li class="whatsapp" data-aos="zoom-in">
-                                            <a href="#" target="_blank">
+                                            <a href="https://wa.me/?text={{ $shareTitle }}%20{{ $shareUrl }}" target="_blank">
                                                 <i class="fab fa-whatsapp"></i>
                                             </a>
                                         </li>
-                                        <!-- <li class="link" data-aos="zoom-in">
-                                            <a href="#" target="_blank">
+                                        <li class="link" data-aos="zoom-in">
+                                            <button id="copyLink"
+                                                    class="btn btn-sm rounded-circle text-white"
+                                                    style="background:#0d6efd"
+                                                    data-bs-toggle="tooltip" data-bs-title="Copy link">
                                                 <i class="fa fa-link"></i>
-                                            </a>
-                                        </li> -->
+                                            </button>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
@@ -213,3 +220,16 @@
     </section>
 </div>
 @endsection
+@push('scripts')
+<script>
+    document.getElementById('copyLink').addEventListener('click', function () {
+        navigator.clipboard.writeText(@json(url()->current()))
+            .then(() => {
+                const tip = bootstrap.Tooltip.getOrCreateInstance(this);
+                tip.hide(); this.dataset.bsTitle = 'Copied!';
+                tip.show();
+                setTimeout(() => { tip.hide(); this.dataset.bsTitle = 'Copy link'; }, 1200);
+            });
+    });
+</script>
+@endpush

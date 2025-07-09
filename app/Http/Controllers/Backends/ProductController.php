@@ -105,7 +105,7 @@ class ProductController extends Controller
             $product->is_active             = $request->is_active;
             $product->product_category_id   = $request->product_category_id;
             $product->brand_id              = $request->brand_id;
-            $videoId                        = youtubeId($request->youtube_url);   // full URL user pasted
+            $videoId                        = $request->filled('youtube_url') ? self::youtubeId($request->youtube_url) : null;   // full URL user pasted
             $product->youtube_id            = $videoId;                           // may be null
             $product->meta_title            = $request->title;
             $product->meta_description      = Str::limit(strip_tags($request->description), 150);
@@ -221,7 +221,7 @@ class ProductController extends Controller
             $product->is_active             = $request->is_active;
             $product->product_category_id   = $request->product_category_id;
             $product->brand_id              = $request->brand_id;
-            $videoId                        = youtubeId($request->youtube_url);   // full URL user pasted
+            $videoId                        = $request->filled('youtube_url') ? self::youtubeId($request->youtube_url) : null;   // full URL user pasted
             $product->youtube_id            = $videoId;                           // may be null
             $product->meta_title            = $request->title;
             $product->meta_description      = Str::limit(strip_tags($request->description), 150);
@@ -585,8 +585,12 @@ class ProductController extends Controller
         }
     }
 
-    function youtubeId(string $url): ?string
+    protected static function youtubeId(?string $url): ?string
     {
+        if (!$url) {
+            return null;  // langsung keluar
+        }
+
         if (preg_match('~youtu\.be/([A-Za-z0-9_-]{11})~', $url, $m) ||
             preg_match('~v=([A-Za-z0-9_-]{11})~', $url, $m) ||
             preg_match('~/embed/([A-Za-z0-9_-]{11})~', $url, $m)) {

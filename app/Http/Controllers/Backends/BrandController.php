@@ -33,7 +33,7 @@ class BrandController extends Controller
         $confirmDelete      = 'Yakin ingin menghapus data ini?';
         $routeAjax          = 'brand.get_data';
         $title              = 'List Brand';
-        $productCategories  = ProductCategory::where('parent_id', 0)->pluck('title', 'id')->put(0, 'Pilih Kategori Produk')->sortKeys();
+        $productCategories  = ProductCategory::where('parent_id', null)->pluck('title', 'id')->put(0, 'Pilih Kategori Produk')->sortKeys();
 
         return view('backends.brand.index', compact(['confirmDelete','routeAjax','title', 'productCategories']));
     }
@@ -116,7 +116,7 @@ class BrandController extends Controller
     public function edit(Brand $brand)
     {
         $title              = 'Edit Brand';
-        $productCategories  = ProductCategory::where('parent_id', 0)->pluck('title', 'id')->put(0, 'Pilih Kategori Produk')->sortKeys();
+        $productCategories  = ProductCategory::where('parent_id', null)->pluck('title', 'id')->put(0, 'Pilih Kategori Produk')->sortKeys();
         return view('backends.brand.edit', compact('title', 'brand', 'productCategories'));
     }
 
@@ -218,7 +218,7 @@ class BrandController extends Controller
             $iconEdit           = '<i class="bi bi-pencil"></i>';
             $iconDestroy        = '<i class="bi bi-trash"></i>';
             $iconPermission     = '<i class="bi bi-lock"></i>';
-            $productCategories  = ProductCategory::where('parent_id', 0)->pluck('title', 'id')->put(0, 'Pilih Kategori Produk')->sortKeys();
+            $productCategories  = ProductCategory::where('parent_id', null)->pluck('title', 'id')->put(0, 'Pilih Kategori Produk')->sortKeys();
 
             return DataTables::of($brands)
                 ->addIndexColumn()
