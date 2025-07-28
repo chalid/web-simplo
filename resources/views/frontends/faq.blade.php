@@ -34,7 +34,7 @@
                                         <span>Kategori</span>
                                     </h5>
                                     <ul class="sidebar-list">
-                                        @foreach($categories as $cat)
+                                        @forelse($categories ?? [] as $cat)
                                             <li>
                                                 <a href="{{ route('web_faq', $cat->slug) }}"
                                                     class="{{ $cat->id == $category->id ? 'active' : '' }}">
@@ -42,7 +42,13 @@
                                                     <span class="icon fa fa-angle-right"></span>
                                                 </a>
                                             </li>
-                                        @endforeach
+                                        @empty
+                                            <li>
+                                                <a href="#">
+                                                    <p>Tidak ada kategori.</p>
+                                                </a>
+                                            </li>
+                                        @endforelse
                                     </ul>
                                 </div>
                             </div>
@@ -51,11 +57,11 @@
                     <div class="col-md-8 col-lg-9">
                         <div class="faq-area">
                             <div class="title-detail" data-aos="fade-in">
-                                <h5 class="font-text-bold">{{ $category->name }}</h5>
+                                <h5 class="font-text-bold">{{ $category?->name ?? 'Pilih Kategori' }}</h5>
                             </div>
                             <div class="faq-content" data-aos="fade-in">
                                 <div class="accordion custom-accordion" id="accordionExample">
-                                    @foreach($category->faqs as $faq)
+                                    @if(isset($category) && $category?->faqs?->isNotEmpty())
                                     <div class="accordion-list">
                                         <div class="accordion-head" id="heading{{ $faq->position }}">
                                             <h5 class="toggle-collapse" data-toggle="collapse" data-target="#collapse{{ $faq->position }}" aria-expanded="true" aria-controls="collapse{{ $faq->position }}">
@@ -70,7 +76,15 @@
                                             </div>
                                         </div>
                                     </div>
-                                    @endforeach
+                                    @else
+                                    <div class="accordion-list">
+                                        <div>
+                                            <div class="alert alert-info">
+                                                Tidak ada FAQ tersedia. Silakan pilih kategori.
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @endif
                                 </div>
                             </div>
                         </div>

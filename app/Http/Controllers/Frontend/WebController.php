@@ -290,9 +290,8 @@ class WebController extends Controller
             : $categories->first();                 // jika /faq tanpa slug
 
         // 3.  FAQ untuk kategori tsb (urut position)
-        $faqs = $category->faqs;                    // relasi sudah di‑order
-
-        $seo        = $category->first();
+        $faqs = $category?->faqs ?? [];  // Empty array if null
+        $seo = $category?->first() ?? About::where('is_active', 1)->first();
         $title      = 'Faq | Simplo';
         $body       = 'faq-page';
         // Use SEO metadata from first banner or fallback
