@@ -10,9 +10,9 @@ return [
          * The default configurations to be used by the meta generator.
          */
         'defaults'       => [
-            'title'        => "PT ARJAYA BERKAH MARINE", // set false to total remove
+            'title'        => "Simplo", // set false to total remove
             'titleBefore'  => false, // Put defaults.title before page title, like 'It's Over 9000! - Dashboard'
-            'description'  => 'PT Arjaya Berkah Marine adalah galangan kapal untuk perbaikan, pembangunan dan alat apung lainnya, lokasi di Puloampel, 5 Km dari Pelabuhan Merak.', // set false to total remove
+            'description'  => 'Simplo.', // set false to total remove
             'separator'    => ' - ',
             'keywords'     => [],
             'canonical'    => 'current', // Set to null or 'full' to use Url::full(), set to 'current' to use Url::current(), set false to total remove
@@ -37,8 +37,8 @@ return [
          * The default configurations to be used by the opengraph generator.
          */
         'defaults' => [
-            'title'       => 'PT ARJAYA BERKAH MARINE', // set false to total remove
-            'description' => 'PT Arjaya Berkah Marine adalah galangan kapal untuk perbaikan, pembangunan dan alat apung lainnya, lokasi di Puloampel, 5 Km dari Pelabuhan Merak.', // set false to total remove
+            'title'       => 'Simplo', // set false to total remove
+            'description' => 'Simplo.', // set false to total remove
             'url'         => null, // Set null for using Url::current(), set false to total remove
             'type'        => 'WebPage',
             'site_name'   => false,
@@ -59,8 +59,8 @@ return [
          * The default configurations to be used by the json-ld generator.
          */
         'defaults' => [
-            'title'       => 'PT ARJAYA BERKAH MARINE', // set false to total remove
-            'description' => 'PT Arjaya Berkah Marine adalah galangan kapal untuk perbaikan, pembangunan dan alat apung lainnya, lokasi di Puloampel, 5 Km dari Pelabuhan Merak.', // set false to total remove
+            'title'       => 'Simplo', // set false to total remove
+            'description' => 'Simplo', // set false to total remove
             'url'         => 'current', // Set to null or 'full' to use Url::full(), set to 'current' to use Url::current(), set false to total remove
             'type'        => 'WebPage',
             'images'      => [],

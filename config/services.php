@@ -50,6 +50,7 @@ return [
         'instagram' => env('INSTAGRAM_URL', '#'),
         'youtube'   => env('YOUTUBE_URL',   '#'),
         'tiktok'    => env('TIKTOK_URL',    '#'),
+        'whatsapp'    => env('WHATSAPP_NO',    '#'),
     ],
 
 ];

@@ -15,6 +15,7 @@ Route::get('/article/{slug}', [App\Http\Controllers\Frontend\WebController::clas
 Route::get('/faq/{slug?}', [App\Http\Controllers\Frontend\WebController::class, 'faq'])->name('web_faq');
 Route::get('/study-case/{slug?}', [App\Http\Controllers\Frontend\WebController::class, 'studyCase'])->name('web_study_case');
 Route::get('/search', [App\Http\Controllers\Frontend\SearchController::class, 'index'])->name('web_search');
+Route::get('/search/suggest', [App\Http\Controllers\Frontend\SearchController::class, 'suggest'])->name('search.suggest');
 // Route::get('/faq/{category:slug}', [App\Http\Controllers\Frontend\WebController::class, 'faqShow'])->name('web_faq.show');
 
 // Redirect plain /login to admin login

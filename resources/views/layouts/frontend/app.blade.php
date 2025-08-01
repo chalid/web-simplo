@@ -61,6 +61,52 @@
 		
 		<!-- End Google Tag Manager -->
 	</head>
+	<style>
+		/* Search Results Dropdown - Improved Visibility */
+		/* Makes results match your search input styling */
+			.header-fix .search-results-dropdown {
+				position: absolute;
+				width: 100%;
+				background: #ffffffff; /* Same blue as your input */
+				border-radius: 0 0 30px 30px; /* Matches your input's rounded corners */
+				box-shadow: 0 4px 8px rgba(27,27,27,0.1); /* Same shadow as input */
+				z-index: 1000;
+				display: none;
+				margin-top: -10px; /* Overlaps slightly with input */
+				padding: 10px 0;
+				border-top: none;
+			}
+
+			.header-fix .search-result-item {
+				padding: 12px 20px; /* Same horizontal padding as input */
+				color: white; /* Matches input text color */
+				cursor: pointer;
+				transition: background 0.2s;
+			}
+
+			.header-fix .search-result-item:hover {
+				background: rgba(255,255,255,0.1); /* Subtle hover effect */
+			}
+
+			.header-fix .result-title {
+				font-size: 1.2rem; /* Exact same size as input */
+				font-weight: 400;
+				margin-bottom: 2px;
+			}
+
+			.header-fix .result-type {
+				font-size: 0.95rem;
+				opacity: 0.8; /* Slightly transparent like placeholder */
+			}
+
+			/* Status messages */
+			.no-results, .error-message {
+				padding: 15px 20px;
+				color: white;
+				font-size: 1.2rem;
+				text-align: center;
+			}
+	</style>
 
 	<body  class="@yield('body', $body ? $body : 'index')">
 
@@ -94,10 +140,12 @@
 						</div>
 					</div>
 				</nav>
-				<div id="searchField" class="search-field">
-					<form id="search-form" action="{{ route('web_search') }}" method="get">
-						<input type="text" class="search-text" name="q" placeholder="Search here...." value="{{ request('q') }}">
+				<div id="searchContainer" class="search-field">
+					<form id="search-form">
+					<input type="text" class="search-text" id="search-input" 
+							placeholder="Search here..." autocomplete="off">
 					</form>
+					<div id="search-results" class="search-results-dropdown"></div>
 				</div>
 			</div>
 		</header>
@@ -130,7 +178,7 @@
 			@yield('content')
             <div class="floating-button inquiry-button">
 				<div class="button-wrapper">
-					<a href="https://api.whatsapp.com/send?phone=62811881901&text=" class="button-inside" target="_blank">
+					<a href="{{ config('services.social.whatsapp') }}" class="button-inside" target="_blank">
 						<span class="arrow"></span>
 						<strong>?</strong>
 						<small>Inquiry</small>
@@ -200,29 +248,96 @@
 				</div>
 			</div>
 		</footer>
-        <script src="{{ asset('assets/frontend/js/vendor.js') }}"></script>
+        <!-- 1. Load jQuery FIRST -->
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+		<!-- 2. Load jQuery plugins that depend on jQuery -->
+		<script src="{{ asset('assets/frontend/js/vendor.js') }}"></script>
+
+		<!-- 3. Load Bootstrap (which depends on jQuery) -->
 		<script src="{{ asset('assets/frontend/js/bootstrap.js') }}"></script>
+
+		<!-- 4. Load your main scripts LAST -->
 		<script src="{{ asset('assets/frontend/js/main.min.js') }}"></script>
-		@push('scripts')
+
 		<script>
-			document.addEventListener('DOMContentLoaded', () => {
+			// Simple, conflict-free implementation
+			document.addEventListener('DOMContentLoaded', function() {
+				// Elements
+				const searchInput = document.getElementById('search-input');
+				const searchForm = document.getElementById('search-form');
+				const searchResults = document.getElementById('search-results');
+				
+				// Verify elements exist
+				if (!searchInput || !searchForm || !searchResults) {
+					console.error('Search elements missing');
+					return;
+				}
 
-				const input = document.querySelector('#searchField input[type=text]');
+				// Debounce function to prevent excessive requests
+				function debounce(func, wait) {
+					let timeout;
+					return function() {
+						const context = this, args = arguments;
+						clearTimeout(timeout);
+						timeout = setTimeout(() => func.apply(context, args), wait);
+					};
+				}
 
-				if (!input) return;
-
-				/* redirect after user stops typing */
-				const handleSearch = debounce(() => {
-					const q = input.value.trim();
-					if (q.length > 1) {                             // e.g. min 2 chars
-						/* keep ?cat= or other params if you want: use URLSearchParams */
-						window.location.href = '{{ route('web_search') }}' + '?q=' + encodeURIComponent(q);
+				// Process search results
+				const processSearch = debounce(async (query) => {
+					if (query.length < 2) {
+						searchResults.style.display = 'none';
+						return;
 					}
-				}, 400);                                           // 400 ms idle time
 
-				input.addEventListener('input', handleSearch);
+					try {
+						const response = await fetch(`/search/suggest?q=${encodeURIComponent(query)}`);
+						const data = await response.json();
+						
+						if (data?.length > 0) {
+							searchResults.innerHTML = data.map(item => `
+								<div class="result-item" data-url="${item.url}">
+									<strong>${item.title}</strong>
+									<small>${item.type}</small>
+								</div>
+							`).join('');
+							searchResults.style.display = 'block';
+						} else {
+							searchResults.innerHTML = '<div class="no-results">No results found</div>';
+							searchResults.style.display = 'block';
+						}
+					} catch (error) {
+						console.error('Search error:', error);
+						searchResults.innerHTML = '<div class="error">Search unavailable</div>';
+						searchResults.style.display = 'block';
+					}
+				}, 300);
+
+				// Event listeners
+				searchInput.addEventListener('input', (e) => processSearch(e.target.value.trim()));
+				
+				searchForm.addEventListener('submit', (e) => {
+					e.preventDefault();
+					if (searchInput.value.trim().length > 0) {
+						window.location.href = `/search?q=${encodeURIComponent(searchInput.value.trim())}`;
+					}
+				});
+
+				document.addEventListener('click', (e) => {
+					if (!e.target.closest('#searchField')) {
+						searchResults.style.display = 'none';
+					}
+				});
+
+				// Handle result clicks
+				searchResults.addEventListener('click', (e) => {
+					const item = e.target.closest('.result-item');
+					if (item) {
+						window.location.href = item.dataset.url;
+					}
+				});
 			});
 		</script>
-		@endpush
 	</body>
 </html>
