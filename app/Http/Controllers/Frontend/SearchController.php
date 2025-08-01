@@ -37,41 +37,60 @@ class SearchController extends Controller
         ]);
     }
 
+    // In your SearchController.php
     public function suggest(Request $request)
     {
-        $q = trim($request->query('q'));
-        \Log::debug('Search query received:', ['query' => $q]);
-        
-        if (empty($q)) {
-            return response()->json([]);
+        try {
+            $q = trim($request->input('q', ''));
+            
+            if (strlen($q) < 2) {
+                return response()->json([]);
+            }
+
+            // Initialize empty collections
+            $products = collect();
+            $articles = collect();
+
+            // Only query if needed
+            if (strlen($q) >= 2) {
+                $products = Product::where('title', 'like', "%$q%")
+                    ->where('is_active', true)
+                    ->limit(5)
+                    ->get()
+                    ->map(function($item) {
+                        return [
+                            'title' => $item->title,
+                            'url' => route('web_product.show', $item->slug),
+                            'type' => 'Product'
+                        ];
+                    });
+
+                $articles = Article::where('title', 'like', "%$q%")
+                    ->where('is_active', true)
+                    ->limit(5)
+                    ->get()
+                    ->map(function($item) {
+                        return [
+                            'title' => $item->title,
+                            'url' => route('web_article.show', $item->slug),
+                            'type' => 'Article'
+                        ];
+                    });
+            }
+
+            // Merge as arrays, not collections
+            $results = $products->toArray();
+            $results = array_merge($results, $articles->toArray());
+
+            return response()->json($results, 200, [
+                'Content-Type' => 'application/json'
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Search service unavailable',
+                'details' => $e->getMessage()
+            ], 500);
         }
-
-        $productResults = Product::where('title', 'like', "%{$q}%")
-                            ->where('is_active', true)
-                            ->take(5)
-                            ->get()
-                            ->map(function($item) {
-                                return [
-                                    'title' => $item->title,
-                                    'url' => route('web_product.show', $item->slug),
-                                    'type' => 'Product'
-                                ];
-                            });
-
-        $articleResults = Article::where('title', 'like', "%{$q}%")
-                            ->where('is_active', true)
-                            ->take(5)
-                            ->get()
-                            ->map(function($item) {
-                                return [
-                                    'title' => $item->title,
-                                    'url' => route('web_article.show', $item->slug),
-                                    'type' => 'Article'
-                                ];
-                            });
-
-        $results = $productResults->merge($articleResults)->take(8);
-
-        return response()->json($results);
     }
 }

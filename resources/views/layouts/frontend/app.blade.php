@@ -63,48 +63,61 @@
 	</head>
 	<style>
 		/* Search Results Dropdown - Improved Visibility */
-		/* Makes results match your search input styling */
-			.header-fix .search-results-dropdown {
+			/* Search Results */
+			.search-results-dropdown {
 				position: absolute;
-				width: 100%;
-				background: #ffffffff; /* Same blue as your input */
-				border-radius: 0 0 30px 30px; /* Matches your input's rounded corners */
-				box-shadow: 0 4px 8px rgba(27,27,27,0.1); /* Same shadow as input */
+				width: 70%;
+				background: white;
+				border-radius: 0 0 10px 10px;
+				box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 				z-index: 1000;
 				display: none;
-				margin-top: -10px; /* Overlaps slightly with input */
-				padding: 10px 0;
-				border-top: none;
+				max-height: 60vh;
+				overflow-y: auto;
+				margin-top: 5px;
 			}
 
-			.header-fix .search-result-item {
-				padding: 12px 20px; /* Same horizontal padding as input */
-				color: white; /* Matches input text color */
-				cursor: pointer;
-				transition: background 0.2s;
-			}
-
-			.header-fix .search-result-item:hover {
-				background: rgba(255,255,255,0.1); /* Subtle hover effect */
-			}
-
-			.header-fix .result-title {
-				font-size: 1.2rem; /* Exact same size as input */
-				font-weight: 400;
-				margin-bottom: 2px;
-			}
-
-			.header-fix .result-type {
-				font-size: 0.95rem;
-				opacity: 0.8; /* Slightly transparent like placeholder */
-			}
-
-			/* Status messages */
-			.no-results, .error-message {
+			.search-result-item {
 				padding: 15px 20px;
-				color: white;
-				font-size: 1.2rem;
+				border-bottom: 1px solid #f0f0f0;
+				cursor: pointer;
+				transition: all 0.2s ease;
+			}
+
+			.search-result-item:hover {
+				background: #f8f9fa;
+			}
+
+			.result-title {
+				font-size: 1.1rem;
+				font-weight: 500;
+				color: #222;
+				margin-bottom: 5px;
+			}
+
+			.result-type {
+				font-size: 0.95rem;
+				color: #555;
+				display: inline-block;
+				background: #f0f4f8;
+				padding: 3px 8px;
+				border-radius: 4px;
+			}
+
+			/* Status Messages */
+			.no-results, .error-message {
+				padding: 20px;
 				text-align: center;
+				font-size: 1rem;
+			}
+
+			.no-results {
+				color: #666;
+			}
+
+			.error-message {
+				color: #d32f2f;
+				background: #ffebee;
 			}
 	</style>
 
@@ -263,81 +276,102 @@
 		<script>
 			// Simple, conflict-free implementation
 			document.addEventListener('DOMContentLoaded', function() {
-				// Elements
 				const searchInput = document.getElementById('search-input');
-				const searchForm = document.getElementById('search-form');
 				const searchResults = document.getElementById('search-results');
 				
-				// Verify elements exist
-				if (!searchInput || !searchForm || !searchResults) {
-					console.error('Search elements missing');
+				if (!searchInput || !searchResults) {
+					console.error('Search elements not found');
 					return;
 				}
 
 				// Debounce function to prevent excessive requests
-				function debounce(func, wait) {
-					let timeout;
-					return function() {
-						const context = this, args = arguments;
-						clearTimeout(timeout);
-						timeout = setTimeout(() => func.apply(context, args), wait);
+				function debounce(func, timeout = 300) {
+					let timer;
+					return (...args) => {
+					clearTimeout(timer);
+					timer = setTimeout(() => func.apply(this, args), timeout);
 					};
 				}
 
-				// Process search results
+				// Fetch results with proper error handling
+				async function fetchResults(query) {
+					try {
+					const response = await fetch(`/search/suggest?q=${encodeURIComponent(query)}`);
+					
+					// Verify JSON response
+					const contentType = response.headers.get('content-type');
+					if (!contentType || !contentType.includes('application/json')) {
+						throw new Error('Invalid response format');
+					}
+					
+					const data = await response.json();
+					
+					// Validate data structure
+					if (!Array.isArray(data)) {
+						throw new Error('Invalid data structure');
+					}
+					
+					return data;
+					} catch (error) {
+					console.error('Search error:', error);
+					return {
+						error: true,
+						message: 'Failed to load results',
+						details: error.message
+					};
+					}
+				}
+
+				// Process search queries
 				const processSearch = debounce(async (query) => {
 					if (query.length < 2) {
-						searchResults.style.display = 'none';
-						return;
+					searchResults.style.display = 'none';
+					return;
 					}
 
-					try {
-						const response = await fetch(`/search/suggest?q=${encodeURIComponent(query)}`);
-						const data = await response.json();
-						
-						if (data?.length > 0) {
-							searchResults.innerHTML = data.map(item => `
-								<div class="result-item" data-url="${item.url}">
-									<strong>${item.title}</strong>
-									<small>${item.type}</small>
-								</div>
-							`).join('');
-							searchResults.style.display = 'block';
-						} else {
-							searchResults.innerHTML = '<div class="no-results">No results found</div>';
-							searchResults.style.display = 'block';
-						}
-					} catch (error) {
-						console.error('Search error:', error);
-						searchResults.innerHTML = '<div class="error">Search unavailable</div>';
-						searchResults.style.display = 'block';
+					const results = await fetchResults(query);
+					
+					if (results.error) {
+					searchResults.innerHTML = `
+						<div class="error-message">
+						${results.message}
+						${results.details ? `<small>${results.details}</small>` : ''}
+						</div>
+					`;
+					} else if (results.length === 0) {
+					searchResults.innerHTML = '<div class="no-results">No results found</div>';
+					} else {
+					searchResults.innerHTML = results.map(item => `
+						<div class="search-result-item" data-url="${item.url}">
+						<div class="result-title">${item.title}</div>
+						<div class="result-type">${item.type}</div>
+						</div>
+					`).join('');
 					}
-				}, 300);
-
-				// Event listeners
-				searchInput.addEventListener('input', (e) => processSearch(e.target.value.trim()));
-				
-				searchForm.addEventListener('submit', (e) => {
-					e.preventDefault();
-					if (searchInput.value.trim().length > 0) {
-						window.location.href = `/search?q=${encodeURIComponent(searchInput.value.trim())}`;
-					}
+					
+					searchResults.style.display = 'block';
 				});
 
-				document.addEventListener('click', (e) => {
-					if (!e.target.closest('#searchField')) {
-						searchResults.style.display = 'none';
-					}
+				// Event listeners
+				searchInput.addEventListener('input', (e) => {
+					processSearch(e.target.value.trim());
 				});
 
 				// Handle result clicks
 				searchResults.addEventListener('click', (e) => {
-					const item = e.target.closest('.result-item');
-					if (item) {
-						window.location.href = item.dataset.url;
+					const resultItem = e.target.closest('.search-result-item');
+					if (resultItem) {
+					window.location.href = resultItem.dataset.url;
 					}
 				});
-			});
+
+				// Close results when clicking outside
+				document.addEventListener('click', (e) => {
+					if (!e.target.closest('#searchField')) {
+					searchResults.style.display = 'none';
+					}
+				});
+				});
 		</script>
 	</body>
 </html>
