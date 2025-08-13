@@ -42,10 +42,11 @@ class ImageHelper{
 
     public static function uploadImage($file, $dir, $paths = null)
     {
-        $sizes = self::resolveSizes($paths);
-        $imageName = $file->hashName();
-        $extension = $file->getClientOriginalExtension();
-        $basePath = 'storage/upload_files/images/' . $dir;
+        $sizes          = self::resolveSizes($paths);
+        $imageBaseName  = pathinfo($file->hashName(), PATHINFO_FILENAME);
+        $imageName      = $imageBaseName  . '.webp';
+        $extension      = $file->getClientOriginalExtension();
+        $basePath       = 'storage/upload_files/images/' . $dir;
 
         if (!File::exists(public_path($basePath))) {
             File::makeDirectory(public_path($basePath), 0777, true);
@@ -65,7 +66,7 @@ class ImageHelper{
                 ->resize($width, $height, function ($constraint) {
                     $constraint->aspectRatio();
                     $constraint->upsize();
-                })->encode($extension);
+                })->encode('webp', 80);
 
             File::put("$resizePath/$imageName", $resizedImage);
         }
