@@ -66,7 +66,7 @@ class ImageHelper{
                 ->resize($width, $height, function ($constraint) {
                     $constraint->aspectRatio();
                     $constraint->upsize();
-                })->encode('webp', 80);
+                })->encode('webp', 95);
 
             File::put("$resizePath/$imageName", $resizedImage);
         }
